@@ -1,6 +1,6 @@
 # Ember-fetch
 
-https://github.com/github/fetch wrapped and bundled for ember-cli users
+HTML5 fetch polyfil from https://github.com/github/fetch wrapped and bundled for ember-cli users
 
 ## Installation
 

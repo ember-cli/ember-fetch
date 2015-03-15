@@ -1,25 +1,41 @@
 # Ember-fetch
 
-This README outlines the details of collaborating on this Ember addon.
+https://github.com/github/fetch wrapped and bundled for ember-cli users
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+* `ember install:addon ember-fetch`
 
-## Running
+## Usage
 
-* `ember server`
-* Visit your app at http://localhost:4200.
+```js
+import fetch from 'fetch';
+import Ember from 'ember';
 
-## Running Tests
+export default Ember.Route.extend({
+  model() {
+    return fetch('/my-cool-end-point.json').then(function(request) {
+      return request.json();
+    });
+  }
+});
+```
 
-* `ember test`
-* `ember test --server`
+further docs: https://github.com/github/fetch
 
-## Building
+### Browser Support
 
-* `ember build`
+* evergreen / IE9+ / Safari 6.1+ https://github.com/github/fetch#browser-support
 
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+### why is this wrapper needed?
+
+* original emits a global
+* original requires a Promise polyfil (ember users have RSVP)
+* original isn't Ember run-loop aware
+
+### Won't this wrapper get out-of-sync?
+
+* we actually don't bundle github/fetch rather we merely wrap/transform what
+  comes from `node_modules`, so we should be resilient to changes assuming
+  semver from the fetch module
+

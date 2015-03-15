@@ -1,6 +1,46 @@
 /* jshint node: true */
 'use strict';
+var fetchPath = require.resolve('whatwg-fetch');
+var p = require('path');
+var fs = require('fs');
+var templater = require('lodash-node/modern/string/template');
+var templatePath = p.resolve(__dirname + '/assets/module-template.js.t');
+
+var stew = require('broccoli-stew');
+var rename = stew.rename;
+var find = stew.find;
+var debug = stew.debug;
+var Template = require('broccoli-templater');
+
+function expand(input) {
+  var path = p.dirname(input);
+  var file = p.basename(input);
+
+  return path + '/{' + file + '}';
+}
 
 module.exports = {
-  name: 'ember-fetch'
+  name: 'ember-fetch',
+  treeForVendor: function(tree) {
+    var fetchPath = require.resolve('whatwg-fetch');
+    var expandedFetchPath = expand(fetchPath);
+
+    var fetch = rename(find(expandedFetchPath), function(path) {
+      return 'whatwg-fetch/fetch.js'
+    });
+
+    return this.mergeTrees([
+      new Template(fetch, templatePath, function variables(content) {
+        return {
+          moduleBody: content
+        };
+      })
+    ]);
+  },
+
+  included: function(app) {
+    this.app = app;
+    this._super.included(app);
+    app.import('vendor/whatwg-fetch/fetch.js');
+  }
 };

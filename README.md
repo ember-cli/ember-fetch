@@ -1,4 +1,4 @@
-# Ember-fetch
+# Ember-fetch [![Build Status](https://travis-ci.org/stefanpenner/ember-fetch.svg?branch=master)](https://travis-ci.org/stefanpenner/ember-fetch)
 
 HTML5 [fetch](fetch.spec.whatwg.org]) polyfil from [github](https://github.com/github/fetch) wrapped and bundled for ember-cli users
 

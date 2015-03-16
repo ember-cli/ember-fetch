@@ -40,6 +40,16 @@ module.exports = {
   included: function(app) {
     this.app = app;
     this._super.included(app);
-    app.import('vendor/whatwg-fetch/fetch.js');
+
+    app.import('vendor/whatwg-fetch/fetch.js', {
+      exports: {
+        default: [
+          'default',
+          'Headers',
+          'Request',
+          'Response'
+        ]
+      }
+    });
   }
 };

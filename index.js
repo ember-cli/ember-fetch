@@ -3,7 +3,6 @@
 var fetchPath = require.resolve('whatwg-fetch');
 var p = require('path');
 var fs = require('fs');
-var templater = require('lodash-node/modern/string/template');
 var templatePath = p.resolve(__dirname + '/assets/module-template.js.t');
 
 var stew = require('broccoli-stew');

@@ -32,6 +32,15 @@ further docs: https://github.com/github/fetch
 
 * evergreen / IE9+ / Safari 6.1+ https://github.com/github/fetch#browser-support
 
+
+### does this replace ic-ajax?
+
+* ideally yes, but only if you cater to IE9+
+
+### What about all the run-loop and promise mixing details?
+
+* taken care of for you
+
 ### why is this wrapper needed?
 
 * original emits a global

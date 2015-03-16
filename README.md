@@ -1,6 +1,11 @@
 # Ember-fetch
 
-HTML5 fetch polyfil from https://github.com/github/fetch wrapped and bundled for ember-cli users
+HTML5 [fetch](fetch.spec.whatwg.org]) polyfil from [github](https://github.com/github/fetch) wrapped and bundled for ember-cli users
+
+* [intro to fetch](http://updates.html5rocks.com/2015/03/introduction-to-fetch)
+* [spec](fetch.spec.whatwg.org])
+* [usage](https://github.com/github/fetch#usage)
+* [origin repo](https://github.com/github/fetch)
 
 ## Installation
 

@@ -1,6 +1,6 @@
 {
   "name": "ember-fetch",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "HTML5 Fetch polyfil (as an ember-addon)",
   "directories": {
     "doc": "doc",

@@ -33,5 +33,7 @@ test('visiting /', function(assert) {
 
   andThen(function() {
     assert.equal(currentPath(), 'index');
+    assert.equal($.trim($('.fetch').text()), 'Hello World! fetch');
+    assert.equal($.trim($('.ajax').text()), 'Hello World! ajax');
   });
 });

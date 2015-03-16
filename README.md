@@ -36,6 +36,7 @@ further docs: https://github.com/github/fetch
 ### does this replace ic-ajax?
 
 * ideally yes, but only if you cater to IE9+
+* for basic drop-in compat `import ajax from 'fetch/ajax'`
 
 ### What about all the run-loop and promise mixing details?
 

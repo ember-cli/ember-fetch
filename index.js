@@ -10,6 +10,7 @@ var rename = stew.rename;
 var find = stew.find;
 var debug = stew.debug;
 var Template = require('broccoli-templater');
+var mergeTrees = require('broccoli-merge-trees')
 
 function expand(input) {
   var path = p.dirname(input);
@@ -28,7 +29,7 @@ module.exports = {
       return 'whatwg-fetch/fetch.js'
     });
 
-    return this.mergeTrees([
+    return mergeTrees([
       new Template(fetch, templatePath, function variables(content) {
         return {
           moduleBody: content

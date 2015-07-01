@@ -19,8 +19,8 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    return fetch('/my-cool-end-point.json').then(function(request) {
-      return request.json();
+    return fetch('/my-cool-end-point.json').then(function(response) {
+      return response.json();
     });
   }
 });

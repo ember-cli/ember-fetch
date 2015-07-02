@@ -1,14 +1,11 @@
 /* jshint node: true */
 'use strict';
-var fetchPath = require.resolve('whatwg-fetch');
 var p = require('path');
-var fs = require('fs');
 var templatePath = p.resolve(__dirname + '/assets/module-template.js.t');
 
 var stew = require('broccoli-stew');
 var rename = stew.rename;
 var find = stew.find;
-var debug = stew.debug;
 var Template = require('broccoli-templater');
 var mergeTrees = require('broccoli-merge-trees')
 

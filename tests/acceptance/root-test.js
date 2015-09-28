@@ -47,7 +47,7 @@ test('posting a string', function(assert) {
       JSON.stringify({ name: 'World' })
     ];
   });
-  fetch('/upload', {
+  return fetch('/upload', {
     method: 'post',
     body: 'foo'
   }).then(function (res) {
@@ -55,8 +55,6 @@ test('posting a string', function(assert) {
     return res.json();
   }).then(function (data) {
     assert.equal(data.name, 'World');
-  }).catch(function (e) {
-    assert(false, e);
   });
 });
 test('posting a form', function(assert) {

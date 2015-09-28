@@ -70,7 +70,7 @@ test('posting a form', function(assert) {
   });
   var form = new window.FormData();
   form.append('foo', 'bar');
-  fetch('/upload', {
+  return fetch('/upload', {
     method: 'post',
     body: form
   }).then(function (res) {
@@ -78,7 +78,5 @@ test('posting a form', function(assert) {
     return res.json();
   }).then(function (data) {
     assert.equal(data.name, 'World');
-  }).catch(function (e) {
-    assert.ok(false, e.stack);
   });
 });

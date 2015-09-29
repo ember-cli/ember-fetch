@@ -5,6 +5,7 @@ import {
 } from 'qunit';
 import startApp from 'dummy/tests/helpers/start-app';
 import Pretender from 'pretender';
+import fetch from 'fetch';
 var application;
 var server;
 
@@ -35,5 +36,45 @@ test('visiting /', function(assert) {
     assert.equal(currentPath(), 'index');
     assert.equal($.trim($('.fetch').text()), 'Hello World! fetch');
     assert.equal($.trim($('.ajax').text()), 'Hello World! ajax');
+  });
+});
+test('posting a string', function(assert) {
+  server.post('/upload', function(req) {
+    assert.equal(req.requestBody, 'foo');
+    return [
+      200,
+      { 'Content-Type': 'text/json'},
+      JSON.stringify({ name: 'World' })
+    ];
+  });
+  return fetch('/upload', {
+    method: 'post',
+    body: 'foo'
+  }).then(function (res) {
+    assert.equal(res.status, 200);
+    return res.json();
+  }).then(function (data) {
+    assert.equal(data.name, 'World');
+  });
+});
+test('posting a form', function(assert) {
+  server.post('/upload', function(req) {
+    assert.ok(req.requestBody instanceof window.FormData);
+    return [
+      200,
+      { 'Content-Type': 'text/json'},
+      JSON.stringify({ name: 'World' })
+    ];
+  });
+  var form = new window.FormData();
+  form.append('foo', 'bar');
+  return fetch('/upload', {
+    method: 'post',
+    body: form
+  }).then(function (res) {
+    assert.equal(res.status, 200);
+    return res.json();
+  }).then(function (data) {
+    assert.equal(data.name, 'World');
   });
 });

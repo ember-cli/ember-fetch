@@ -9,7 +9,7 @@ HTML5 [fetch](https://fetch.spec.whatwg.org) polyfill from [github](https://gith
 
 ## Installation
 
-* `ember install:addon ember-fetch`
+* `ember install ember-fetch`
 
 ## Usage
 

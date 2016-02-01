@@ -1,15 +1,15 @@
 {
   "name": "ember-fetch",
   "version": "1.2.2",
-  "description": "HTML5 Fetch polyfil (as an ember-addon)",
+  "description": "HTML5 Fetch polyfill (as an ember-addon)",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
   "scripts": {
-    "start": "ember server",
     "build": "ember build",
-    "test": "ember test"
+    "start": "ember server",
+    "test": "ember try:testall"
   },
   "repository": "https://github.com/stefanpenner/ember-fetch",
   "engines": {
@@ -18,34 +18,39 @@
   "author": "Stefan Penner <stefan.penner@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "broccoli-asset-rev": "^2.0.2",
-    "ember-cli": "0.2.3",
-    "ember-cli-app-version": "0.3.3",
-    "ember-cli-babel": "^4.0.0",
+    "broccoli-asset-rev": "^2.2.0",
+    "ember-cli": "1.13.15",
+    "ember-cli-app-version": "^1.0.0",
     "ember-cli-content-security-policy": "0.4.0",
-    "ember-cli-dependency-checker": "0.0.8",
-    "ember-cli-htmlbars": "0.7.4",
-    "ember-cli-ic-ajax": "0.1.1",
-    "ember-cli-inject-live-reload": "^1.3.0",
+    "ember-cli-dependency-checker": "^1.1.0",
+    "ember-cli-htmlbars": "^1.0.1",
+    "ember-cli-htmlbars-inline-precompile": "^0.3.1",
+    "ember-cli-ic-ajax": "0.2.4",
+    "ember-cli-inject-live-reload": "^1.3.1",
     "ember-cli-pretender": "^0.3.1",
-    "ember-cli-qunit": "0.3.10",
-    "ember-cli-uglify": "1.0.1",
-    "ember-export-application-global": "^1.0.2",
+    "ember-cli-qunit": "^1.0.4",
+    "ember-cli-release": "0.2.8",
+    "ember-cli-sri": "^1.2.0",
+    "ember-cli-uglify": "^1.2.0",
+    "ember-data": "1.13.15",
+    "ember-disable-proxy-controllers": "^1.0.1",
+    "ember-export-application-global": "^1.0.4",
     "ember-disable-prototype-extensions": "^1.0.0",
-    "ember-try": "0.0.4"
+    "ember-try": "~0.0.8"
   },
   "keywords": [
     "ember-addon"
   ],
-  "ember-addon": {
-    "configPath": "tests/dummy/config"
-  },
   "dependencies": {
     "broccoli-caching-writer": "^0.5.5",
     "broccoli-filter": "^0.1.11",
     "broccoli-merge-trees": "^0.2.1",
     "broccoli-stew": "^0.2.1",
     "broccoli-templater": "0.0.2",
-    "whatwg-fetch": "^0.9.0"
+    "ember-cli-babel": "^5.1.5",
+    "whatwg-fetch": "^0.11.0"
+  },
+  "ember-addon": {
+    "configPath": "tests/dummy/config"
   }
 }

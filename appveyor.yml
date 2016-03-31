@@ -6,7 +6,6 @@ init:
 
 # Test against these versions of Node.js.
 environment:
-  DEBUG: '*'
   matrix:
     - nodejs_version: "0.12"
     - nodejs_version: "4.2"
@@ -18,6 +17,7 @@ install:
   # Typical npm stuff.
   - md C:\nc
   - npm config set cache C:\nc
+  - npm install phantomjs-prebuilt
   - npm version
   - npm install --no-optional
   - npm install -g bower

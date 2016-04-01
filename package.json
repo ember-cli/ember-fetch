@@ -42,11 +42,9 @@
     "ember-addon"
   ],
   "dependencies": {
-    "broccoli-caching-writer": "^0.5.5",
-    "broccoli-filter": "^0.1.11",
-    "broccoli-merge-trees": "^0.2.1",
-    "broccoli-stew": "^0.2.1",
-    "broccoli-templater": "0.0.2",
+    "broccoli-merge-trees": "^1.1.1",
+    "broccoli-stew": "^1.2.0",
+    "broccoli-templater": "^1.0.0",
     "ember-cli-babel": "^5.1.5",
     "whatwg-fetch": "^0.11.0"
   },

@@ -42,13 +42,17 @@
     "ember-addon"
   ],
   "dependencies": {
-    "broccoli-merge-trees": "^1.1.1",
+    "broccoli-funnel": "^1.0.7",
     "broccoli-stew": "^1.2.0",
     "broccoli-templater": "^1.0.0",
     "ember-cli-babel": "^5.1.5",
-    "whatwg-fetch": "^0.11.0"
+    "node-fetch": "^1.6.3",
+    "whatwg-fetch": "^1.0.0"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "fastBootDependencies": [
+      "node-fetch"
+    ]
   }
 }

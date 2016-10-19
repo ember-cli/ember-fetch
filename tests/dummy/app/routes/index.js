@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import fetch from 'fetch';
-import ajax from 'fetch/ajax';
+import ajax from 'ember-fetch/ajax';
 
 export default Ember.Route.extend({
   model: function() {

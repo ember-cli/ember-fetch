@@ -17,17 +17,17 @@ install:
   # Typical npm stuff.
   - md C:\nc
   - npm config set cache C:\nc
-  - npm install phantomjs-prebuilt
-  - npm version
-  - npm install --no-optional
-  - npm install -g bower
-  - bower i
+  - npm install -g bower yarn
+  - yarn add phantomjs-prebuilt
+  - yarn version
+  - yarn install
+  - bower install
 
 # Post-install test scripts.
 test_script:
   # Output useful info for debugging.
-  - npm version
-  - cmd: npm test
+  - yarn version
+  - cmd: yarn test
 
 # Don't actually build.
 build: off

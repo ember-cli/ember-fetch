@@ -22,7 +22,7 @@
     "broccoli-templater": "^1.0.0",
     "ember-cli-babel": "^5.1.7",
     "node-fetch": "^1.6.3",
-    "whatwg-fetch": "^1.0.0"
+    "whatwg-fetch": "^2.0.1"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",

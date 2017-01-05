@@ -47,7 +47,7 @@ further docs: https://github.com/github/fetch
 ### why is this wrapper needed?
 
 * original emits a global
-* original requires a Promise polyfil (ember users have RSVP)
+* original requires a Promise polyfill (ember users have RSVP)
 * original isn't Ember run-loop aware
 
 ### Won't this wrapper get out-of-sync?

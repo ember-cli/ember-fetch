@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import $ from 'jquery';
 import {
   module,
   test

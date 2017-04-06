@@ -14,7 +14,21 @@
 
     <%= moduleBody %>
 
-    self['default'] = self.fetch;
+    var pending = 0;
+    if (Ember.Test) {
+      Ember.Test.registerWaiter(function() { return pending === 0; });
+    }
+
+    function decrement(result) {
+      pending--;
+      return result;
+    }
+
+    self['default'] = function() {
+      pending++;
+
+      return self.fetch.apply(self, arguments).then(decrement, decrement);
+    };
     self['Headers'] = self.Headers;
     self['Request'] = self.Request;
     self['Response'] = self.Response;

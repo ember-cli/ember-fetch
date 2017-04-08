@@ -15,8 +15,8 @@
     <%= moduleBody %>
 
     var pending = 0;
-    if (Ember.Test) {
-      Ember.Test.registerWaiter(function() { return pending === 0; });
+    if (Ember.default.Test) {
+      Ember.default.Test.registerWaiter(function() { return pending === 0; });
     }
 
     function decrement(result) {

@@ -34,7 +34,7 @@ module.exports = {
    * from our `vendor` tree into the final built app.
    */
   included: function(app) {
-    app.import('vendor/fetch.js', {
+    app.import('vendor/ember-fetch.js', {
       exports: {
         default: [
           'default',
@@ -124,11 +124,11 @@ function treeForBrowserFetch() {
 }
 
 // Renames either `fastboot-fetch.js` or `whatwg-fetch/fetch.js` to just
-// `fetch.js`. Note that this function will rename _every_ file in the tree;
+// `ember-fetch.js`. Note that this function will rename _every_ file in the tree;
 // we just happen to know that the passed tree only contains a single file.
 function normalizeFileName(tree) {
   return rename(tree, function() {
-    return 'fetch.js';
+    return 'ember-fetch.js';
   });
 }
 

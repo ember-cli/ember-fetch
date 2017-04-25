@@ -17,10 +17,8 @@ install:
   # Typical npm stuff.
   - md C:\nc
   - npm config set cache C:\nc
-  - npm install -g bower yarn
   - yarn add phantomjs-prebuilt
   - yarn install
-  - bower install
 
 # Post-install test scripts.
 test_script:

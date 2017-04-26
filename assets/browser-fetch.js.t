@@ -15,20 +15,28 @@
     <%= moduleBody %>
 
     var pending = 0;
-    if (Ember.default.Test) {
-      Ember.default.Test.registerWaiter(function() { return pending === 0; });
-    }
-
     function decrement(result) {
       pending--;
       return result;
     }
 
-    self['default'] = function() {
-      pending++;
+    if (Ember.default.Test) {
+      Ember.default.Test.registerWaiter(function() {
+        return pending === 0;
+      });
 
-      return self.fetch.apply(self, arguments).then(decrement, decrement);
-    };
+      self['default'] = function() {
+        pending++;
+
+        return self.fetch.apply(self, arguments).then(function(response){
+          response.clone().blob().then(decrement, decrement);
+          return response;
+        }, decrement);
+      };
+    } else {
+      self['default'] = self.fetch;
+    }
+
     self['Headers'] = self.Headers;
     self['Request'] = self.Request;
     self['Response'] = self.Response;

@@ -38,7 +38,16 @@ module.exports = {
    * from our `vendor` tree into the final built app.
    */
   included: function(app) {
-    app.import('vendor/ember-fetch.js');
+    app.import('vendor/ember-fetch.js',
+      exports: {		
+        default: [		
+          'default',		
+          'Headers',		
+          'Request',		
+          'Response'		
+        ]		
+      }		
+    });		
   },
 
   /*

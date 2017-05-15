@@ -3,7 +3,6 @@
 
 var path = require('path');
 var map = require('broccoli-stew').map;
-var MergeTrees = require('broccoli-merge-trees');
 
 /*
  * The `index.js` file is the main entry point for all Ember CLI addons.  The
@@ -62,7 +61,7 @@ module.exports = {
   treeForVendor: function(vendorTree) {
     var browserTree = treeForBrowserFetch();
     browserTree = map(browserTree, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
-    return new MergeTrees([vendorTree, browserTree]);
+    return browserTree;
   },
 
   //add node version of fetch.js into fastboot package.json manifest vendorFiles array

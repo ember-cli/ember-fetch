@@ -45,8 +45,8 @@ module.exports = {
           'Request',
           'Response'
         ]
-      }	
-    });		
+      }
+    });
   },
 
   /*

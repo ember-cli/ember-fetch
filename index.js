@@ -38,14 +38,14 @@ module.exports = {
    */
   included: function(app) {
     app.import('vendor/ember-fetch.js', {
-      exports: {		
-        default: [		
-          'default',		
-          'Headers',		
-          'Request',		
-          'Response'		
-        ]		
-      }		
+      exports: {
+        default: [
+          'default',
+          'Headers',
+          'Request',
+          'Response'
+        ]
+      }	
     });		
   },
 

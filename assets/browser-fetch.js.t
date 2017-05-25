@@ -1,23 +1,23 @@
 (function (global) {
-  define('fetch', ['ember', 'exports'], function(Ember, self) {
+  define('fetch', ['ember', 'exports'], function(Ember, exp) {
     'use strict';
     var Promise = Ember['default'].RSVP.Promise;
     if (global.FormData) {
-      self.FormData = global.FormData;
+      exp.FormData = global.FormData;
     }
     if (global.FileReader) {
-      self.FileReader = global.FileReader;
+      exp.FileReader = global.FileReader;
     }
     if (global.Blob) {
-      self.Blob = global.Blob;
+      exp.Blob = global.Blob;
     }
 
     <%= moduleBody %>
 
-    self['default'] = self.fetch;
-    self['Headers'] = self.Headers;
-    self['Request'] = self.Request;
-    self['Response'] = self.Response;
+    exp['default'] = self.fetch;
+    exp['Headers'] = self.Headers;
+    exp['Request'] = self.Request;
+    exp['Response'] = self.Response;
   });
 
   define('fetch/ajax', ['exports'], function() {

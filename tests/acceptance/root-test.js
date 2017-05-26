@@ -79,3 +79,32 @@ test('posting a form', function(assert) {
     assert.equal(data.name, 'World');
   });
 });
+
+test('tests await for fetch requests', function(assert) {
+  server.get('/omg.json', function() {
+    return [
+      200,
+      { 'Content-Type': 'text/json'},
+      JSON.stringify({ name: 'World' })
+    ];
+  });
+
+  server.get('/slow-data.json', function() {
+    return [
+      200,
+      { 'Content-Type': 'text/json'},
+      JSON.stringify({ content: 'This was slow' })
+    ];
+  }, 800);
+
+  visit('/');
+
+
+  andThen(function() {
+    click('#fetch-slow-data-button');
+  });
+
+  andThen(function() {
+    assert.equal(find('.fetched-slow-data-span').length, 1, 'Test has waited for data to appear');
+  });
+});

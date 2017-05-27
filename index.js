@@ -1,6 +1,9 @@
 /* eslint-env node */
 'use strict';
 
+var path = require('path');
+var map = require('broccoli-stew').map;
+
 /*
  * The `index.js` file is the main entry point for all Ember CLI addons.  The
  * object we export from this file is turned into an Addon class
@@ -55,16 +58,19 @@ module.exports = {
    * not. Based on that, we return a tree that contains the correct version of
    * the polyfill at the `vendor/fetch.js` path.
    */
-  treeForVendor: function() {
-    if (isFastBoot()) {
-      return treeForNodeFetch();
-    } else {
-      return treeForBrowserFetch();
-    }
+  treeForVendor: function(vendorTree) {
+    var browserTree = treeForBrowserFetch();
+    browserTree = map(browserTree, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
+    return browserTree;
+  },
+
+  //add node version of fetch.js into fastboot package.json manifest vendorFiles array
+  updateFastBootManifest: function (manifest) {
+    manifest.vendorFiles.push('ember-fetch/fastboot-fetch.js');
+    return manifest;
   }
 };
 
-var path = require('path');
 
 // We use a few different Broccoli plugins to build our trees:
 //
@@ -81,7 +87,6 @@ var path = require('path');
 //   * find - finds files in a tree based on a glob pattern
 
 var Template = require('broccoli-templater');
-var funnel = require('broccoli-funnel');
 var stew = require('broccoli-stew');
 var rename = stew.rename;
 var find = stew.find;
@@ -90,21 +95,6 @@ var find = stew.find;
 // polyfill
 var templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
 
-// Checks to see whether this build is targeting FastBoot. Note that we cannot
-// check this at boot time--the environment variable is only set once the build
-// has started, which happens after this file is evaluated.
-function isFastBoot() {
-  return process.env.EMBER_CLI_FASTBOOT === 'true';
-}
-
-// Returns a shim file from the assets directory and renames it to the
-// normalized `fetch.js`. That shim file calls `FastBoot.require`, which allows
-// you to require node modules (in this case `node-fetch`) in FastBoot mode.
-function treeForNodeFetch() {
-  return normalizeFileName(funnel(path.join(__dirname, './assets'), {
-    files: ['fastboot-fetch.js'],
-  }));
-}
 
 // Returns a tree containing the browser polyfill (from
 // `node_modules/whatwg-fetch`), wrapped in a shim that stops it from exporting

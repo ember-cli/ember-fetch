@@ -73,15 +73,20 @@ export function headersToObject(headers) {
  * Helper function that translates the options passed to `jQuery.ajax` into a format that `fetch` expects.
  * @param {Object} options
  */
-export function mungOptionsForFetch(_options) {
+export function mungOptionsForFetch(_options, adapter) {
   const options = (assign || merge)({
     credentials: 'same-origin',
   }, _options);
 
+  let adapterHeaders = adapter.get('headers');
+  if (adapterHeaders) {
+    options.headers = assign({}, options.headers || {}, adapterHeaders);
+  }
   options.method = options.type;
 
   // Mimics the default behavior in Ember Data's `ajaxOptions`
-  if (options.headers && (!options.headers['Content-Type'] || !options.headers['content-type'])) {
+  if (options.headers === undefined || !(options.headers['Content-Type'] || options.headers['content-type'])) {
+    options.headers = options.headers || {};
     options.headers['Content-Type'] = 'application/json; charset=utf-8';
   }
 
@@ -130,8 +135,7 @@ export default Ember.Mixin.create({
    * @override
    */
   _ajaxRequest(options) {
-    const _options = mungOptionsForFetch(options);
-
+    const _options = mungOptionsForFetch(options, this);
     return fetch(_options.url, _options);
   },
 

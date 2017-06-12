@@ -7,6 +7,8 @@ const {
   RSVP
 } = Ember;
 
+const RBRACKET = /\[\]$/;
+
 /**
  * Helper function that turns the data/body of a request into a query param string.
  * This is directly copied from jQuery.param.
@@ -14,22 +16,16 @@ const {
  * @returns {String}
  */
 export function serialiazeQueryParams(queryParamsObject) {
-  var s = [], rbracket = /\[\]$/;
-  function isArray(obj) {
-    return Object.prototype.toString.call(obj) === '[object Array]';
-  }
-  function add(k, v) {
-    v = typeof v === 'function' ? v() : v === null ? '' : v === undefined ? '' : v;
-    s[s.length] = encodeURIComponent(k) + '=' + encodeURIComponent(v);
-  }
+  var s = [];
+
   function buildParams(prefix, obj) {
     var i, len, key;
 
     if (prefix) {
-      if (isArray(obj)) {
+      if (Array.isArray(obj)) {
         for (i = 0, len = obj.length; i < len; i++) {
-          if (rbracket.test(prefix)) {
-            add(prefix, obj[i]);
+          if (RBRACKET.test(prefix)) {
+            add(s, prefix, obj[i]);
           } else {
             buildParams(prefix + '[' + (typeof obj[i] === 'object' ? i : '') + ']', obj[i]);
           }
@@ -39,11 +35,11 @@ export function serialiazeQueryParams(queryParamsObject) {
           buildParams(prefix + '[' + key + ']', obj[key]);
         }
       } else {
-        add(prefix, obj);
+        add(s, prefix, obj);
       }
-    } else if (isArray(obj)) {
+    } else if (Array.isArray(obj)) {
       for (i = 0, len = obj.length; i < len; i++) {
-        add(obj[i].name, obj[i].value);
+        add(s, obj[i].name, obj[i].value);
       }
     } else {
       for (key in obj) {
@@ -54,6 +50,17 @@ export function serialiazeQueryParams(queryParamsObject) {
   }
 
   return buildParams('', queryParamsObject).join('&').replace(/%20/g, '+');
+}
+
+/**
+ * Part of the `serialiazeQueryParams` helper function.
+ * @param {Array} s
+ * @param {String} k
+ * @param {String} v
+ */
+function add(s, k, v) {
+  v = typeof v === 'function' ? v() : v === null ? '' : v === undefined ? '' : v;
+  s[s.length] = `${encodeURIComponent(k)}=${encodeURIComponent(v)}`;
 }
 
 /**

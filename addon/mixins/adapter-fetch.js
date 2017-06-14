@@ -81,13 +81,16 @@ export function headersToObject(headers) {
  * @param {Object} options
  */
 export function mungOptionsForFetch(_options, adapter) {
-  const options = (assign || merge)({
+  // This allows this mixin to be backward compatible with Ember < 2.5.
+  const combineObjs = (assign || merge);
+  const options = combineObjs({
     credentials: 'same-origin',
   }, _options);
 
   let adapterHeaders = adapter.get('headers');
   if (adapterHeaders) {
-    options.headers = assign({}, options.headers || {}, adapterHeaders);
+    // This double use of `combineObjs` is necessary because `merge` only accepts two arguments.
+    options.headers = combineObjs(combineObjs({}, options.headers || {}), adapterHeaders);
   }
   options.method = options.type;
 

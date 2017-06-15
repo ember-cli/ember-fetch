@@ -28,11 +28,24 @@ export default Ember.Route.extend({
 });
 ```
 
+### Use with Ember Data
+To have Ember Data utilize `fetch` instead of jQuery.ajax to make calls to your backend, extend your project's `application` adapter with the `adapter-fetch` mixin.
+
+```js
+// app/adapters/application.js
+import DS from 'ember-data';
+import AdapterFetch from 'ember-fetch/mixins/adapter-fetch';
+
+export default RESTAdapter.extend(AdapterFetch, {
+  ...
+});
+```
+
 further docs: https://github.com/github/fetch
 
 ### Browser Support
 
-* evergreen / IE9+ / Safari 6.1+ https://github.com/github/fetch#browser-support
+* evergreen / IE10+ / Safari 6.1+ https://github.com/github/fetch#browser-support
 
 
 ### does this replace ic-ajax?

@@ -118,14 +118,15 @@ test('tests await for fetch requests', function(assert) {
     ];
   });
 
+
   visit('/');
 
-
   andThen(function() {
-    click('#fetch-slow-data-button');
+    server.shutdown();
+    click('#fetch-broken-data-button');
   });
 
   andThen(function() {
-    assert.equal(find('.fetched-slow-data-failed-span').length, 1, 'The fetch promise has rejected');
+    assert.equal(find('.fetched-failed-span').length, 1, 'The fetch promise has rejected');
   });
 });

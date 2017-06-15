@@ -180,24 +180,15 @@ export default Ember.Mixin.create({
    * @param {Object} requestData
    */
   ajaxError(error, response, requestData) {
-    let returnedError;
-
     if (error instanceof Error) {
-      returnedError = error;
+      return error;
     } else {
-      try {
-        const headersObject = headersToObject(response.headers);
-        returnedError = this.handleResponse(
-          response.status,
-          headersObject,
-          this.parseErrorResponse(response.statusText) || error,
-          requestData
-        );
-      } catch (e) {
-        throw e;
-      }
+       return this.handleResponse(
+        response.status,
+         headersToObject(response.headers),
+        this.parseErrorResponse(response.statusText) || error,
+        requestData
+      );
     }
-
-    return returnedError;
   }
 });

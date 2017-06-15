@@ -71,9 +71,7 @@ function add(s, k, v) {
  */
 export function headersToObject(headers) {
   let headersObject = {};
-  headers.forEach((value, key) => {
-    headersObject[key] = value;
-  });
+  headers.forEach((value, key) => headersObject[key] = value);
   return headersObject;
 }
 /**

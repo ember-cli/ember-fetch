@@ -133,7 +133,12 @@ export default Ember.Mixin.create({
         if (response.ok) {
           // We want to check that there is a body in the response, otherwise JSON.parse will throw an error.
           // Instead, we'll let Ember Data handle an empty response.
-          const bodyPromise = response.headers.get('content-length') ? response.json() : {};
+          let bodyPromise;
+          if (response.headers.get('content-length')) {
+            bodyPromise = response.json();
+          } else {
+            bodyPromise = new RSVP.Promise((resolve) => resolve({}));
+          }
           return this.ajaxSuccess(response, bodyPromise, requestData);
         }
         throw this.ajaxError(null, response, requestData);

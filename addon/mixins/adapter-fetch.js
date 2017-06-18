@@ -109,6 +109,23 @@ export function mungOptionsForFetch(_options, adapter) {
 
   return options;
 }
+/**
+ * Function checks that there is a body in the response. Otherwise JSON.parse will throw an error.
+ * If there is not, return an empty object and let Ember data handle the empty response
+ * @param {Response} response
+ * @returns {Promise}
+ */
+export function determineBodyPromise(response) {
+  let bodyPromise;
+  const contentLength = response.headers.get('content-length');
+
+  if (contentLength && parseInt(contentLength)) {
+    bodyPromise = response.json();
+  } else {
+    bodyPromise = RSVP.Promise.resolve({});
+  }
+  return bodyPromise;
+}
 
 export default Ember.Mixin.create({
   /**
@@ -131,14 +148,7 @@ export default Ember.Mixin.create({
       })
       .then((response) => {
         if (response.ok) {
-          // We want to check that there is a body in the response, otherwise JSON.parse will throw an error.
-          // Instead, we'll let Ember Data handle an empty response.
-          let bodyPromise;
-          if (response.headers.get('content-length')) {
-            bodyPromise = response.json();
-          } else {
-            bodyPromise = new RSVP.Promise((resolve) => resolve({}));
-          }
+          const bodyPromise = determineBodyPromise(response);
           return this.ajaxSuccess(response, bodyPromise, requestData);
         }
         throw this.ajaxError(null, response, requestData);

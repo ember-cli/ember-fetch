@@ -117,9 +117,11 @@ export function mungOptionsForFetch(_options, adapter) {
  */
 export function determineBodyPromise(response) {
   let bodyPromise;
-  const contentLength = response.headers.get('content-length');
 
-  if (contentLength && Number(contentLength)) {
+  // Content-Length is returned as a string or null, so we convert to a number.
+  const contentLength = Number(response.headers.get('content-length'));
+
+  if (contentLength > 0) {
     bodyPromise = response.json();
   } else {
     bodyPromise = RSVP.Promise.resolve({});

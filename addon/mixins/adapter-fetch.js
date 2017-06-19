@@ -119,7 +119,7 @@ export function determineBodyPromise(response) {
   let bodyPromise;
   const contentLength = response.headers.get('content-length');
 
-  if (contentLength && parseInt(contentLength)) {
+  if (contentLength && Number(contentLength)) {
     bodyPromise = response.json();
   } else {
     bodyPromise = RSVP.Promise.resolve({});

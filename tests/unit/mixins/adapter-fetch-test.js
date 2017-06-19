@@ -200,7 +200,6 @@ test('determineBodyResponse returns the body when it is present', function(asser
 test('determineBodyResponse returns an empty object when the body is not present', function(assert) {
   assert.expect(1);
 
-  const done = assert.async();
   const response = new Response('',
     {
       status: 200,
@@ -211,8 +210,7 @@ test('determineBodyResponse returns an empty object when the body is not present
   );
   const bodyPromise = determineBodyPromise(response);
 
-  bodyPromise.then((body) => {
+  return bodyPromise.then((body) => {
     assert.deepEqual(body, {});
-    done();
   });
 });

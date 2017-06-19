@@ -1,14 +1,18 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 import { module, test } from 'qunit';
-import { Headers } from 'fetch';
+import {
+  Headers,
+  Response
+} from 'fetch';
 import AdapterFetchMixin, {
   mungOptionsForFetch,
   headersToObject,
-  serialiazeQueryParams
+  serialiazeQueryParams,
+  determineBodyPromise
 } from 'ember-fetch/mixins/adapter-fetch';
-const { JSONAPIAdapter } = DS;
 
+const { JSONAPIAdapter } = DS;
 
 module('Unit | Mixin | adapter-fetch', {
   beforeEach() {
@@ -171,4 +175,42 @@ test('serialiazeQueryParams turns deeply nested objects into queryParams like $.
   const queryParamString = serialiazeQueryParams(body);
 
   assert.equal(queryParamString, 'a=1&b=2&c%5Bd%5D=3&c%5Be%5D%5Bf%5D=4&c%5Bg%5D%5B%5D=5&c%5Bg%5D%5B%5D=6&c%5Bg%5D%5B%5D=7');
+});
+
+test('determineBodyResponse returns the body when it is present', function(assert) {
+  assert.expect(1);
+
+  const done = assert.async();
+  const response = new Response('{"data": "foo"}',
+    {
+      status: 200,
+      headers: new Headers({
+        'Content-Length': 15
+      })
+    }
+  );
+  const bodyPromise = determineBodyPromise(response);
+
+  bodyPromise.then((body) => {
+    assert.deepEqual(body, {data: 'foo'});
+    done();
+  });
+});
+
+test('determineBodyResponse returns an empty object when the body is not present', function(assert) {
+  assert.expect(1);
+
+  const response = new Response('',
+    {
+      status: 200,
+      headers: new Headers({
+        'Content-Length': 0
+      })
+    }
+  );
+  const bodyPromise = determineBodyPromise(response);
+
+  return bodyPromise.then((body) => {
+    assert.deepEqual(body, {});
+  });
 });

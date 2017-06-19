@@ -180,37 +180,43 @@ test('serialiazeQueryParams turns deeply nested objects into queryParams like $.
 test('determineBodyResponse returns the body when it is present', function(assert) {
   assert.expect(1);
 
-  const done = assert.async();
-  const response = new Response('{"data": "foo"}',
-    {
-      status: 200,
-      headers: new Headers({
-        'Content-Length': 15
-      })
-    }
-  );
-  const bodyPromise = determineBodyPromise(response);
+  const response = new Response('{"data": "foo"}', {status: 200});
+  const bodyPromise = determineBodyPromise(response, {});
 
-  bodyPromise.then((body) => {
+  return bodyPromise.then((body) => {
     assert.deepEqual(body, {data: 'foo'});
-    done();
   });
 });
 
-test('determineBodyResponse returns an empty object when the body is not present', function(assert) {
+test('determineBodyResponse returns an empty object when the http status code is 204', function(assert) {
   assert.expect(1);
 
-  const response = new Response('',
-    {
-      status: 200,
-      headers: new Headers({
-        'Content-Length': 0
-      })
-    }
-  );
-  const bodyPromise = determineBodyPromise(response);
+  const response = new Response(null, {status: 204});
+  const bodyPromise = determineBodyPromise(response, {});
 
   return bodyPromise.then((body) => {
-    assert.deepEqual(body, {});
+    assert.deepEqual(body, {data: null});
+  });
+});
+
+test('determineBodyResponse returns an empty object when the http status code is 205', function(assert) {
+  assert.expect(1);
+
+  const response = new Response(null, {status: 205});
+  const bodyPromise = determineBodyPromise(response, {});
+
+  return bodyPromise.then((body) => {
+    assert.deepEqual(body, {data: null});
+  });
+});
+
+test('determineBodyResponse returns an empty object when the request method is \'HEAD\'', function(assert) {
+  assert.expect(1);
+
+  const response = new Response(null, {status: 200});
+  const bodyPromise = determineBodyPromise(response, {method: 'HEAD'});
+
+  return bodyPromise.then((body) => {
+    assert.deepEqual(body, {data: null});
   });
 });

@@ -110,21 +110,23 @@ export function mungOptionsForFetch(_options, adapter) {
   return options;
 }
 /**
- * Function checks that there is a body in the response. Otherwise JSON.parse will throw an error.
- * If there is not, return an empty object and let Ember data handle the empty response
+ * Function that determines what sort of Promise to return for the response's body.
+ * If the response has a status code of 204 (No Content) or 205 (Reset Content) or if the request method was 'HEAD',
+ * it has no body and we should return a Promise that resolves to an object with 'data' set to null.
+ * Otherwise, it returns a Promise that resolves to the JSON body of the response.
+ * This check is necessary because calling `json` on an empty body will cause JSON.parse to throw an error.
  * @param {Response} response
+ * @param {Object} requestData
  * @returns {Promise}
  */
-export function determineBodyPromise(response) {
+export function determineBodyPromise(response, requestData) {
   let bodyPromise;
+  const status = response.status;
 
-  // Content-Length is returned as a string or null, so we convert to a number.
-  const contentLength = Number(response.headers.get('content-length'));
-
-  if (contentLength > 0) {
-    bodyPromise = response.json();
+  if (status === 204 || status === 205 || requestData.method === 'HEAD') {
+    bodyPromise = RSVP.Promise.resolve({data: null});
   } else {
-    bodyPromise = RSVP.Promise.resolve({});
+    bodyPromise = response.json();
   }
   return bodyPromise;
 }
@@ -150,7 +152,7 @@ export default Ember.Mixin.create({
       })
       .then((response) => {
         if (response.ok) {
-          const bodyPromise = determineBodyPromise(response);
+          const bodyPromise = determineBodyPromise(response, requestData);
           return this.ajaxSuccess(response, bodyPromise, requestData);
         }
         throw this.ajaxError(null, response, requestData);

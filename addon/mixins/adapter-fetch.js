@@ -163,9 +163,19 @@ export default Ember.Mixin.create({
    * @param {Object} options
    * @override
    */
-  _ajaxRequest(options) {
-    const _options = mungOptionsForFetch(options, this);
-    return fetch(_options.url, _options);
+  _ajaxRequest(_options) {
+    const options = mungOptionsForFetch(_options, this);
+    return this._fetchRequest(options.url, options);
+  },
+
+  /**
+   * A hook into where `fetch` is called.
+   * Useful if you want to override this behavior, for example to multiplex requests.
+   * @param {String} url
+   * @param {Object} options
+   */
+  _fetchRequest(url, options) {
+    return fetch(url, options);
   },
 
   /**
@@ -197,6 +207,7 @@ export default Ember.Mixin.create({
    * @param {Error} error
    * @param {Object} response
    * @param {Object} requestData
+   * @override
    */
   ajaxError(error, response, requestData) {
     if (error instanceof Error) {

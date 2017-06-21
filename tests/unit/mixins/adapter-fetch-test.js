@@ -220,3 +220,19 @@ test('determineBodyResponse returns an empty object when the request method is \
     assert.deepEqual(body, {data: null});
   });
 });
+
+test('default fetch hook is correctly called if not overriden', function(assert) {
+  assert.expect(1);
+
+  const fetchReturn = this.JSONAPIAdapter._ajaxRequest({});
+  assert.ok(fetchReturn instanceof Ember.RSVP.Promise);
+});
+
+test('overridden fetch hook is called when supplied', function(assert) {
+  assert.expect(1);
+
+  const newText = 'intercepted';
+  this.JSONAPIAdapter._fetchRequest = () => newText;
+  const fetchReturn = this.JSONAPIAdapter._ajaxRequest({});
+  assert.equal(fetchReturn, newText);
+});

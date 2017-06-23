@@ -92,12 +92,6 @@ export function mungOptionsForFetch(_options, adapter) {
   }
   options.method = options.type;
 
-  // Mimics the default behavior in Ember Data's `ajaxOptions`
-  if (options.headers === undefined || !(options.headers['Content-Type'] || options.headers['content-type'])) {
-    options.headers = options.headers || {};
-    options.headers['Content-Type'] = 'application/json; charset=utf-8';
-  }
-
   // GET and HEAD requests can't have a `body`
   if (options.data && Object.keys(options.data).length) {
     if (options.method === 'GET' || options.method === 'HEAD') {
@@ -105,6 +99,13 @@ export function mungOptionsForFetch(_options, adapter) {
     } else {
       options.body = options.data;
     }
+  }
+
+  // Mimics the default behavior in Ember Data's `ajaxOptions`, namely to set the
+  // 'Content-Type' header to application/json if it is not a GET request and it has a body.
+  if (options.method !== 'GET' && options.body && (options.headers === undefined || !(options.headers['Content-Type'] || options.headers['content-type']))) {
+    options.headers = options.headers || {};
+    options.headers['Content-Type'] = 'application/json; charset=utf-8';
   }
 
   return options;
@@ -158,6 +159,7 @@ export default Ember.Mixin.create({
         throw this.ajaxError(null, response, requestData);
       });
   },
+
   /**
    * Overrides the `_ajaxRequest` method to use `fetch` instead of jQuery.ajax
    * @param {Object} options

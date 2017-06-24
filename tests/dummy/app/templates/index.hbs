@@ -10,3 +10,8 @@
 {{#if fetchedSlowData}}
   <span class="fetched-slow-data-span">{{fetchedSlowData.content}}</span>
 {{/if}}
+
+<button onclick={{action 'badFetch'}} id="fetch-broken-data-button">Failing fetch</button>
+{{#if fetchFailed}}
+  <span class="fetched-failed-span">Fetch failed</span>
+{{/if}}

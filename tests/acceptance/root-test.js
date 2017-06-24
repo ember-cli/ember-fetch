@@ -108,3 +108,25 @@ test('tests await for fetch requests', function(assert) {
     assert.equal(find('.fetched-slow-data-span').length, 1, 'Test has waited for data to appear');
   });
 });
+
+test('tests await for fetch requests', function(assert) {
+  server.get('/omg.json', function() {
+    return [
+      200,
+      { 'Content-Type': 'text/json'},
+      JSON.stringify({ name: 'World' })
+    ];
+  });
+
+
+  visit('/');
+
+  andThen(function() {
+    server.shutdown();
+    click('#fetch-broken-data-button');
+  });
+
+  andThen(function() {
+    assert.equal(find('.fetched-failed-span').length, 1, 'The fetch promise has rejected');
+  });
+});

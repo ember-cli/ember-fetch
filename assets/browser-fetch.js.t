@@ -31,7 +31,10 @@
         return self.fetch.apply(self, arguments).then(function(response){
           response.clone().blob().then(decrement, decrement);
           return response;
-        }, decrement);
+        }, function(reason) {
+          decrement(reason);
+          throw reason;
+        });
       };
     } else {
       self['default'] = self.fetch;

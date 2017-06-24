@@ -19,7 +19,6 @@ module('Unit | Mixin | adapter-fetch', {
     this.JSONAPIAdapter = JSONAPIAdapter.extend(AdapterFetchMixin, {
       headers: {
         'custom-header' : 'foo',
-        'Content-Type': 'application/vnd.api+json'
       }
     }).create();
     this.basicAdapter = Ember.Object.extend(AdapterFetchMixin).create();
@@ -74,7 +73,7 @@ test('mungOptionsForFetch transforms jQuery-style options into fetch compatible 
     type: 'POST',
     headers: {
       'custom-header' : 'foo',
-      'Content-Type': 'application/vnd.api+json'
+      'Content-Type': 'application/json; charset=utf-8'
     },
     body: {
       a: 1
@@ -103,16 +102,48 @@ test('mungOptionsForFetch adds a default "Content-Type" header if none is presen
   let options = mungOptionsForFetch(optionsNoHeaders, this.basicAdapter);
   assert.deepEqual(options.headers, {
     'Content-Type': 'application/json; charset=utf-8'
-  }, 'POST call\'s options are correct');
+  }, 'POST call\'s options without a headers object now has a headers object which has a content-type header');
 
   options = mungOptionsForFetch(optionsHeadersWithoutContentType, this.basicAdapter);
   assert.deepEqual(options.headers, {
     'Content-Type': 'application/json; charset=utf-8',
     'X-foo': 'bar'
-  }, 'POST call\'s options are correct');
+  }, 'POST call\'s options with a headers object now has a content-type header');
 });
 
-test('mungOptionsForFetch respects the "Content-Type" if present', function(assert) {
+test('mungOptionsForFetch does not add a "Content-Type" header if it is a GET request', function(assert) {
+  assert.expect(1);
+  const getOptions = {
+    url: 'https://emberjs.com',
+    type: 'GET',
+    headers: {
+      foo: 'bar'
+    }
+  };
+
+  let options = mungOptionsForFetch(getOptions, this.basicAdapter);
+  assert.deepEqual(options.headers, {
+    foo: 'bar',
+  }, 'GET call\'s options has no added content-type header');
+});
+
+test('mungOptionsForFetch does not add a "Content-Type" header if a POST request has no body', function(assert) {
+  assert.expect(1);
+  const PostNoDataOptions = {
+    url: 'https://emberjs.com',
+    type: 'GET',
+    headers: {
+      foo: 'bar'
+    }
+  };
+
+  let options = mungOptionsForFetch(PostNoDataOptions, this.basicAdapter);
+  assert.deepEqual(options.headers, {
+    foo: 'bar',
+  }, 'POST call with no body has no added content-type header');
+});
+
+test('mungOptionsForFetch respects the "Content-Type" header if present', function(assert) {
   assert.expect(1);
   const optionsHeadersWithContentType = {
     url: 'https://emberjs.com',
@@ -126,7 +157,7 @@ test('mungOptionsForFetch respects the "Content-Type" if present', function(asse
   let options = mungOptionsForFetch(optionsHeadersWithContentType, this.basicAdapter);
   assert.deepEqual(options.headers, {
     'Content-Type': 'application/special-type',
-  }, 'POST call\'s options are correct');
+  }, 'POST call\'s options has the original content-type header');
 });
 
 test('mungOptionsForFetch takes the headers from the adapter if present', function(assert) {
@@ -142,7 +173,7 @@ test('mungOptionsForFetch takes the headers from the adapter if present', functi
 
   let options = mungOptionsForFetch(optionsHeadersWithoutContentType, this.JSONAPIAdapter);
   assert.deepEqual(options.headers, {
-    'Content-Type': 'application/vnd.api+json',
+    'Content-Type': 'application/json; charset=utf-8',
     'X-foo': 'bar',
     'custom-header' : 'foo',
   }, 'POST call\'s options are correct');

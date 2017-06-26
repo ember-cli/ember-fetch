@@ -16,13 +16,13 @@ HTML5 [fetch](https://fetch.spec.whatwg.org) polyfill from [github](https://gith
 ## Usage
 
 ```js
-import fetch from 'fetch';
+import fetch from 'ember-fetch/ajax';
 import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
     return fetch('/my-cool-end-point.json').then(function(response) {
-      return response.json();
+      return response;
     });
   }
 });

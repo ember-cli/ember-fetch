@@ -71,7 +71,11 @@ function add(s, k, v) {
  */
 export function headersToObject(headers) {
   let headersObject = {};
-  headers.forEach((value, key) => headersObject[key] = value);
+
+  if (headers) {
+    headers.forEach((value, key) => headersObject[key] = value);
+  }
+
   return headersObject;
 }
 /**
@@ -90,12 +94,16 @@ export function mungOptionsForFetch(_options, adapter) {
     // This double use of `combineObjs` is necessary because `merge` only accepts two arguments.
     options.headers = combineObjs(combineObjs({}, options.headers || {}), adapterHeaders);
   }
-  options.method = options.type;
+
+  // Default to 'GET' in case `type` is not passed in (mimics jQuery.ajax).
+  options.method = options.type || 'GET';
 
   // GET and HEAD requests can't have a `body`
   if (options.data && Object.keys(options.data).length) {
     if (options.method === 'GET' || options.method === 'HEAD') {
-      options.url += `?${serialiazeQueryParams(options.data)}`;
+      // Test if there are already query params in the url (mimics jQuey.ajax).
+      const queryParamDelimiter = options.url.indexOf('?') > -1 ? '&' : '?';
+      options.url += `${queryParamDelimiter}${serialiazeQueryParams(options.data)}`;
     } else {
       options.body = options.data;
     }
@@ -211,7 +219,7 @@ export default Ember.Mixin.create({
    * @param {Object} requestData
    * @override
    */
-  ajaxError(error, response, requestData) {
+  ajaxError(error, response = {}, requestData) {
     if (error instanceof Error) {
       return error;
     } else {

@@ -179,6 +179,38 @@ test('mungOptionsForFetch takes the headers from the adapter if present', functi
   }, 'POST call\'s options are correct');
 });
 
+test('mungOptionsForFetch sets the method to "GET" if `type` is not provided', function(assert) {
+  assert.expect(1);
+  const getOptions = {
+    url: 'https://emberjs.com',
+    type: undefined,
+  };
+
+  const options = mungOptionsForFetch(getOptions, this.basicAdapter);
+  assert.equal(options.method, 'GET');
+});
+
+test('mungOptionsForFetch adds string query params to the url correctly', function(assert) {
+  assert.expect(2);
+
+  const baseUrl = 'https://emberjs.com';
+  const noQueryStringOptions = {
+    url: baseUrl,
+    data: { a: 1, b: 2 }
+  };
+
+  let options = mungOptionsForFetch(noQueryStringOptions, this.basicAdapter);
+  assert.equal(options.url, `${baseUrl}?a=1&b=2`, 'url that started without query params has query params');
+
+  const hasQueryStringOptions = {
+    url: `${baseUrl}?fastboot=true`,
+    data: { a: 1, b: 2 }
+  };
+
+  options = mungOptionsForFetch(hasQueryStringOptions, this.basicAdapter);
+  assert.equal(options.url, `${baseUrl}?fastboot=true&a=1&b=2`, 'url that started with query params has more query params');
+});
+
 test('headersToObject turns an Headers instance into an object', function (assert) {
   assert.expect(1);
 
@@ -187,6 +219,13 @@ test('headersToObject turns an Headers instance into an object', function (asser
   const headerObject = headersToObject(headers);
 
   assert.deepEqual(headerObject, exampleHeaders);
+});
+
+test('headersToObject returns an empty object if no headers are passed to it', function (assert) {
+  assert.expect(1);
+
+  const headerObject = headersToObject();
+  assert.deepEqual(headerObject, {});
 });
 
 test('serialiazeQueryParams turns deeply nested objects into queryParams like $.param', function (assert) {

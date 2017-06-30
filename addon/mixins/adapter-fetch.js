@@ -59,7 +59,12 @@ export function serialiazeQueryParams(queryParamsObject) {
  * @param {String} v
  */
 function add(s, k, v) {
-  v = typeof v === 'function' ? v() : v === null ? '' : v === undefined ? '' : v;
+  // Strip out keys with undefined or null values (mimics jQuery.ajax).
+  if (v == undefined) {
+    return;
+  }
+
+  v = typeof v === 'function' ? v() : v;
   s[s.length] = `${encodeURIComponent(k)}=${encodeURIComponent(v)}`;
 }
 
@@ -80,7 +85,9 @@ export function headersToObject(headers) {
 }
 /**
  * Helper function that translates the options passed to `jQuery.ajax` into a format that `fetch` expects.
- * @param {Object} options
+ * @param {Object} _options
+ * @param {DS.Adapter} adapter
+ * @returns {Object}
  */
 export function mungOptionsForFetch(_options, adapter) {
   // This allows this mixin to be backward compatible with Ember < 2.5.
@@ -105,7 +112,14 @@ export function mungOptionsForFetch(_options, adapter) {
       const queryParamDelimiter = options.url.indexOf('?') > -1 ? '&' : '?';
       options.url += `${queryParamDelimiter}${serialiazeQueryParams(options.data)}`;
     } else {
-      options.body = options.data;
+      // Strip out keys with undefined or null values (mimics jQuery.ajax).
+      options.body = Object.keys(options.data).reduce((filteredObj, key) => {
+        const currentValue = options.data[key];
+        if (currentValue != undefined) {
+          filteredObj[key] = currentValue;
+        }
+        return filteredObj;
+      }, {});
     }
   }
 

@@ -211,6 +211,26 @@ test('mungOptionsForFetch adds string query params to the url correctly', functi
   assert.equal(options.url, `${baseUrl}?fastboot=true&a=1&b=2`, 'url that started with query params has more query params');
 });
 
+test('mungOptionsForFetch removes undefined and null query params when method is POST', function(assert) {
+  assert.expect(1);
+
+  const undefinedQueryStringOptions = {
+    url: 'https://emberjs.com',
+    type: 'POST',
+    data: {
+      a: 1,
+      b: undefined,
+      c: 3,
+      d: null,
+      e: 0,
+      f: false
+    }
+  };
+
+  let options = mungOptionsForFetch(undefinedQueryStringOptions, this.basicAdapter);
+  assert.deepEqual(options.body, { a: 1, c: 3, e: 0, f: false });
+});
+
 test('headersToObject turns an Headers instance into an object', function (assert) {
   assert.expect(1);
 
@@ -245,6 +265,28 @@ test('serialiazeQueryParams turns deeply nested objects into queryParams like $.
   const queryParamString = serialiazeQueryParams(body);
 
   assert.equal(queryParamString, 'a=1&b=2&c%5Bd%5D=3&c%5Be%5D%5Bf%5D=4&c%5Bg%5D%5B%5D=5&c%5Bg%5D%5B%5D=6&c%5Bg%5D%5B%5D=7');
+});
+
+test('serialiazeQueryParams does not serialize keys with undefined or null values', function (assert) {
+  assert.expect(1);
+
+  const body = {
+    a: undefined,
+    b: 2,
+    c: {
+      d: undefined,
+      e: {
+        f: 4
+      },
+      g: [5,6,7]
+    },
+    h: null,
+    i: 0,
+    j: false
+  };
+  const queryParamString = serialiazeQueryParams(body);
+
+  assert.equal(queryParamString, 'b=2&c%5Be%5D%5Bf%5D=4&c%5Bg%5D%5B%5D=5&c%5Bg%5D%5B%5D=6&c%5Bg%5D%5B%5D=7&i=0&j=false');
 });
 
 test('determineBodyResponse returns the body when it is present', function(assert) {

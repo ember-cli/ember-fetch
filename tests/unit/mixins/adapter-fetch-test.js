@@ -75,9 +75,7 @@ test('mungOptionsForFetch transforms jQuery-style options into fetch compatible 
       'custom-header' : 'foo',
       'Content-Type': 'application/json; charset=utf-8'
     },
-    body: {
-      a: 1
-    },
+    body: "{\"a\":1}",
     data: {
       a: 1
     },
@@ -211,24 +209,41 @@ test('mungOptionsForFetch adds string query params to the url correctly', functi
   assert.equal(options.url, `${baseUrl}?fastboot=true&a=1&b=2`, 'url that started with query params has more query params');
 });
 
-test('mungOptionsForFetch removes undefined and null query params when method is POST', function(assert) {
+test('mungOptionsForFetch removes undefined and null query params when method is POST and \'data\' is an object', function(assert) {
   assert.expect(1);
 
-  const undefinedQueryStringOptions = {
-    url: 'https://emberjs.com',
-    type: 'POST',
-    data: {
+  const dataAsObject = {
       a: 1,
       b: undefined,
       c: 3,
       d: null,
       e: 0,
       f: false
-    }
+    };
+
+  const undefinedQueryStringOptions = {
+    url: 'https://emberjs.com',
+    type: 'POST',
+    data: dataAsObject
   };
 
   let options = mungOptionsForFetch(undefinedQueryStringOptions, this.basicAdapter);
-  assert.deepEqual(options.body, { a: 1, c: 3, e: 0, f: false });
+  assert.deepEqual(options.body, "{\"a\":1,\"c\":3,\"e\":0,\"f\":false}");
+});
+
+test('mungOptionsForFetch sets the request body correctly when the method is POST and \'data\' is a string', function(assert) {
+  assert.expect(1);
+
+  const stringifiedData = JSON.stringify({a:1, b:2});
+
+  const dataAsString = {
+    url: 'https://emberjs.com',
+    type: 'POST',
+    data: stringifiedData,
+  };
+
+  let options = mungOptionsForFetch(dataAsString, this.basicAdapter);
+  assert.deepEqual(options.body, stringifiedData);
 });
 
 test('headersToObject turns an Headers instance into an object', function (assert) {

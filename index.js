@@ -39,9 +39,6 @@ module.exports = {
   included: function(app) {
     this._super.included.apply(this, arguments);
 
-    // Addon options from the apps ember-cli-build.js
-    let options = app.options[this.name] || {};
-
     // If the addon has the _findHost() method (in ember-cli >= 2.7.0), we'll just
     // use that.
     if (typeof this._findHost === 'function') {

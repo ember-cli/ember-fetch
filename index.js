@@ -37,7 +37,30 @@ module.exports = {
    * from our `vendor` tree into the final built app.
    */
   included: function(app) {
-    app.import('vendor/ember-fetch.js', {
+    this._super.included.apply(this, arguments);
+    
+    let target = app;
+
+    if (typeof this.import === 'function') {
+      target = this;
+    } else {
+      // If the addon has the _findHost() method (in ember-cli >= 2.7.0), we'll just
+      // use that.
+      if (typeof this._findHost === 'function') {
+        target = this._findHost();
+      }
+
+      // Otherwise, we'll use this implementation borrowed from the _findHost()
+      // method in ember-cli.
+      // Keep iterating upward until we don't have a grandparent.
+      // Has to do this grandparent check because at some point we hit the project.
+      let current = this;
+      do {
+       target = current.app || app;
+      } while (current.parent.parent && (current = current.parent));
+    }
+
+    target.import('vendor/ember-fetch.js', {
       exports: {
         default: [
           'default',

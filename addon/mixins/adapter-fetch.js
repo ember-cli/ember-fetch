@@ -235,6 +235,17 @@ export default Ember.Mixin.create({
     });
   },
 
+
+/**
+ * Allows for the error to be parsed out of the response.
+ * Fetch returns the body of an error response in a `_bodyText`
+ * property that one might wish to extract instead of the statusText.
+ * @param {Object} response
+ */
+  parseFetchResponseForError(response) {
+    return response.statusText;
+  },
+
   /**
    * @param {Error} error
    * @param {Object} response
@@ -248,7 +259,7 @@ export default Ember.Mixin.create({
        return this.handleResponse(
         response.status,
          headersToObject(response.headers),
-        this.parseErrorResponse(response.statusText) || error,
+        this.parseErrorResponse(this.parseFetchResponseForError(response)) || error,
         requestData
       );
     }

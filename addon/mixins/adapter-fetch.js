@@ -179,14 +179,20 @@ export default Ember.Mixin.create({
 
     return this._ajaxRequest(hash)
       .catch((error, response, requestData) => {
-        throw this.ajaxError(error, response, requestData);
+        throw this.ajaxError(this, response, requestData, error);
       })
       .then((response) => {
+        return RSVP.hash({
+          responseData: determineBodyPromise(response, requestData),
+          response
+        });
+      })
+      .then(({response, responseData}) => {
         if (response.ok) {
-          const bodyPromise = determineBodyPromise(response, requestData);
-          return this.ajaxSuccess(response, bodyPromise, requestData);
+          return this.ajaxSuccess(this, response, responseData, requestData);
+        } else {
+          throw this.ajaxError(this, response, requestData, responseData);
         }
-        throw this.ajaxError(null, response, requestData);
       });
   },
 
@@ -211,44 +217,54 @@ export default Ember.Mixin.create({
   },
 
   /**
+   * @param {Object} adapter
    * @param {Object} response
-   * @param {Promise} bodyPromise
+   * @param {Object} payload
    * @param {Object} requestData
    * @override
    */
-  ajaxSuccess(response, bodyPromise, requestData) {
-    const headersObject = headersToObject(response.headers);
+  ajaxSuccess(adapter, response, payload, requestData) {
+    const returnResponse = adapter.handleResponse(
+      response.status,
+      headersToObject(response.headers),
+      payload,
+      requestData
+    );
 
-    return bodyPromise.then((body) => {
-      const returnResponse = this.handleResponse(
-        response.status,
-        headersObject,
-        body,
-        requestData
-      );
+    if (returnResponse && returnResponse.isAdapterError) {
+      return RSVP.Promise.reject(returnResponse);
+    } else {
+      return returnResponse;
+    }
+  },
 
-      if (returnResponse && returnResponse.isAdapterError) {
-        return RSVP.Promise.reject(returnResponse);
-      } else {
-        return returnResponse;
-      }
-    });
+
+/**
+ * Allows for the error to be selected from either the
+ * response object, or the response data.
+ * @param {Object} response
+ * @param {Object} responseData
+ */
+  parseFetchResponseForError(response, responseData) {
+    return responseData;
   },
 
   /**
-   * @param {Error} error
+   * @param {Object} adapter
    * @param {Object} response
    * @param {Object} requestData
+   * @param {Object} responseData
    * @override
    */
-  ajaxError(error, response = {}, requestData) {
-    if (error instanceof Error) {
-      return error;
+  ajaxError(adapter, response, requestData, responseData) {
+    if (responseData instanceof Error) {
+      return responseData;
     } else {
-       return this.handleResponse(
+      const parsedResponse = this.parseFetchResponseForError(response, responseData);
+      return this.handleResponse(
         response.status,
-         headersToObject(response.headers),
-        this.parseErrorResponse(response.statusText) || error,
+        headersToObject(response.headers),
+        this.parseErrorResponse(parsedResponse) || responseData,
         requestData
       );
     }

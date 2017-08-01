@@ -348,6 +348,28 @@ test('determineBodyResponse returns an empty object when the request method is \
   });
 });
 
+test('parseFetchResponseForError is able to be overwritten to mutate the error payload that gets passed along', function(assert) {
+  assert.expect(1);
+
+  this.errorAdapter = JSONAPIAdapter.extend(AdapterFetchMixin, {
+    _fetchRequest() {
+      const response = new Response(`{ "errors": ["myoneerror"] }`, {status: 422});
+      return Ember.RSVP.Promise.resolve(response);
+    },
+    parseFetchResponseForError() {
+      return {
+        errors: ['myOverWrittenError']
+      }
+    }
+  }).create();
+
+  const fetchReturn = this.errorAdapter.ajax({url: '/foo'});
+
+  return fetchReturn.catch((body) => {
+    assert.deepEqual(body.errors, ["myOverWrittenError"]);
+  });
+});
+
 test('default fetch hook is correctly called if not overriden', function(assert) {
   assert.expect(1);
 

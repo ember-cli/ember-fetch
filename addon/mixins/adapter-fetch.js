@@ -183,15 +183,15 @@ export default Ember.Mixin.create({
       })
       .then((response) => {
         return RSVP.hash({
-          responseData: determineBodyPromise(response, requestData),
-          response
+          response,
+          payload: determineBodyPromise(response, requestData)
         });
       })
-      .then(({response, responseData}) => {
+      .then(({ response, payload }) => {
         if (response.ok) {
-          return this.ajaxSuccess(this, response, responseData, requestData);
+          return this.ajaxSuccess(this, response, payload, requestData);
         } else {
-          throw this.ajaxError(this, response, requestData, responseData);
+          throw this.ajaxError(this, response, requestData, payload);
         }
       });
   },
@@ -260,11 +260,11 @@ export default Ember.Mixin.create({
     if (responseData instanceof Error) {
       return responseData;
     } else {
-      const parsedResponse = this.parseFetchResponseForError(response, responseData);
-      return this.handleResponse(
+      const parsedResponse = adapter.parseFetchResponseForError(response, responseData);
+      return adapter.handleResponse(
         response.status,
         headersToObject(response.headers),
-        this.parseErrorResponse(parsedResponse) || responseData,
+        adapter.parseErrorResponse(parsedResponse) || responseData,
         requestData
       );
     }

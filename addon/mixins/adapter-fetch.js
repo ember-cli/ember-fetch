@@ -141,25 +141,21 @@ export function mungOptionsForFetch(_options, adapter) {
   return options;
 }
 /**
- * Function that determines what sort of Promise to return for the response's body.
- * If the response has a status code of 204 (No Content) or 205 (Reset Content) or if the request method was 'HEAD',
- * it has no body and we should return a Promise that resolves to an object with 'data' set to null.
- * Otherwise, it returns a Promise that resolves to the JSON body of the response.
- * This check is necessary because calling `json` on an empty body will cause JSON.parse to throw an error.
+ * Function that always attempts to parse the response as json, and if an error is thrown,
+ * returns an object with 'data' set to null if the response is a sucess, and
+ * the plain payload if the response was an error.
  * @param {Response} response
- * @param {Object} requestData
  * @returns {Promise}
  */
-export function determineBodyPromise(response, requestData) {
-  let bodyPromise;
-  const status = response.status;
-
-  if (status === 204 || status === 205 || requestData.method === 'HEAD') {
-    bodyPromise = RSVP.Promise.resolve({data: null});
-  } else {
-    bodyPromise = response.json();
-  }
-  return bodyPromise;
+export function determineBodyPromise(response) {
+  return response.text().then(function(payload) {
+    try {
+      payload = JSON.parse(payload);
+    } catch(error) {
+      payload = response.ok ? { data: null } : payload;
+    }
+    return payload;
+  });
 }
 
 export default Ember.Mixin.create({

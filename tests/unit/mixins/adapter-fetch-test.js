@@ -370,6 +370,25 @@ test('parseFetchResponseForError is able to be overwritten to mutate the error p
   });
 });
 
+test('able to handle empty error payloads', function(assert) {
+  assert.expect(2);
+
+  this.errorAdapter = JSONAPIAdapter.extend(AdapterFetchMixin, {
+    _fetchRequest() {
+      const response = new Response(``, {status: 500});
+      return Ember.RSVP.Promise.resolve(response);
+    }
+  }).create();
+
+  const fetchReturn = this.errorAdapter.ajax({url: '/foo'});
+
+  return fetchReturn.catch((body) => {
+    const error = body.errors[0]
+    assert.equal(error.detail, '');
+    assert.equal(error.status, '500');
+  });
+});
+
 test('default fetch hook is correctly called if not overriden', function(assert) {
   assert.expect(1);
 

@@ -315,6 +315,17 @@ test('determineBodyResponse returns the body when it is present', function(asser
   });
 });
 
+test('determineBodyResponse returns the body even if it is not json', function(assert) {
+  assert.expect(1);
+
+  const response = new Response('this is not json', {status: 200});
+  const bodyPromise = determineBodyPromise(response, {});
+
+  return bodyPromise.then((body) => {
+    assert.deepEqual(body, 'this is not json');
+  });
+});
+
 test('determineBodyResponse returns an empty object when the http status code is 204', function(assert) {
   assert.expect(1);
 

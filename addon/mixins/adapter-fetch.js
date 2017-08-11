@@ -4,7 +4,8 @@ import fetch from 'fetch';
 const {
   assign,
   merge,
-  RSVP
+  RSVP,
+  Logger: { warn }
 } = Ember;
 
 const RBRACKET = /\[\]$/;
@@ -147,12 +148,17 @@ export function mungOptionsForFetch(_options, adapter) {
  * @param {Response} response
  * @returns {Promise}
  */
-export function determineBodyPromise(response) {
+export function determineBodyPromise(response, requestData) {
   return response.text().then(function(payload) {
     try {
       payload = JSON.parse(payload);
     } catch(error) {
-      payload = response.ok ? { data: null } : payload;
+      const status = response.status;
+      if (response.ok && (status === 204 || status === 205 || requestData.method === 'HEAD')) {
+        payload = { data: null };
+      } else {
+        warn('This response was unable to be parsed as json.', payload);
+      }
     }
     return payload;
   });

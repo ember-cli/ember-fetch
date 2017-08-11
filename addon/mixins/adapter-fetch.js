@@ -183,7 +183,7 @@ export default Ember.Mixin.create({
 
     return this._ajaxRequest(hash)
       .catch((error, response, requestData) => {
-        throw this.ajaxError(this, response, requestData, error);
+        throw this.ajaxError(this, response, null, requestData, error);
       })
       .then((response) => {
         return RSVP.hash({
@@ -195,7 +195,7 @@ export default Ember.Mixin.create({
         if (response.ok) {
           return this.ajaxSuccess(this, response, payload, requestData);
         } else {
-          throw this.ajaxError(this, response, requestData, payload);
+          throw this.ajaxError(this, response, payload, requestData);
         }
       });
   },
@@ -247,28 +247,29 @@ export default Ember.Mixin.create({
  * Allows for the error to be selected from either the
  * response object, or the response data.
  * @param {Object} response
- * @param {Object} responseData
+ * @param {Object} payload
  */
-  parseFetchResponseForError(response, responseData) {
-    return responseData;
+  parseFetchResponseForError(response, payload) {
+    return payload || response.statusTest;
   },
 
   /**
    * @param {Object} adapter
    * @param {Object} response
+   * @param {String|Object} payload
    * @param {Object} requestData
-   * @param {Object} responseData
+   * @param {Error} error
    * @override
    */
-  ajaxError(adapter, response, requestData, responseData) {
-    if (responseData instanceof Error) {
-      return responseData;
+  ajaxError(adapter, response, payload, requestData, error) {
+    if (error) {
+      return error;
     } else {
-      const parsedResponse = adapter.parseFetchResponseForError(response, responseData);
+      const parsedResponse = adapter.parseFetchResponseForError(response, payload);
       return adapter.handleResponse(
         response.status,
         headersToObject(response.headers),
-        adapter.parseErrorResponse(parsedResponse) || responseData,
+        adapter.parseErrorResponse(parsedResponse) || payload,
         requestData
       );
     }

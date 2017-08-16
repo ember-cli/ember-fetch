@@ -374,7 +374,7 @@ test('parseFetchResponseForError is able to be overwritten to mutate the error p
     }
   }).create();
 
-  const fetchReturn = this.errorAdapter.ajax({url: '/trigger-a-server-error-with-content'});
+  const fetchReturn = this.errorAdapter.ajax('/trigger-a-server-error-with-content');
 
   return fetchReturn.catch((body) => {
     assert.deepEqual(body.errors, ["myOverWrittenError"]);
@@ -391,7 +391,7 @@ test('able to handle empty error payloads', function(assert) {
     }
   }).create();
 
-  const fetchReturn = this.errorAdapter.ajax({url: '/trigger-an-empty-server-error'});
+  const fetchReturn = this.errorAdapter.ajax('/trigger-an-empty-server-error');
 
   return fetchReturn.catch((body) => {
     const error = body.errors[0]

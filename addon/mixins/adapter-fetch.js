@@ -155,6 +155,9 @@ export function determineBodyPromise(response, requestData) {
     try {
       payload = JSON.parse(payload);
     } catch(error) {
+      if (!(error instanceof SyntaxError)) {
+        throw error;
+      }
       const status = response.status;
       if (response.ok && (status === 204 || status === 205 || requestData.method === 'HEAD')) {
         payload = { data: null };

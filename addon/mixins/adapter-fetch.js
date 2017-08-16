@@ -4,7 +4,8 @@ import fetch from 'fetch';
 const {
   assign,
   merge,
-  RSVP
+  RSVP,
+  Logger: { warn }
 } = Ember;
 
 const RBRACKET = /\[\]$/;
@@ -141,25 +142,31 @@ export function mungOptionsForFetch(_options, adapter) {
   return options;
 }
 /**
- * Function that determines what sort of Promise to return for the response's body.
- * If the response has a status code of 204 (No Content) or 205 (Reset Content) or if the request method was 'HEAD',
- * it has no body and we should return a Promise that resolves to an object with 'data' set to null.
- * Otherwise, it returns a Promise that resolves to the JSON body of the response.
- * This check is necessary because calling `json` on an empty body will cause JSON.parse to throw an error.
+ * Function that always attempts to parse the response as json, and if an error is thrown,
+ * returns an object with 'data' set to null if the response is
+ * a sucess and has a status code of 204 (No Content) or 205 (Reset Content) or if the request method was 'HEAD',
+ * and the plain payload otherwise.
  * @param {Response} response
  * @param {Object} requestData
  * @returns {Promise}
  */
 export function determineBodyPromise(response, requestData) {
-  let bodyPromise;
-  const status = response.status;
-
-  if (status === 204 || status === 205 || requestData.method === 'HEAD') {
-    bodyPromise = RSVP.Promise.resolve({data: null});
-  } else {
-    bodyPromise = response.json();
-  }
-  return bodyPromise;
+  return response.text().then(function(payload) {
+    try {
+      payload = JSON.parse(payload);
+    } catch(error) {
+      if (!(error instanceof SyntaxError)) {
+        throw error;
+      }
+      const status = response.status;
+      if (response.ok && (status === 204 || status === 205 || requestData.method === 'HEAD')) {
+        payload = { data: null };
+      } else {
+        warn('This response was unable to be parsed as json.', payload);
+      }
+    }
+    return payload;
+  });
 }
 
 export default Ember.Mixin.create({
@@ -179,14 +186,20 @@ export default Ember.Mixin.create({
 
     return this._ajaxRequest(hash)
       .catch((error, response, requestData) => {
-        throw this.ajaxError(error, response, requestData);
+        throw this.ajaxError(this, response, null, requestData, error);
       })
       .then((response) => {
+        return RSVP.hash({
+          response,
+          payload: determineBodyPromise(response, requestData)
+        });
+      })
+      .then(({ response, payload }) => {
         if (response.ok) {
-          const bodyPromise = determineBodyPromise(response, requestData);
-          return this.ajaxSuccess(response, bodyPromise, requestData);
+          return this.ajaxSuccess(this, response, payload, requestData);
+        } else {
+          throw this.ajaxError(this, response, payload, requestData);
         }
-        throw this.ajaxError(null, response, requestData);
       });
   },
 
@@ -211,44 +224,55 @@ export default Ember.Mixin.create({
   },
 
   /**
+   * @param {Object} adapter
    * @param {Object} response
-   * @param {Promise} bodyPromise
+   * @param {Object} payload
    * @param {Object} requestData
    * @override
    */
-  ajaxSuccess(response, bodyPromise, requestData) {
-    const headersObject = headersToObject(response.headers);
+  ajaxSuccess(adapter, response, payload, requestData) {
+    const returnResponse = adapter.handleResponse(
+      response.status,
+      headersToObject(response.headers),
+      payload,
+      requestData
+    );
 
-    return bodyPromise.then((body) => {
-      const returnResponse = this.handleResponse(
-        response.status,
-        headersObject,
-        body,
-        requestData
-      );
+    if (returnResponse && returnResponse.isAdapterError) {
+      return RSVP.Promise.reject(returnResponse);
+    } else {
+      return returnResponse;
+    }
+  },
 
-      if (returnResponse && returnResponse.isAdapterError) {
-        return RSVP.Promise.reject(returnResponse);
-      } else {
-        return returnResponse;
-      }
-    });
+
+/**
+ * Allows for the error to be selected from either the
+ * response object, or the response data.
+ * @param {Object} response
+ * @param {Object} payload
+ */
+  parseFetchResponseForError(response, payload) {
+    return payload || response.statusTest;
   },
 
   /**
-   * @param {Error} error
+   * @param {Object} adapter
    * @param {Object} response
+   * @param {String|Object} payload
    * @param {Object} requestData
+   * @param {Error} error
    * @override
    */
-  ajaxError(error, response = {}, requestData) {
-    if (error instanceof Error) {
+  ajaxError(adapter, response, payload, requestData, error) {
+    if (error) {
       return error;
     } else {
-       return this.handleResponse(
+      const parsedResponse = adapter.parseFetchResponseForError(response, payload);
+      return adapter.handleResponse(
         response.status,
-         headersToObject(response.headers),
-        this.parseErrorResponse(response.statusText) || error,
+        headersToObject(response.headers),
+        adapter.parseErrorResponse(parsedResponse) || payload,
         requestData
       );
     }

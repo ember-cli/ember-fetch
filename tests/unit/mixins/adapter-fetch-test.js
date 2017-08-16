@@ -315,6 +315,17 @@ test('determineBodyResponse returns the body when it is present', function(asser
   });
 });
 
+test('determineBodyResponse returns the body even if it is not json', function(assert) {
+  assert.expect(1);
+
+  const response = new Response('this is not json', {status: 200});
+  const bodyPromise = determineBodyPromise(response, {});
+
+  return bodyPromise.then((body) => {
+    assert.deepEqual(body, 'this is not json');
+  });
+});
+
 test('determineBodyResponse returns an empty object when the http status code is 204', function(assert) {
   assert.expect(1);
 
@@ -345,6 +356,47 @@ test('determineBodyResponse returns an empty object when the request method is \
 
   return bodyPromise.then((body) => {
     assert.deepEqual(body, {data: null});
+  });
+});
+
+test('parseFetchResponseForError is able to be overwritten to mutate the error payload that gets passed along', function(assert) {
+  assert.expect(1);
+
+  this.errorAdapter = JSONAPIAdapter.extend(AdapterFetchMixin, {
+    _fetchRequest() {
+      const response = new Response(`{ "errors": ["myoneerror"] }`, {status: 422});
+      return Ember.RSVP.Promise.resolve(response);
+    },
+    parseFetchResponseForError() {
+      return {
+        errors: ['myOverWrittenError']
+      }
+    }
+  }).create();
+
+  const fetchReturn = this.errorAdapter.ajax('/trigger-a-server-error-with-content');
+
+  return fetchReturn.catch((body) => {
+    assert.deepEqual(body.errors, ["myOverWrittenError"]);
+  });
+});
+
+test('able to handle empty error payloads', function(assert) {
+  assert.expect(2);
+
+  this.errorAdapter = JSONAPIAdapter.extend(AdapterFetchMixin, {
+    _fetchRequest() {
+      const response = new Response(``, {status: 500});
+      return Ember.RSVP.Promise.resolve(response);
+    }
+  }).create();
+
+  const fetchReturn = this.errorAdapter.ajax('/trigger-an-empty-server-error');
+
+  return fetchReturn.catch((body) => {
+    const error = body.errors[0]
+    assert.equal(error.detail, '');
+    assert.equal(error.status, '500');
   });
 });
 

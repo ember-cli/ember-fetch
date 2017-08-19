@@ -1,7 +1,7 @@
 (function (global) {
-  define('fetch', ['ember', 'exports'], function(Ember, self) {
+  define('fetch', ['exports'], function(self) {
     'use strict';
-    var Promise = Ember['default'].RSVP.Promise;
+    var Promise = global.Ember.RSVP.Promise;
     if (global.FormData) {
       self.FormData = global.FormData;
     }
@@ -20,8 +20,8 @@
       return result;
     }
 
-    if (Ember.default.Test) {
-      Ember.default.Test.registerWaiter(function() {
+    if (global.Ember.Test) {
+      global.Ember.Test.registerWaiter(function() {
         return pending === 0;
       });
 

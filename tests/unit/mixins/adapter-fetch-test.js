@@ -209,7 +209,7 @@ test('mungOptionsForFetch adds string query params to the url correctly', functi
   assert.equal(options.url, `${baseUrl}?fastboot=true&a=1&b=2`, 'url that started with query params has more query params');
 });
 
-test('mungOptionsForFetch removes undefined and null query params when method is POST and \'data\' is an object', function(assert) {
+test('mungOptionsForFetch removes undefined query params when method is POST and \'data\' is an object', function(assert) {
   assert.expect(1);
 
   const dataAsObject = {
@@ -228,7 +228,7 @@ test('mungOptionsForFetch removes undefined and null query params when method is
   };
 
   let options = mungOptionsForFetch(undefinedQueryStringOptions, this.basicAdapter);
-  assert.deepEqual(options.body, "{\"a\":1,\"c\":3,\"e\":0,\"f\":false}");
+  assert.deepEqual(options.body, "{\"a\":1,\"c\":3,\"d\":null,\"e\":0,\"f\":false}");
 });
 
 test('mungOptionsForFetch sets the request body correctly when the method is POST and \'data\' is a string', function(assert) {
@@ -244,6 +244,28 @@ test('mungOptionsForFetch sets the request body correctly when the method is POS
 
   let options = mungOptionsForFetch(dataAsString, this.basicAdapter);
   assert.deepEqual(options.body, stringifiedData);
+});
+
+test('mungOptionsForFetch does not process an empty \'data\' object', function(assert) {
+  assert.expect(2);
+
+  const getData = {
+    url: 'https://emberjs.com',
+    type: 'GET',
+    data: {},
+  };
+
+  const getOptions = mungOptionsForFetch(getData, this.basicAdapter);
+  assert.equal(getOptions.url.indexOf('?'), -1, 'A question mark is not added if there are no query params to add');
+
+  const postData = {
+    url: 'https://emberjs.com',
+    type: 'POST',
+    data: {},
+  };
+
+  const postOptions = mungOptionsForFetch(postData, this.basicAdapter);
+  assert.equal(postOptions.body, undefined, 'There is no \'options.body\' set if the request has no data');
 });
 
 test('headersToObject turns an Headers instance into an object', function (assert) {
@@ -282,7 +304,7 @@ test('serialiazeQueryParams turns deeply nested objects into queryParams like $.
   assert.equal(queryParamString, 'a=1&b=2&c%5Bd%5D=3&c%5Be%5D%5Bf%5D=4&c%5Bg%5D%5B%5D=5&c%5Bg%5D%5B%5D=6&c%5Bg%5D%5B%5D=7');
 });
 
-test('serialiazeQueryParams does not serialize keys with undefined or null values', function (assert) {
+test('serialiazeQueryParams does not serialize keys with undefined values', function (assert) {
   assert.expect(1);
 
   const body = {
@@ -301,7 +323,7 @@ test('serialiazeQueryParams does not serialize keys with undefined or null value
   };
   const queryParamString = serialiazeQueryParams(body);
 
-  assert.equal(queryParamString, 'b=2&c%5Be%5D%5Bf%5D=4&c%5Bg%5D%5B%5D=5&c%5Bg%5D%5B%5D=6&c%5Bg%5D%5B%5D=7&i=0&j=false');
+  assert.equal(queryParamString, 'b=2&c%5Be%5D%5Bf%5D=4&c%5Bg%5D%5B%5D=5&c%5Bg%5D%5B%5D=6&c%5Bg%5D%5B%5D=7&h=null&i=0&j=false');
 });
 
 test('determineBodyResponse returns the body when it is present', function(assert) {

@@ -61,7 +61,7 @@ export function serialiazeQueryParams(queryParamsObject) {
  */
 function add(s, k, v) {
   // Strip out keys with undefined or null values (mimics jQuery.ajax).
-  if (v == undefined) {
+  if (v === undefined) {
     return;
   }
 
@@ -106,8 +106,11 @@ export function mungOptionsForFetch(_options, adapter) {
   // Default to 'GET' in case `type` is not passed in (mimics jQuery.ajax).
   options.method = options.type || 'GET';
 
-  // GET and HEAD requests can't have a `body`
-  if (options.data) {
+  // If no options are passed, Ember Data sets `data` to an empty object, which we test for.
+  // In modern browsers, Object.keys(<string>) works correctly. In Phantomjs it does not,
+  // so we have an extra type check for string.
+  if (options.data && (typeof options.data === 'string' || Object.keys(options.data).length)) {
+    // GET and HEAD requests can't have a `body`
     if (options.method === 'GET' || options.method === 'HEAD') {
       // Test if there are already query params in the url (mimics jQuey.ajax).
       const queryParamDelimiter = options.url.indexOf('?') > -1 ? '&' : '?';
@@ -115,19 +118,11 @@ export function mungOptionsForFetch(_options, adapter) {
     } else {
       // NOTE: a request's body cannot be an object, so we stringify it if it is.
       if (typeof options.data === 'string') {
-        // JSON.stringify removes keys with values of `undefined`.
+        // JSON.stringify has already removed keys with values of `undefined`.
         options.body = options.data;
       } else {
-        // Strip out keys with undefined or null values (mimics jQuery.ajax).
-        const filteredBody = Object.keys(options.data).reduce((filteredObj, key) => {
-          const currentValue = options.data[key];
-          if (currentValue != undefined) {
-            filteredObj[key] = currentValue;
-          }
-          return filteredObj;
-        }, {});
-
-        options.body = JSON.stringify(filteredBody);
+        // JSON.stringify removes keys with values of `undefined` (mimics jQuery.ajax).
+        options.body = JSON.stringify(options.data);
       }
     }
   }

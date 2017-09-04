@@ -36,7 +36,7 @@ To have Ember Data utilize `fetch` instead of jQuery.ajax to make calls to your 
 import DS from 'ember-data';
 import AdapterFetch from 'ember-fetch/mixins/adapter-fetch';
 
-export default RESTAdapter.extend(AdapterFetch, {
+export default DS.RESTAdapter.extend(AdapterFetch, {
   ...
 });
 ```
@@ -68,4 +68,3 @@ further docs: https://github.com/github/fetch
 * we actually don't bundle github/fetch rather we merely wrap/transform what
   comes from `node_modules`, so we should be resilient to changes assuming
   semver from the fetch module
-

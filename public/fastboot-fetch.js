@@ -1,4 +1,8 @@
 (function() {
+  if (typeof FastBoot === 'undefined' || typeof FastBoot.require === 'undefined') {
+    return
+  }
+
   define('fetch', ['exports'], function(self) {
     var fetch = FastBoot.require('node-fetch');
     self['default'] = fetch;

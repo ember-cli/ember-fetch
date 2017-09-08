@@ -9,5 +9,9 @@ module.exports = {
     browser: true
   },
   rules: {
+  },
+  globals: {
+    define: false,
+    FastBoot: false
   }
 };

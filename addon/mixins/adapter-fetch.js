@@ -165,6 +165,20 @@ export function determineBodyPromise(response, requestData) {
 }
 
 export default Ember.Mixin.create({
+/**
+ * @param {String} url
+ * @param {String} type
+ * @param {Object} _options
+ * @returns {Object}
+ * @override
+ */
+
+  ajaxOptions(url, type, options = {}) {
+    options.url = url;
+    options.type = type;
+    return mungOptionsForFetch(options, this);
+  },
+
   /**
    * @param {String} url
    * @param {String} type
@@ -203,8 +217,7 @@ export default Ember.Mixin.create({
    * @param {Object} options
    * @override
    */
-  _ajaxRequest(_options) {
-    const options = mungOptionsForFetch(_options, this);
+  _ajaxRequest(options) {
     return this._fetchRequest(options.url, options);
   },
 

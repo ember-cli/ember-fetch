@@ -437,3 +437,30 @@ test('overridden fetch hook is called when supplied', function(assert) {
   const fetchReturn = this.JSONAPIAdapter._ajaxRequest({});
   assert.equal(fetchReturn, newText);
 });
+
+test('ajaxOptions returns the correct data', function(assert) {
+  assert.expect(1);
+
+  const ajaxOptionsReturn = this.JSONAPIAdapter.ajaxOptions('/url', 'GET', {
+    data: {
+      a: 1
+    },
+    headers: {
+      'secret-key': 1234
+    }
+  });
+
+  assert.deepEqual(ajaxOptionsReturn, {
+    url: '/url?a=1',
+    method: 'GET',
+    type: 'GET',
+    credentials: 'same-origin',
+    data: {
+      "a": 1
+    },
+    headers: {
+      'custom-header': 'foo',
+      'secret-key': 1234
+    },
+  });
+});

@@ -1,3 +1,12 @@
+
+3.4.0 / 2017-09-15
+==================
+
+  * Override Ember Data's RESTAdapter#ajaxOptions
+  * Add `globals` to eslint config
+  * Add CHANGELOG through 3.0.1
+  * fix minor typo around DS
+
 3.3.1 / 2017-08-23
 ==================
 

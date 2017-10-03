@@ -177,6 +177,19 @@ test('mungOptionsForFetch takes the headers from the adapter if present', functi
   }, 'POST call\'s options are correct');
 });
 
+test('mungOptionsForFetch creates a valid JSON POST body when `data` is a string', function(assert) {
+  assert.expect(1);
+  const data = 'foo';
+  const optionsWithStringData = {
+    url: 'https://emberjs.com',
+    type: 'POST',
+    data
+  };
+
+  let options = mungOptionsForFetch(optionsWithStringData, this.JSONAPIAdapter);
+  assert.equal(options.body, JSON.stringify(data));
+});
+
 test('mungOptionsForFetch sets the method to "GET" if `type` is not provided', function(assert) {
   assert.expect(1);
   const getOptions = {

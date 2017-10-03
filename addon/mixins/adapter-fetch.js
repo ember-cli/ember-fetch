@@ -116,14 +116,9 @@ export function mungOptionsForFetch(_options, adapter) {
       const queryParamDelimiter = options.url.indexOf('?') > -1 ? '&' : '?';
       options.url += `${queryParamDelimiter}${serialiazeQueryParams(options.data)}`;
     } else {
-      // NOTE: a request's body cannot be an object, so we stringify it if it is.
-      if (typeof options.data === 'string') {
-        // JSON.stringify has already removed keys with values of `undefined`.
-        options.body = options.data;
-      } else {
-        // JSON.stringify removes keys with values of `undefined` (mimics jQuery.ajax).
-        options.body = JSON.stringify(options.data);
-      }
+      // NOTE: a request's body must be JSON.
+      // If `data` is an object, JSON.stringify removes keys with values of `undefined` (mimics jQuery.ajax).
+      options.body = JSON.stringify(options.data);
     }
   }
 

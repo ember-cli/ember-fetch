@@ -22,6 +22,7 @@
     "broccoli-stew": "^1.4.2",
     "broccoli-templater": "^1.0.0",
     "ember-cli-babel": "^6.8.1",
+    "form-data": "^2.3.1",
     "node-fetch": "^2.0.0-alpha.9",
     "whatwg-fetch": "^2.0.3"
   },
@@ -50,7 +51,8 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "fastbootDependencies": [
-      "node-fetch"
+      "node-fetch",
+      "form-data"
     ]
   }
 }

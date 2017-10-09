@@ -5,6 +5,7 @@
     self['Headers'] = fetch.Headers;
     self['Request'] = fetch.Request;
     self['Response'] = fetch.Response;
+    self['FormData'] = FastBoot.require('form-data');
   });
 
   define('fetch/ajax', ['exports'], function() {

@@ -8,7 +8,7 @@ import {
 import AdapterFetchMixin, {
   mungOptionsForFetch,
   headersToObject,
-  serialiazeQueryParams,
+  serializeQueryParams,
   determineBodyPromise
 } from 'ember-fetch/mixins/adapter-fetch';
 
@@ -285,7 +285,7 @@ test('headersToObject returns an empty object if no headers are passed to it', f
   assert.deepEqual(headerObject, {});
 });
 
-test('serialiazeQueryParams turns deeply nested objects into queryParams like $.param', function (assert) {
+test('serializeQueryParams turns deeply nested objects into queryParams like $.param', function (assert) {
   assert.expect(1);
 
   const body = {
@@ -299,12 +299,12 @@ test('serialiazeQueryParams turns deeply nested objects into queryParams like $.
       g: [5,6,7]
     }
   };
-  const queryParamString = serialiazeQueryParams(body);
+  const queryParamString = serializeQueryParams(body);
 
   assert.equal(queryParamString, 'a=1&b=2&c%5Bd%5D=3&c%5Be%5D%5Bf%5D=4&c%5Bg%5D%5B%5D=5&c%5Bg%5D%5B%5D=6&c%5Bg%5D%5B%5D=7');
 });
 
-test('serialiazeQueryParams does not serialize keys with undefined values', function (assert) {
+test('serializeQueryParams does not serialize keys with undefined values', function (assert) {
   assert.expect(1);
 
   const body = {
@@ -321,7 +321,7 @@ test('serialiazeQueryParams does not serialize keys with undefined values', func
     i: 0,
     j: false
   };
-  const queryParamString = serialiazeQueryParams(body);
+  const queryParamString = serializeQueryParams(body);
 
   assert.equal(queryParamString, 'b=2&c%5Be%5D%5Bf%5D=4&c%5Bg%5D%5B%5D=5&c%5Bg%5D%5B%5D=6&c%5Bg%5D%5B%5D=7&h=null&i=0&j=false');
 });

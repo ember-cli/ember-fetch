@@ -16,7 +16,7 @@ const RBRACKET = /\[\]$/;
  * @param {Object} queryParamsObject
  * @returns {String}
  */
-export function serialiazeQueryParams(queryParamsObject) {
+export function serializeQueryParams(queryParamsObject) {
   var s = [];
 
   function buildParams(prefix, obj) {
@@ -54,7 +54,7 @@ export function serialiazeQueryParams(queryParamsObject) {
 }
 
 /**
- * Part of the `serialiazeQueryParams` helper function.
+ * Part of the `serializeQueryParams` helper function.
  * @param {Array} s
  * @param {String} k
  * @param {String} v
@@ -114,7 +114,7 @@ export function mungOptionsForFetch(_options, adapter) {
     if (options.method === 'GET' || options.method === 'HEAD') {
       // Test if there are already query params in the url (mimics jQuey.ajax).
       const queryParamDelimiter = options.url.indexOf('?') > -1 ? '&' : '?';
-      options.url += `${queryParamDelimiter}${serialiazeQueryParams(options.data)}`;
+      options.url += `${queryParamDelimiter}${serializeQueryParams(options.data)}`;
     } else {
       // NOTE: a request's body cannot be an object, so we stringify it if it is.
       if (typeof options.data === 'string') {

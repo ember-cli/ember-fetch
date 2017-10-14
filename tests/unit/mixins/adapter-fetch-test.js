@@ -232,21 +232,53 @@ test('mungOptionsForFetch removes undefined query params when method is POST and
 });
 
 test('mungOptionsForFetch sets the request body correctly when the method is POST and \'data\' is a string', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
 
+  // Tests stringified objects.
   const stringifiedData = JSON.stringify({a:1, b:2});
-
-  const dataAsString = {
+  const optionsWithStringData = {
     url: 'https://emberjs.com',
     type: 'POST',
     data: stringifiedData,
   };
 
-  let options = mungOptionsForFetch(dataAsString, this.basicAdapter);
-  assert.deepEqual(options.body, stringifiedData);
+  let options = mungOptionsForFetch(optionsWithStringData, this.basicAdapter);
+  assert.deepEqual(options.body, JSON.stringify(stringifiedData));
+
+  // Tests plain strings.
+  const data = 'foo';
+  optionsWithStringData.data = data;
+
+  options = mungOptionsForFetch(optionsWithStringData, this.JSONAPIAdapter);
+  assert.equal(options.body, JSON.stringify(data));
 });
 
-test('mungOptionsForFetch does not process an empty \'data\' object', function(assert) {
+test('mungOptionsForFetch does not set a request body when the method is GET or HEAD', function(assert) {
+  assert.expect(4);
+
+  const baseOptions = {
+    url: '/',
+    method: 'GET',
+    data: { a: 1 }
+  };
+
+  let options = mungOptionsForFetch(baseOptions, this.basicAdapter);
+  assert.equal(options.body, undefined, 'GET request does not have a request body');
+
+  baseOptions.method = 'HEAD';
+  options = mungOptionsForFetch(baseOptions, this.basicAdapter);
+  assert.equal(options.body, undefined, 'HEAD request does not have a request body');
+
+  baseOptions.data = {};
+  options = mungOptionsForFetch(baseOptions, this.basicAdapter);
+  assert.equal(options.body, undefined, 'HEAD request does not have a request body when `data` is an empty object');
+
+  baseOptions.method = 'GET';
+  options = mungOptionsForFetch(baseOptions, this.basicAdapter);
+  assert.equal(options.body, undefined, 'GET request does not have a request body when `data` is an empty object');
+});
+
+test('mungOptionsForFetch correctly processes an empty \'data\' object', function(assert) {
   assert.expect(2);
 
   const getData = {
@@ -265,7 +297,7 @@ test('mungOptionsForFetch does not process an empty \'data\' object', function(a
   };
 
   const postOptions = mungOptionsForFetch(postData, this.basicAdapter);
-  assert.equal(postOptions.body, undefined, 'There is no \'options.body\' set if the request has no data');
+  assert.equal(postOptions.body, "{}", '\'options.body\' is an empty object');
 });
 
 test('headersToObject turns an Headers instance into an object', function (assert) {

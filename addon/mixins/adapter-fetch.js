@@ -106,24 +106,17 @@ export function mungOptionsForFetch(_options, adapter) {
   // Default to 'GET' in case `type` is not passed in (mimics jQuery.ajax).
   options.method = options.type || 'GET';
 
-  // If no options are passed, Ember Data sets `data` to an empty object, which we test for.
-  // In modern browsers, Object.keys(<string>) works correctly. In Phantomjs it does not,
-  // so we have an extra type check for string.
-  if (options.data && (typeof options.data === 'string' || Object.keys(options.data).length)) {
+  if (options.data) {
     // GET and HEAD requests can't have a `body`
-    if (options.method === 'GET' || options.method === 'HEAD') {
+    // If no options are passed, Ember Data sets `data` to an empty object, which we test for.
+    if ((options.method === 'GET' || options.method === 'HEAD') && Object.keys(options.data).length) {
       // Test if there are already query params in the url (mimics jQuey.ajax).
       const queryParamDelimiter = options.url.indexOf('?') > -1 ? '&' : '?';
       options.url += `${queryParamDelimiter}${serializeQueryParams(options.data)}`;
-    } else {
+    } else if (options.method === 'POST') {
       // NOTE: a request's body cannot be an object, so we stringify it if it is.
-      if (typeof options.data === 'string') {
-        // JSON.stringify has already removed keys with values of `undefined`.
-        options.body = options.data;
-      } else {
-        // JSON.stringify removes keys with values of `undefined` (mimics jQuery.ajax).
-        options.body = JSON.stringify(options.data);
-      }
+      // JSON.stringify removes keys with values of `undefined` (mimics jQuery.ajax).
+      options.body = JSON.stringify(options.data);
     }
   }
 

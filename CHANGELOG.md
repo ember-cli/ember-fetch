@@ -1,4 +1,13 @@
 
+3.4.1 / 2017-10-13
+==================
+
+  * Restore POST body being stringified
+  * fix 'serializeQueryParams' typo
+  * add more badges
+  * add chrome and firefox to travis
+  * fix tests by using yarn in ember-try
+
 3.4.0 / 2017-09-15
 ==================
 

@@ -231,6 +231,30 @@ test('mungOptionsForFetch removes undefined query params when method is POST and
   assert.deepEqual(options.body, "{\"a\":1,\"c\":3,\"d\":null,\"e\":0,\"f\":false}");
 });
 
+test('mungOptionsForFetch sets the request body correctly when the method is not GET or HEAD', function(assert) {
+  assert.expect(3);
+
+  const baseOptions = {
+    url: '/',
+    type: 'POST',
+    data: { a: 1 }
+  };
+
+  // Tests POST method.
+  let options = mungOptionsForFetch(baseOptions, this.basicAdapter);
+  assert.equal(options.body, JSON.stringify(baseOptions.data), 'POST request body correctly set');
+
+  // Tests PUT method.
+  baseOptions.type = 'PUT';
+  options = mungOptionsForFetch(baseOptions, this.basicAdapter);
+  assert.equal(options.body, JSON.stringify(baseOptions.data), 'PUT request body correctly set');
+
+  // Tests DELETE method.
+  baseOptions.type = 'DELETE';
+  options = mungOptionsForFetch(baseOptions, this.basicAdapter);
+  assert.equal(options.body, JSON.stringify(baseOptions.data), 'DELETE request has the correct body');
+});
+
 test('mungOptionsForFetch sets the request body correctly when the method is POST and \'data\' is a string', function(assert) {
   assert.expect(2);
 
@@ -258,14 +282,14 @@ test('mungOptionsForFetch does not set a request body when the method is GET or 
 
   const baseOptions = {
     url: '/',
-    method: 'GET',
+    type: 'GET',
     data: { a: 1 }
   };
 
   let options = mungOptionsForFetch(baseOptions, this.basicAdapter);
   assert.equal(options.body, undefined, 'GET request does not have a request body');
 
-  baseOptions.method = 'HEAD';
+  baseOptions.type = 'HEAD';
   options = mungOptionsForFetch(baseOptions, this.basicAdapter);
   assert.equal(options.body, undefined, 'HEAD request does not have a request body');
 
@@ -273,7 +297,7 @@ test('mungOptionsForFetch does not set a request body when the method is GET or 
   options = mungOptionsForFetch(baseOptions, this.basicAdapter);
   assert.equal(options.body, undefined, 'HEAD request does not have a request body when `data` is an empty object');
 
-  baseOptions.method = 'GET';
+  baseOptions.type = 'GET';
   options = mungOptionsForFetch(baseOptions, this.basicAdapter);
   assert.equal(options.body, undefined, 'GET request does not have a request body when `data` is an empty object');
 });

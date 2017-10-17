@@ -108,12 +108,14 @@ export function mungOptionsForFetch(_options, adapter) {
 
   if (options.data) {
     // GET and HEAD requests can't have a `body`
-    // If no options are passed, Ember Data sets `data` to an empty object, which we test for.
-    if ((options.method === 'GET' || options.method === 'HEAD') && Object.keys(options.data).length) {
-      // Test if there are already query params in the url (mimics jQuey.ajax).
-      const queryParamDelimiter = options.url.indexOf('?') > -1 ? '&' : '?';
-      options.url += `${queryParamDelimiter}${serializeQueryParams(options.data)}`;
-    } else if (options.method === 'POST') {
+    if ((options.method === 'GET' || options.method === 'HEAD')) {
+      // If no options are passed, Ember Data sets `data` to an empty object, which we test for.
+      if (Object.keys(options.data).length) {
+        // Test if there are already query params in the url (mimics jQuey.ajax).
+        const queryParamDelimiter = options.url.indexOf('?') > -1 ? '&' : '?';
+        options.url += `${queryParamDelimiter}${serializeQueryParams(options.data)}`;
+      }
+    } else {
       // NOTE: a request's body cannot be an object, so we stringify it if it is.
       // JSON.stringify removes keys with values of `undefined` (mimics jQuery.ajax).
       options.body = JSON.stringify(options.data);

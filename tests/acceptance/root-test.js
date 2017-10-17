@@ -79,6 +79,30 @@ test('posting a form', function(assert) {
     assert.equal(data.name, 'World');
   });
 });
+test('posting a search params form', function(assert) {
+  server.post('/upload', function(req) {
+    assert.equal(req.requestHeaders['content-type'], 'application/x-www-form-urlencoded;charset=UTF-8');
+
+    return [
+      200,
+      { 'Content-Type': 'text/json'},
+      JSON.stringify({ name: 'World' })
+    ];
+  });
+
+  var form = new window.URLSearchParams();
+  form.append('foo', 'bar');
+
+  return fetch('/upload', {
+    method: 'post',
+    body: form
+  }).then(function (res) {
+    assert.equal(res.status, 200);
+    return res.json();
+  }).then(function (data) {
+    assert.equal(data.name, 'World');
+  });
+});
 
 test('tests await for fetch requests', function(assert) {
   server.get('/omg.json', function() {

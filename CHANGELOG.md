@@ -1,3 +1,9 @@
+3.4.2 / 2017-10-16
+==================
+
+  * Remove `app` tree re-export of `ember-fetch/mixins/ember-fetch.js`
+  * Drop requirement of host apps having ember-cli-shims
+  * Upgrade ember-cli and other dependencies
 
 3.4.1 / 2017-10-13
 ==================

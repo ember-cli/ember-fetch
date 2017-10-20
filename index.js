@@ -42,7 +42,7 @@ module.exports = {
     let target = app;
 
     if (typeof this.import === 'function') {
-        target = this;
+      target = this;
     } else {
       target = this._findHostApp();
     }
@@ -105,18 +105,18 @@ module.exports = {
 
   //convenient method to determine if we should import the default node fetch module
   //or skip. Let consumer app to import node fetch from elsewhere
+  //return true means we will define fetch from node-fetch
+  //return false means fetch in node will not be defined, it's user's responsiblity to define their own fetch in fastboot
   _shouldImportDefaultNodeModule: function() {
-    var app = this._findHostApp();
-    var appOptions = (app && app.options) || {};
-    //make it backwards compatiable for apps doesn't set this config
-    if (typeof appOptions['ember-fetch'] === 'undefined') {
-      return true;
-    } else {
-      return !appOptions['ember-fetch']['disableDefaultNodeFetch'];
-    }
+    const app = this._findHostApp();
+    let appOptions = (app && app.options) || {};
+    //make it backwards compatible for apps doesn't set this config
+    let shouldDisableNodeFetch = appOptions['ember-fetch'] &&
+    appOptions['ember-fetch'].disableDefaultNodeFetch === true;
+
+    return !shouldDisableNodeFetch;
   }
 };
-
 
 // We use a few different Broccoli plugins to build our trees:
 //
@@ -164,7 +164,7 @@ function treeForBrowserFetch() {
 // we just happen to know that the passed tree only contains a single file.
 function normalizeFileName(tree) {
   return rename(tree, function() {
-      return 'ember-fetch.js';
+    return 'ember-fetch.js';
   });
 }
 

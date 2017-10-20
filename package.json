@@ -15,18 +15,26 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:each"
+    "test": "ember try:each && mocha",
+    "test:precook": "node node_modules/ember-cli-addon-tests/scripts/precook-node-modules.js"
   },
   "dependencies": {
+    "bower": "^1.8.2",
     "broccoli-funnel": "^1.2.0",
     "broccoli-stew": "^1.4.2",
     "broccoli-templater": "^1.0.0",
+    "ember-cli-addon-tests": "0.9.2",
     "ember-cli-babel": "^6.8.1",
-    "node-fetch": "^2.0.0-alpha.9",
     "whatwg-fetch": "^2.0.3"
+  },
+  "optionalDependencies": {
+    "node-fetch": "^2.0.0-alpha.9"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
+    "broccoli-babel-transpiler": "^6.1.2",
+    "chai": "^4.1.2",
+    "chai-fs": "^1.0.0",
     "ember-cli": "~2.16.2",
     "ember-cli-dependency-checker": "^2.0.0",
     "ember-cli-eslint": "^4.0.0",
@@ -37,12 +45,14 @@
     "ember-cli-release": "^0.2.9",
     "ember-cli-shims": "^1.1.0",
     "ember-cli-uglify": "^2.0.0",
-    "ember-disable-prototype-extensions": "^1.1.2",
     "ember-data": "^2.16.0",
+    "ember-disable-prototype-extensions": "^1.1.2",
     "ember-load-initializers": "^1.0.0",
     "ember-resolver": "^4.0.0",
-    "ember-source": "~2.16.0",
-    "loader.js": "^4.2.3"
+    "ember-source": "^2.16.0",
+    "glob": "^7.1.2",
+    "loader.js": "^4.2.3",
+    "mocha": "^4.0.1"
   },
   "engines": {
     "node": "^4.5 || 6.* || >= 7.*"

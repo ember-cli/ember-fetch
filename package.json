@@ -25,9 +25,7 @@
     "broccoli-stew": "^1.4.2",
     "broccoli-templater": "^1.0.0",
     "ember-cli-babel": "^6.8.1",
-    "whatwg-fetch": "^2.0.3"
-  },
-  "optionalDependencies": {
+    "whatwg-fetch": "^2.0.3",
     "node-fetch": "^2.0.0-alpha.9"
   },
   "devDependencies": {

@@ -69,7 +69,7 @@ describe('it builds', function() {
     app.editPackageJSON(function(pkg) {
       pkg['devDependencies']['ember-cli-fastboot'] = "*";
     });
-    return app.run('yarn', 'install');
+    return app.run('npm', 'install');
   }
 
 });

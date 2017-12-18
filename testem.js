@@ -1,10 +1,9 @@
 /* eslint-env node */
 
 const isRunningInTravis = process.env.TRAVIS === 'true';
-const launch_in_ci = ['PhantomJS'];
+const launch_in_ci = ['Chrome'];
 
 if (isRunningInTravis) {
-  launch_in_ci.push('Chrome');
   launch_in_ci.push('Firefox');
 }
 
@@ -13,7 +12,6 @@ module.exports = {
   disable_watching: true,
   launch_in_ci,
   launch_in_dev: [
-    'PhantomJS',
     'Chrome'
   ],
   browser_args: {

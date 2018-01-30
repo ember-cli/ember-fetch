@@ -1,3 +1,8 @@
+3.4.4 / 2017-12-20
+==================
+
+  * Ensure `fetch` can be used with `ArrayBuffer`s.
+  * Switch typings to newer style.
 
 3.4.3 / 2017-10-16
 ==================

@@ -79,6 +79,25 @@ test('posting a form', function(assert) {
     assert.equal(data.name, 'World');
   });
 });
+test('posting an array buffer', function(assert) {
+  server.post('/upload', function(req) {
+    assert.ok(req.requestBody instanceof window.ArrayBuffer);
+    return [
+      200,
+      { 'Content-Type': 'text/json' },
+      JSON.stringify({ name: 'World' })
+    ];
+  });
+  return fetch('/upload', {
+    method: 'post',
+    body: new window.ArrayBuffer()
+  }).then(function(res) {
+    assert.equal(res.status, 200);
+    return res.json();
+  }).then(function(data) {
+    assert.equal(data.name, 'World');
+  });
+});
 
 test('tests await for fetch requests', function(assert) {
   server.get('/omg.json', function() {

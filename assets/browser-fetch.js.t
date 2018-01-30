@@ -11,6 +11,9 @@
     if (global.Blob) {
       self.Blob = global.Blob;
     }
+    if (global.ArrayBuffer) {
+      self.ArrayBuffer = global.ArrayBuffer;
+    }
 
     <%= moduleBody %>
 

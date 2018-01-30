@@ -16,7 +16,6 @@ install:
   # Typical npm stuff.
   - md C:\nc
   - npm config set cache C:\nc
-  - yarn add phantomjs-prebuilt
   - yarn install
 
 # Post-install test scripts.

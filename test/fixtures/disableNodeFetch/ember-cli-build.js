@@ -4,10 +4,18 @@
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
+  let pathPrefix  =  __dirname;
   let app = new EmberAddon(defaults, {
+    configPath: '/config/environment',
+    trees: {
+      app: './app',
+      styles: './app/styles',
+      templates: './app/templates',
+      public: './public'
+    },
     // Add options here
     'ember-fetch': {
-      disableDefaultNodeFetch: false
+      disableDefaultNodeFetch: true
     }
   });
 

@@ -38,26 +38,13 @@ module.exports = {
    */
   included: function(app) {
     this._super.included.apply(this, arguments);
-    
+
     let target = app;
 
     if (typeof this.import === 'function') {
       target = this;
     } else {
-      // If the addon has the _findHost() method (in ember-cli >= 2.7.0), we'll just
-      // use that.
-      if (typeof this._findHost === 'function') {
-        target = this._findHost();
-      }
-
-      // Otherwise, we'll use this implementation borrowed from the _findHost()
-      // method in ember-cli.
-      // Keep iterating upward until we don't have a grandparent.
-      // Has to do this grandparent check because at some point we hit the project.
-      let current = this;
-      do {
-       target = current.app || app;
-      } while (current.parent.parent && (current = current.parent));
+      target = this._findHostApp();
     }
 
     target.import('vendor/ember-fetch.js', {
@@ -87,13 +74,49 @@ module.exports = {
     return browserTree;
   },
 
+  //If user don't set  disableDefaultNodeFetch to be true,
   //add node version of fetch.js into fastboot package.json manifest vendorFiles array
-  updateFastBootManifest: function (manifest) {
-    manifest.vendorFiles.push('ember-fetch/fastboot-fetch.js');
+  updateFastBootManifest: function(manifest) {
+    if (this._shouldImportDefaultNodeModule()) {
+        manifest.vendorFiles.push('ember-fetch/fastboot-fetch.js');
+    }
     return manifest;
+  },
+  
+  //return host app object
+  _findHostApp: function() {
+    // If the addon has the _findHost() method (in ember-cli >= 2.7.0), we'll just
+    // use that.
+    let target;
+    if (typeof this._findHost === 'function') {
+        target = this._findHost();
+    }
+
+    // Otherwise, we'll use this implementation borrowed from the _findHost()
+    // method in ember-cli.
+    // Keep iterating upward until we don't have a grandparent.
+    // Has to do this grandparent check because at some point we hit the project.
+    let current = this;
+    do {
+        target = current.app || app;
+    } while (current.parent.parent && (current = current.parent));
+    return target;
+  },
+
+  //convenient method to determine if we should import the default node fetch module
+  //or skip. Let consumer app to import node fetch from elsewhere
+  //return true means we will define fetch from node-fetch
+  //return false means fetch in node will not be defined, it's user's responsiblity to define their own fetch in fastboot
+  _shouldImportDefaultNodeModule: function() {
+    const app = this._findHostApp();
+    let appOptions = (app && app.options) || {};
+    //make it backwards compatible for apps doesn't set this config
+    let shouldDisableNodeFetch = appOptions['ember-fetch'] &&
+    appOptions['ember-fetch'].disableDefaultNodeFetch === true;
+
+    return !shouldDisableNodeFetch;
   }
 };
-
 
 // We use a few different Broccoli plugins to build our trees:
 //

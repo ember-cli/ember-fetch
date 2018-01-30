@@ -43,6 +43,15 @@ export default DS.RESTAdapter.extend(AdapterFetch, {
 });
 ```
 
+### Configuration
+This addon provides `fetch` in fastboot. The default `fetch` module is node-fetch, which uses node http or https underneath. If your app require different communication protocal on server side. You can disable using node-fetch by setting following config value in ember-cli-build.js to be true. Without setting this value means using node-fetch for server side `fetch`.
+```js
+let app = new EmberAddon(defaults, {
+    'ember-fetch': {
+      disableDefaultNodeFetch: true
+    }
+```
+
 further docs: https://github.com/github/fetch
 
 ### Browser Support

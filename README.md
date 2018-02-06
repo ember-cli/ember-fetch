@@ -44,11 +44,11 @@ export default DS.RESTAdapter.extend(AdapterFetch, {
 ```
 
 ### Use with Fastboot
-Currently, Fastboot supplies its own server-side ajax functionality, and including `ember-fetch` and the `adapter-fetch` mixin in a Fastboot app will not work without some modifications. To allow the `node-fetch` polyfill that is included with this addon to make your API calls, you must add an initializer that overrides the one Fastboot utilizes to inject its own ajax.
+Currently, Fastboot supplies its own server-side ajax functionality, and including `ember-fetch` and the `adapter-fetch` mixin in a Fastboot app will not work without some modifications. To allow the `node-fetch` polyfill that is included with this addon to make your API calls, you must add an initializer to the consuming app's `fastboot` directory that overrides the one Fastboot utilizes to inject its own ajax.
 
 Example:
 ```js
-// app/initializers/ajax.js
+// fastboot/initializers/ajax.js
 
 export default {
   name: 'ajax-service',

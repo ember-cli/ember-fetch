@@ -6,7 +6,7 @@
 
 HTML5 [fetch](https://fetch.spec.whatwg.org) polyfill from [github](https://github.com/github/fetch) wrapped and bundled for ember-cli users
 
-* [intro to fetch](http://updates.html5rocks.com/2015/03/introduction-to-fetch)
+* [intro to fetch](https://developers.google.com/web/updates/2015/03/introduction-to-fetch)
 * [spec](https://fetch.spec.whatwg.org)
 * [usage](https://github.com/github/fetch#usage)
 * [origin repo](https://github.com/github/fetch)
@@ -43,7 +43,22 @@ export default DS.RESTAdapter.extend(AdapterFetch, {
 });
 ```
 
-further docs: https://github.com/github/fetch
+### Use with Fastboot
+Currently, Fastboot supplies its own server-side ajax functionality, and including `ember-fetch` and the `adapter-fetch` mixin in a Fastboot app will not work without some modifications. To allow the `node-fetch` polyfill that is included with this addon to make your API calls, you must add an initializer that overrides the one Fastboot utilizes to inject its own ajax.
+
+Example:
+```js
+// app/initializers/ajax.js
+
+export default {
+  name: 'ajax-service',
+  initialize() {
+    // noop
+    // This is to override Fastboot's initializer which prevents ember-fetch from working
+    // https://github.com/ember-fastboot/ember-cli-fastboot/blob/master/fastboot/initializers/ajax.js
+  }
+}
+```
 
 ### Browser Support
 

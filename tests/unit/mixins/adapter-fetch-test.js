@@ -379,7 +379,7 @@ test('serializeQueryParams does not serialize keys with undefined values', funct
   };
   const queryParamString = serializeQueryParams(body);
 
-  assert.equal(queryParamString, 'b=2&c%5Be%5D%5Bf%5D=4&c%5Bg%5D%5B%5D=5&c%5Bg%5D%5B%5D=6&c%5Bg%5D%5B%5D=7&h=null&i=0&j=false');
+  assert.equal(queryParamString, 'b=2&c%5Be%5D%5Bf%5D=4&c%5Bg%5D%5B%5D=5&c%5Bg%5D%5B%5D=6&c%5Bg%5D%5B%5D=7&h=&i=0&j=false');
 });
 
 test('determineBodyResponse returns the body when it is present', function(assert) {

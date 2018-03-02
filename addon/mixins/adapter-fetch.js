@@ -60,9 +60,12 @@ export function serializeQueryParams(queryParamsObject) {
  * @param {String} v
  */
 function add(s, k, v) {
-  // Strip out keys with undefined or null values (mimics jQuery.ajax).
+  // Strip out keys with undefined value and replace null values with
+  // empty strings (mimics jQuery.ajax)
   if (v === undefined) {
     return;
+  } else if (v === null) {
+    v = '';
   }
 
   v = typeof v === 'function' ? v() : v;

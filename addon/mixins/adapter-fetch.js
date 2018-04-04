@@ -1,10 +1,11 @@
 import Ember from 'ember';
+import Mixin from '@ember/object/mixin';
+import { assign } from '@ember/polyfills'
+import { merge } from '@ember/polyfills'
+import RSVP from 'rsvp';
 import fetch from 'fetch';
 
 const {
-  assign,
-  merge,
-  RSVP,
   Logger: { warn }
 } = Ember;
 
@@ -162,7 +163,7 @@ export function determineBodyPromise(response, requestData) {
   });
 }
 
-export default Ember.Mixin.create({
+export default Mixin.create({
 /**
  * @param {String} url
  * @param {String} type

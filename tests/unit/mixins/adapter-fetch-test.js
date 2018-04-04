@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { Promise } from 'rsvp';
 import DS from 'ember-data';
 import { module, test } from 'qunit';
 import {
@@ -17,11 +18,14 @@ const { JSONAPIAdapter } = DS;
 module('Unit | Mixin | adapter-fetch', {
   beforeEach() {
     this.JSONAPIAdapter = JSONAPIAdapter.extend(AdapterFetchMixin, {
-      headers: {
-        'custom-header' : 'foo',
+      init() {
+        this._super();
+        this.headers = {
+          'custom-header' : 'foo',
+        };
       }
     }).create();
-    this.basicAdapter = Ember.Object.extend(AdapterFetchMixin).create();
+    this.basicAdapter = EmberObject.extend(AdapterFetchMixin).create();
   }
 });
 
@@ -443,7 +447,7 @@ test('parseFetchResponseForError is able to be overwritten to mutate the error p
   this.errorAdapter = JSONAPIAdapter.extend(AdapterFetchMixin, {
     _fetchRequest() {
       const response = new Response(`{ "errors": ["myoneerror"] }`, {status: 422});
-      return Ember.RSVP.Promise.resolve(response);
+      return Promise.resolve(response);
     },
     parseFetchResponseForError() {
       return {
@@ -465,7 +469,7 @@ test('able to handle empty error payloads', function(assert) {
   this.errorAdapter = JSONAPIAdapter.extend(AdapterFetchMixin, {
     _fetchRequest() {
       const response = new Response(``, {status: 500});
-      return Ember.RSVP.Promise.resolve(response);
+      return Promise.resolve(response);
     }
   }).create();
 
@@ -482,7 +486,7 @@ test('default fetch hook is correctly called if not overriden', function(assert)
   assert.expect(1);
 
   const fetchReturn = this.JSONAPIAdapter._ajaxRequest({});
-  assert.ok(fetchReturn instanceof Ember.RSVP.Promise);
+  assert.ok(fetchReturn instanceof Promise);
 });
 
 test('overridden fetch hook is called when supplied', function(assert) {

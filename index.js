@@ -1,4 +1,3 @@
-/* eslint-env node */
 'use strict';
 
 var path = require('path');
@@ -81,7 +80,7 @@ module.exports = {
    * not. Based on that, we return a tree that contains the correct version of
    * the polyfill at the `vendor/fetch.js` path.
    */
-  treeForVendor: function(vendorTree) {
+  treeForVendor: function() {
     var browserTree = treeForBrowserFetch();
     browserTree = map(browserTree, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
     return browserTree;

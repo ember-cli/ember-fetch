@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
 import fetch from 'fetch';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   actions: {
     fetchSlowData() {
       fetch('/slow-data.json')

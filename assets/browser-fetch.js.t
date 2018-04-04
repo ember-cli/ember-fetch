@@ -14,6 +14,9 @@
     if (global.ArrayBuffer) {
       self.ArrayBuffer = global.ArrayBuffer;
     }
+    if (global.Symbol) {
+      self.Symbol = global.Symbol;
+    }
 
     <%= moduleBody %>
 

@@ -1,10 +1,20 @@
+/* globals define FastBoot */
 (function() {
   define('fetch', ['exports'], function(self) {
-    var fetch = FastBoot.require('node-fetch');
-    self['default'] = fetch;
-    self['Headers'] = fetch.Headers;
-    self['Request'] = fetch.Request;
-    self['Response'] = fetch.Response;
+    var AbortControllerPolyfill = FastBoot.require('abortcontroller-polyfill/dist/cjs-ponyfill');
+    var nodeFetch = FastBoot.require('node-fetch');
+    var abortableFetch = AbortControllerPolyfill.abortableFetch({
+      fetch: nodeFetch,
+      Request: nodeFetch.Request
+    });
+
+    self['default'] = abortableFetch.fetch;
+    self['Request'] = abortableFetch.Request;
+
+    self['Headers'] = nodeFetch.Headers;    
+    self['Response'] = nodeFetch.Response;
+
+    self['AbortController'] = AbortControllerPolyfill.AbortController;
   });
 
   define('fetch/ajax', ['exports'], function() {

@@ -2,6 +2,7 @@
   define('fetch', ['exports'], function(self) {
     'use strict';
     var Promise = global.Ember.RSVP.Promise;
+    var window = self;
     if (global.FormData) {
       self.FormData = global.FormData;
     }
@@ -16,6 +17,9 @@
     }
     if (global.Symbol) {
       self.Symbol = global.Symbol;
+    }
+    if (global.URLSearchParams) {
+      self.URLSearchParams = global.URLSearchParams;
     }
 
     <%= moduleBody %>
@@ -45,10 +49,6 @@
     } else {
       self['default'] = self.fetch;
     }
-
-    self['Headers'] = self.Headers;
-    self['Request'] = self.Request;
-    self['Response'] = self.Response;
   });
 
   define('fetch/ajax', ['exports'], function() {

@@ -1,7 +1,23 @@
 'use strict';
 
 var path = require('path');
-var map = require('broccoli-stew').map;
+// We use a few different Broccoli plugins to build our trees:
+//
+// broccoli-templater: renders the contents of a file inside a template.
+// Used to wrap the browser polyfill in a shim that prevents it from exporting
+// a global.
+//
+// broccoli-stew: super useful library of Broccoli utilities. We use:
+//
+//   * find - finds files in a tree based on a glob pattern
+//   * map - map content of files in a tree
+//
+var stew = require('broccoli-stew');
+var Template = require('broccoli-templater');
+var MergeTrees = require('broccoli-merge-trees');
+var concat = require('broccoli-concat');
+var map = stew.map;
+var find = stew.find;
 
 /*
  * The `index.js` file is the main entry point for all Ember CLI addons.  The
@@ -93,60 +109,33 @@ module.exports = {
   }
 };
 
-
-// We use a few different Broccoli plugins to build our trees:
-//
-// broccoli-templater: renders the contents of a file inside a template.
-// Used to wrap the browser polyfill in a shim that prevents it from exporting
-// a global.
-//
-// broccoli-funnel: used to import a stub file that requires the node package
-// when running in FastBoot.
-//
-// broccoli-stew: super useful library of Broccoli utilities. We use:
-//
-//   * rename - renames files in a tree
-//   * find - finds files in a tree based on a glob pattern
-
-var Template = require('broccoli-templater');
-var stew = require('broccoli-stew');
-var rename = stew.rename;
-var find = stew.find;
-
 // Path to the template that contains the shim wrapper around the browser
 // polyfill
 var templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
 
 
-// Returns a tree containing the browser polyfill (from
-// `node_modules/whatwg-fetch`), wrapped in a shim that stops it from exporting
-// a global and instead turns it into a module that can be used by the Ember
-// app.
+// Returns a tree containing the browser polyfill (from `yetch` and `abortcontroller-polyfill`),
+// wrapped in a shim that stops it from exporting a global and instead turns it into a module
+// that can be used by the Ember app.
 function treeForBrowserFetch() {
-  var fetchPath = require.resolve('whatwg-fetch');
-  var expandedFetchPath = expand(fetchPath);
+  var fetchPath = require.resolve('yetch/polyfill');
+  var abortcontrollerPath = require.resolve('abortcontroller-polyfill');
 
-  var fetch = normalizeFileName(find(expandedFetchPath));
+  var expandedFetchPath = expand(fetchPath, 'dist/yetch-polyfill.js');
+  var expandedAbortcontrollerPath = expand(abortcontrollerPath, 'abortcontroller-polyfill-only.js');
 
-  return new Template(fetch, templatePath, function(content) {
+  var polyfillTree = concat(new MergeTrees([find(expandedFetchPath), find(expandedAbortcontrollerPath)]), {
+    outputFile: 'ember-fetch.js'
+  });
+
+  return new Template(polyfillTree, templatePath, function(content) {
     return {
       moduleBody: content
     };
   });
 }
 
-// Renames either `fastboot-fetch.js` or `whatwg-fetch/fetch.js` to just
-// `ember-fetch.js`. Note that this function will rename _every_ file in the tree;
-// we just happen to know that the passed tree only contains a single file.
-function normalizeFileName(tree) {
-  return rename(tree, function() {
-    return 'ember-fetch.js';
-  });
-}
-
-function expand(input) {
+function expand(input, file) {
   var dirname = path.dirname(input);
-  var file = path.basename(input);
-
-  return dirname + '/{' + file + '}';
+  return path.join(dirname, file);
 }

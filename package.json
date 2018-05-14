@@ -1,6 +1,6 @@
 {
   "name": "ember-fetch",
-  "version": "3.4.5",
+  "version": "4.0.0",
   "description": "HTML5 Fetch polyfill (as an ember-addon)",
   "typings": "./index.d.ts",
   "keywords": [

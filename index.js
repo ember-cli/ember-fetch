@@ -81,7 +81,8 @@ module.exports = {
           'default',
           'Headers',
           'Request',
-          'Response'
+          'Response',
+          'AbortController'
         ]
       }
     });

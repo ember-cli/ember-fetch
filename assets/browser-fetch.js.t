@@ -14,10 +14,11 @@
       'fetch',
       'Headers',
       'Request',
-      'Response'
+      'Response',
+      'AbortController'
     ];
     var combinedProps = supportProps;
-    if (!forcePolyfill) {
+    if (preferNative) {
       combinedProps = supportProps.concat(polyfillProps);
     }
     combinedProps.forEach(function(prop) {
@@ -44,7 +45,7 @@
       self['default'] = function() {
         pending++;
 
-        return self.fetch.apply(forcePolyfill ? self : global, arguments).then(function(response){
+        return self.fetch.apply(preferNative ? global : self, arguments).then(function(response){
           response.clone().blob().then(decrement, decrement);
           return response;
         }, function(reason) {

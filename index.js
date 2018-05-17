@@ -75,7 +75,7 @@ module.exports = {
       } while (current.parent.parent && (current = current.parent));
     }
 
-    this.buildConfig = target.options['ember-fetch'] || {forcePolyfill: true};
+    this.buildConfig = target.options['ember-fetch'] || { preferNative: false };
 
     target.import('vendor/ember-fetch.js', {
       exports: {
@@ -101,9 +101,11 @@ module.exports = {
    */
   treeForVendor: function() {
     var browserTree = treeForBrowserFetch();
-    var forcePolyfill = this.buildConfig.forcePolyfill;
-    browserTree = map(browserTree, (content) => `var forcePolyfill = ${forcePolyfill}; ${content}`);
-    browserTree = map(browserTree, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
+    var preferNative = this.buildConfig.preferNative;
+    browserTree = map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
+      var preferNative = ${preferNative};
+      ${content}
+    }`);
     return browserTree;
   },
 

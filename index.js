@@ -53,7 +53,7 @@ module.exports = {
    */
   included: function(app) {
     this._super.included.apply(this, arguments);
-    
+
     let target = app;
 
     if (typeof this.import === 'function') {
@@ -75,6 +75,8 @@ module.exports = {
       } while (current.parent.parent && (current = current.parent));
     }
 
+    this.buildConfig = target.options['ember-fetch'] || {forcePolyfill: true};
+
     target.import('vendor/ember-fetch.js', {
       exports: {
         default: [
@@ -93,12 +95,14 @@ module.exports = {
    * directory is kind of a junk drawer; nothing we put in it is used unless we
    * explicitly `import()` a file (which we do in the `included` hook, above).
    *
-   * To build our tree, we first detect whether we're in a FastBoot build or
-   * not. Based on that, we return a tree that contains the correct version of
-   * the polyfill at the `vendor/fetch.js` path.
+   * To build our tree, we first pass in option flags and detect whether we're
+   * in a FastBoot build or not. Based on that, we return a tree that contains
+   * the correct version of the polyfill at the `vendor/fetch.js` path.
    */
   treeForVendor: function() {
     var browserTree = treeForBrowserFetch();
+    var forcePolyfill = this.buildConfig.forcePolyfill;
+    browserTree = map(browserTree, (content) => `var forcePolyfill = ${forcePolyfill}; ${content}`);
     browserTree = map(browserTree, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
     return browserTree;
   },

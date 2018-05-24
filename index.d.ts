@@ -4,5 +4,6 @@
 // TypeScript Version: 2.3
 
 declare module 'fetch' {
-  export default function fetch(input: RequestInfo, init?: RequestInit): Promise<Response>;
+  import RSVP from 'rsvp';
+  export default function fetch(input: RequestInfo, init?: RequestInit): RSVP.Promise<Response>;
 }

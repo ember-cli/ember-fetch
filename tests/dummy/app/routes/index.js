@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import { hash } from 'rsvp'; 
+import { hash } from 'rsvp';
 import fetch from 'fetch';
 import ajax from 'ember-fetch/ajax';
 

@@ -72,21 +72,12 @@ module.exports = {
         do {
           target = current.app || app;
         } while (current.parent.parent && (current = current.parent));
-        // If this.import is not a function, app and target should point to the same EmberApp
-        app = target;
       }
+      // If this.import is not a function, app and target should point to the same EmberApp
+      app = target;
     }
 
-    // We access app config and pass in the environment: 'development', 'test' or 'production'
-    // The current idea is we let user to decide situation to prefer native fetch
-    this.fetchConfig = app.project.config(app.env)['ember-fetch'] || {
-      preferNative: false
-    };
-    if (this.fetchConfig.preferNative === true) {
-      this.ui.writeInfoLine(
-        '[ember-fetch] Prefer native fetch enabled, please be aware of browser and pretender support.'
-      );
-    }
+    this.buildConfig = app.options['ember-fetch'] || { preferNative: false };
 
     target.import('vendor/ember-fetch.js', {
       exports: {
@@ -112,7 +103,7 @@ module.exports = {
    */
   treeForVendor: function() {
     var browserTree = treeForBrowserFetch();
-    var preferNative = this.fetchConfig.preferNative;
+    var preferNative = this.buildConfig.preferNative;
     browserTree = map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
       var preferNative = ${preferNative};
       ${content}

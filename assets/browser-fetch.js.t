@@ -23,7 +23,10 @@
     }
     combinedProps.forEach(function(prop) {
       if (global[prop]) {
-        self[prop] = global[prop];
+        Object.defineProperty(self, prop, {
+          configurable: true,
+          get: function() { return global[prop] }
+        });
       }
     });
 

@@ -16,7 +16,8 @@
     "build": "ember build",
     "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
     "start": "ember server",
-    "test": "ember try:each"
+    "test": "ember try:each",
+    "test:node": "mocha"
   },
   "dependencies": {
     "abortcontroller-polyfill": "^1.1.9",
@@ -30,6 +31,8 @@
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
+    "broccoli-test-helper": "^1.2.0",
+    "chai": "^4.1.2",
     "ember-cli": "~3.0.2",
     "ember-cli-dependency-checker": "^2.0.0",
     "ember-cli-eslint": "^4.2.1",
@@ -49,7 +52,8 @@
     "ember-try": "^0.2.23",
     "eslint-plugin-ember": "^5.0.0",
     "eslint-plugin-node": "^5.2.1",
-    "loader.js": "^4.2.3"
+    "loader.js": "^4.2.3",
+    "mocha": "^5.2.0"
   },
   "engines": {
     "node": "6.* || 8.* || >= 10"

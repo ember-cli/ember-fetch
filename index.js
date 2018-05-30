@@ -7,6 +7,10 @@ var path = require('path');
 // Used to wrap the browser polyfill in a shim that prevents it from exporting
 // a global.
 //
+// broccoli-merge-trees: merge several broccoli trees (folders) to a single tree
+// 
+// broccoli-concat: concatenate input files to single output file
+//
 // broccoli-stew: super useful library of Broccoli utilities. We use:
 //
 //   * find - finds files in a tree based on a glob pattern
@@ -99,7 +103,7 @@ module.exports = {
    *
    * To build our tree, we first pass in option flags and detect whether we're
    * in a FastBoot build or not. Based on that, we return a tree that contains
-   * the correct version of the polyfill at the `vendor/fetch.js` path.
+   * the correct version of the polyfill at the `vendor/ember-fetch.js` path.
    */
   treeForVendor: function() {
     var browserTree = treeForBrowserFetch();
@@ -123,7 +127,7 @@ module.exports = {
 var templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
 
 
-// Returns a tree containing the browser polyfill (from `yetch` and `abortcontroller-polyfill`),
+// Returns a tree containing the browser polyfill (from `whatwg-fetch` and `abortcontroller-polyfill`),
 // wrapped in a shim that stops it from exporting a global and instead turns it into a module
 // that can be used by the Ember app.
 function treeForBrowserFetch() {

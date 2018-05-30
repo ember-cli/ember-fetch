@@ -30,6 +30,11 @@ export default Ember.Route.extend({
 });
 ```
 
+Available imports:
+```js
+import fetch, { Headers, Request, Response, AbortController } from 'fetch';
+```
+
 ### Use with Ember Data
 To have Ember Data utilize `fetch` instead of jQuery.ajax to make calls to your backend, extend your project's `application` adapter with the `adapter-fetch` mixin.
 
@@ -60,12 +65,33 @@ export default {
 }
 ```
 
-### Browser Support
+### Allow native fetch
+`ember-fetch` allows access to native fetch in browser through a build config flag:
+```js
+// ember-cli-build.js
+let app = new EmberAddon(defaults, {
+  // Add options here
+  'ember-fetch': {
+    preferNative: true
+  }
+});
+```
+If set to `true`, the fetch polyfill will be skipped if native `fetch` is available, 
+otherwise the polyfilled `fetch` will be installed during the first pass of the vendor js file.
+
+If set to `false`, the polyfilled `fetch` will replace native `fetch` be there or not.
+
+The way you do import remains same.
+
+## Browser Support
 
 * evergreen / IE10+ / Safari 6.1+ https://github.com/Netflix/yetch#browser-support
 
+## Q & A
+### Does it work with pretender?
+Yes, [pretender v2.1](https://github.com/pretenderjs/pretender/tree/v2.1.0) comes with `fetch` support.
 
-### does this replace ic-ajax?
+### Does this replace ic-ajax?
 
 * ideally yes, but only if you cater to IE9+
 * for basic drop-in compat `import ajax from 'ember-fetch/ajax'`
@@ -74,7 +100,7 @@ export default {
 
 * taken care of for you
 
-### why is this wrapper needed?
+### Why is this wrapper needed?
 
 * original emits a global
 * original requires a Promise polyfill (ember users have RSVP)

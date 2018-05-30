@@ -25,12 +25,11 @@
       if (global[prop]) {
         Object.defineProperty(self, prop, {
           configurable: true,
-          get: function() { return global[prop] }
+          get: function() { return global[prop] },
+          set: function(v) { global[prop] = v }
         });
       }
     });
-
-    var window = self;
 
     <%= moduleBody %>
 

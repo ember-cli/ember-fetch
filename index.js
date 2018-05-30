@@ -127,10 +127,10 @@ var templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
 // wrapped in a shim that stops it from exporting a global and instead turns it into a module
 // that can be used by the Ember app.
 function treeForBrowserFetch() {
-  var fetchTree = path.dirname(require.resolve('yetch/polyfill'));
+  var fetchTree = path.dirname(require.resolve('whatwg-fetch'));
   var abortcontrollerTree = path.dirname(require.resolve('abortcontroller-polyfill'));
   var polyfillTree = concat(new MergeTrees([abortcontrollerTree, fetchTree]), {
-    inputFiles: ['abortcontroller-polyfill-only.js', 'dist/yetch-polyfill.js'],
+    inputFiles: ['abortcontroller-polyfill-only.js', 'fetch.umd.js'],
     outputFile: 'ember-fetch.js'
   });
 

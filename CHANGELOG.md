@@ -1,3 +1,9 @@
+5.0.0 / 2018-06-05
+==================
+
+  * Drop Node 4, 5, 7, and 9 support.
+  * Update dependencies to prevent warnings RE: legacy broccoli APIs.
+
 4.0.2 / 2018-05-23
 ==================
 

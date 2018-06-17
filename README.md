@@ -4,12 +4,12 @@
 [![Ember Observer Score](https://emberobserver.com/badges/ember-fetch.svg)](https://emberobserver.com/addons/ember-fetch)
 [![npm version](https://badge.fury.io/js/ember-fetch.svg)](https://badge.fury.io/js/ember-fetch)
 
-HTML5 [fetch](https://fetch.spec.whatwg.org) polyfill from [github](https://github.com/github/fetch) wrapped and bundled for ember-cli users
+HTML5 [fetch](https://fetch.spec.whatwg.org) polyfill from [Netflix](https://github.com/Netflix/yetch) that supports AbortController/AbortSignal wrapped and bundled for ember-cli users.
 
 * [intro to fetch](https://developers.google.com/web/updates/2015/03/introduction-to-fetch)
 * [spec](https://fetch.spec.whatwg.org)
-* [usage](https://github.com/github/fetch#usage)
-* [origin repo](https://github.com/github/fetch)
+* [usage](https://github.com/Netflix/yetch#usage)
+* [origin repo](https://github.com/Netflix/yetch)
 
 ## Installation
 
@@ -62,7 +62,7 @@ export default {
 
 ### Browser Support
 
-* evergreen / IE10+ / Safari 6.1+ https://github.com/github/fetch#browser-support
+* evergreen / IE10+ / Safari 6.1+ https://github.com/Netflix/yetch#browser-support
 
 
 ### does this replace ic-ajax?
@@ -82,6 +82,6 @@ export default {
 
 ### Won't this wrapper get out-of-sync?
 
-* we actually don't bundle github/fetch rather we merely wrap/transform what
+* we actually don't bundle Netflix/yetch rather we merely wrap/transform what
   comes from `node_modules`, so we should be resilient to changes assuming
-  semver from the fetch module
+  semver from the yetch module

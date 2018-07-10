@@ -126,7 +126,8 @@ function treeForBrowserFetch() {
   var expandedAbortcontrollerPath = expand(abortcontrollerPath, 'abortcontroller-polyfill-only.js');
 
   var polyfillTree = concat(new MergeTrees([find(expandedFetchPath), find(expandedAbortcontrollerPath)]), {
-    outputFile: 'ember-fetch.js'
+    outputFile: 'ember-fetch.js',
+    sourceMapConfig: { enabled: false }
   });
 
   return new Template(polyfillTree, templatePath, function(content) {

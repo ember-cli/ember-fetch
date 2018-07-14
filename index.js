@@ -21,7 +21,6 @@ var Template = require('broccoli-templater');
 var MergeTrees = require('broccoli-merge-trees');
 var concat = require('broccoli-concat');
 var map = stew.map;
-var find = stew.find;
 
 /*
  * The `index.js` file is the main entry point for all Ember CLI addons.  The

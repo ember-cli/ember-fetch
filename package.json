@@ -24,7 +24,7 @@
     "abortcontroller-polyfill": "^1.1.9",
     "broccoli-concat": "^3.2.2",
     "broccoli-merge-trees": "^2.0.0",
-    "broccoli-stew": "^1.4.2",
+    "broccoli-stew": "^2.0.0",
     "broccoli-templater": "^2.0.1",
     "ember-cli-babel": "^6.8.2",
     "node-fetch": "^2.0.0-alpha.9"
@@ -38,7 +38,7 @@
     "ember-cli-eslint": "^4.2.1",
     "ember-cli-htmlbars": "^2.0.1",
     "ember-cli-inject-live-reload": "^1.4.1",
-    "ember-cli-pretender": "^1.0.1",
+    "ember-cli-pretender": "xg-wang/ember-cli-pretender#feat/fetch-pretender",
     "ember-cli-qunit": "^4.3.2",
     "ember-cli-release": "^0.2.9",
     "ember-cli-uglify": "^2.0.0",

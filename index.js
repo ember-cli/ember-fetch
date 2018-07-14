@@ -8,7 +8,7 @@ var path = require('path');
 // a global.
 //
 // broccoli-merge-trees: merge several broccoli trees (folders) to a single tree
-// 
+//
 // broccoli-concat: concatenate input files to single output file
 //
 // broccoli-stew: super useful library of Broccoli utilities. We use:
@@ -131,7 +131,7 @@ var templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
 // wrapped in a shim that stops it from exporting a global and instead turns it into a module
 // that can be used by the Ember app.
 function treeForBrowserFetch() {
-  var fetchTree = path.dirname(require.resolve('whatwg-fetch'));
+  var fetchTree = path.dirname(require.resolve('@xg-wang/whatwg-fetch'));
   var abortcontrollerTree = path.dirname(require.resolve('abortcontroller-polyfill'));
   var polyfillTree = concat(new MergeTrees([abortcontrollerTree, fetchTree]), {
     inputFiles: ['abortcontroller-polyfill-only.js', 'fetch.umd.js'],

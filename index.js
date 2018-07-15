@@ -1,6 +1,6 @@
 'use strict';
 
-var path = require('path');
+const path = require('path');
 // We use a few different Broccoli plugins to build our trees:
 //
 // broccoli-templater: renders the contents of a file inside a template.
@@ -16,11 +16,11 @@ var path = require('path');
 //   * find - finds files in a tree based on a glob pattern
 //   * map - map content of files in a tree
 //
-var stew = require('broccoli-stew');
-var Template = require('broccoli-templater');
-var MergeTrees = require('broccoli-merge-trees');
-var concat = require('broccoli-concat');
-var map = stew.map;
+const stew = require('broccoli-stew');
+const Template = require('broccoli-templater');
+const MergeTrees = require('broccoli-merge-trees');
+const concat = require('broccoli-concat');
+const map = stew.map;
 
 /*
  * The `index.js` file is the main entry point for all Ember CLI addons.  The
@@ -105,8 +105,8 @@ module.exports = {
    * the correct version of the polyfill at the `vendor/ember-fetch.js` path.
    */
   treeForVendor: function() {
-    var browserTree = treeForBrowserFetch();
-    var preferNative = this.buildConfig.preferNative;
+    let browserTree = treeForBrowserFetch();
+    const preferNative = this.buildConfig.preferNative;
     browserTree = map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
       var preferNative = ${preferNative};
       ${content}
@@ -123,18 +123,19 @@ module.exports = {
 
 // Path to the template that contains the shim wrapper around the browser
 // polyfill
-var templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
+const templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
 
 
 // Returns a tree containing the browser polyfill (from `whatwg-fetch` and `abortcontroller-polyfill`),
 // wrapped in a shim that stops it from exporting a global and instead turns it into a module
 // that can be used by the Ember app.
 function treeForBrowserFetch() {
-  var fetchTree = path.dirname(require.resolve('@xg-wang/whatwg-fetch'));
-  var abortcontrollerTree = path.dirname(require.resolve('abortcontroller-polyfill'));
-  var polyfillTree = concat(new MergeTrees([abortcontrollerTree, fetchTree]), {
+  const fetchTree = path.dirname(require.resolve('@xg-wang/whatwg-fetch'));
+  const abortcontrollerTree = path.dirname(require.resolve('abortcontroller-polyfill'));
+  const polyfillTree = concat(new MergeTrees([abortcontrollerTree, fetchTree]), {
     inputFiles: ['abortcontroller-polyfill-only.js', 'fetch.umd.js'],
-    outputFile: 'ember-fetch.js'
+    outputFile: 'ember-fetch.js',
+    sourceMapConfig: { enabled: false }
   });
 
   return new Template(polyfillTree, templatePath, function(content) {

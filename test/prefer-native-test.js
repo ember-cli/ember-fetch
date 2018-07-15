@@ -38,7 +38,7 @@ require('fetch-test');
     it('preferNative is built into vendor file', async function() {
       await output.build();
       let files = output.read();
-      expect(files).to.have.all.keys('ember-fetch.js', 'ember-fetch.map');
+      expect(files).to.have.all.keys('ember-fetch.js');
       expect(files['ember-fetch.js']).to.include(`var preferNative = ${flag}`);
     });
 

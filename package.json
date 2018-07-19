@@ -38,7 +38,7 @@
     "ember-cli-eslint": "^4.2.1",
     "ember-cli-htmlbars": "^2.0.1",
     "ember-cli-inject-live-reload": "^1.4.1",
-    "ember-cli-pretender": "xg-wang/ember-cli-pretender#feat/fetch-pretender",
+    "ember-cli-pretender": "^3.0.0",
     "ember-cli-qunit": "^4.3.2",
     "ember-cli-release": "^0.2.9",
     "ember-cli-uglify": "^2.0.0",

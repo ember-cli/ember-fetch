@@ -2078,16 +2078,17 @@ ember-cli-preprocess-registry@^3.1.0:
     process-relative-require "^1.0.0"
     silent-error "^1.0.0"
 
-ember-cli-pretender@xg-wang/ember-cli-pretender#feat/fetch-pretender:
-  version "2.0.0"
-  resolved "https://codeload.github.com/xg-wang/ember-cli-pretender/tar.gz/2edd8c6ae1756f0e4f3a6bba9e92faf771b35801"
+ember-cli-pretender@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-pretender/-/ember-cli-pretender-3.0.0.tgz#dcaf772332a1e6b0fc91e4b9a7e793a1283c85ac"
   dependencies:
+    "@xg-wang/whatwg-fetch" "^3.0.0"
     abortcontroller-polyfill "^1.1.9"
     broccoli-funnel "^2.0.1"
     broccoli-merge-trees "^3.0.0"
     ember-cli-babel "^6.6.0"
     fake-xml-http-request "^2.0.0"
-    pretender xg-wang/pretender#feat/fetch
+    pretender "^2.1.0"
     resolve "^1.2.0"
     route-recognizer "^0.3.3"
 
@@ -5135,9 +5136,9 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-pretender@xg-wang/pretender#feat/fetch:
-  version "2.0.0"
-  resolved "https://codeload.github.com/xg-wang/pretender/tar.gz/6e5fcd27b3744b055430fef08b476ecd21551f68"
+pretender@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/pretender/-/pretender-2.1.1.tgz#5085f0a1272c31d5b57c488386f69e6ca207cb35"
   dependencies:
     "@xg-wang/whatwg-fetch" "^3.0.0"
     fake-xml-http-request "^2.0.0"

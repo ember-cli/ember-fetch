@@ -16,15 +16,15 @@ define('fetch-test', ['fetch'], function(_fetch) {
 require('fetch-test');
 `;
 
-[true, false].forEach(flag => {
-  describe(`Build browser assets with preferNative = ${flag}`, function() {
+[true, false].forEach(preferNative => {
+  describe(`Build browser assets with preferNative = ${preferNative}`, function() {
     let output, subject, addon;
 
-    beforeEach(async function() {
+    beforeEach(function() {
       addon = Object.create(AddonFactory);
       Object.assign(addon, {
         buildConfig: {
-          preferNative: flag
+          preferNative
         }
       });
       subject = addon.treeForVendor();
@@ -39,11 +39,11 @@ require('fetch-test');
       await output.build();
       let files = output.read();
       expect(files).to.have.all.keys('ember-fetch.js');
-      expect(files['ember-fetch.js']).to.include(`var preferNative = ${flag}`);
+      expect(files['ember-fetch.js']).to.include(`var preferNative = ${preferNative}`);
     });
 
     it(`${
-      flag ? 'Prefers' : "Doesn't prefer"
+      preferNative ? 'Prefers' : "Doesn't prefer"
     } native fetch as specified`, async function() {
       await output.build();
       let emberFetchCode = output.read()['ember-fetch.js'];
@@ -60,10 +60,10 @@ require('fetch-test');
       vm.createContext(sandbox);
       const code = amdLoaderCode + emberFetchCode + testCode;
       vm.runInContext(code, sandbox);
-      expect(sandbox.__result).to.equal(flag);
+      expect(sandbox.__result).to.equal(preferNative);
     });
 
-    if (flag === true) {
+    if (preferNative === true) {
       it('Has fetch poly fill even if fetch is not there', async function() {
         await output.build();
         let emberFetchCode = output.read()['ember-fetch.js'];

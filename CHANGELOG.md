@@ -1,3 +1,10 @@
+5.1.1 / 2018-07-20
+==================
+
+  * added supports latest Pretender!
+  * added support for opt-in native fetch (see readme for details)
+  * added support for AbortController (see readme for details)
+
 5.0.0 / 2018-06-05
 ==================
 

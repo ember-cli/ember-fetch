@@ -1,23 +1,26 @@
 'use strict';
 
-var path = require('path');
+const path = require('path');
 // We use a few different Broccoli plugins to build our trees:
 //
 // broccoli-templater: renders the contents of a file inside a template.
 // Used to wrap the browser polyfill in a shim that prevents it from exporting
 // a global.
 //
+// broccoli-merge-trees: merge several broccoli trees (folders) to a single tree
+//
+// broccoli-concat: concatenate input files to single output file
+//
 // broccoli-stew: super useful library of Broccoli utilities. We use:
 //
 //   * find - finds files in a tree based on a glob pattern
 //   * map - map content of files in a tree
 //
-var stew = require('broccoli-stew');
-var Template = require('broccoli-templater');
-var MergeTrees = require('broccoli-merge-trees');
-var concat = require('broccoli-concat');
-var map = stew.map;
-var find = stew.find;
+const stew = require('broccoli-stew');
+const Template = require('broccoli-templater');
+const MergeTrees = require('broccoli-merge-trees');
+const concat = require('broccoli-concat');
+const map = stew.map;
 
 /*
  * The `index.js` file is the main entry point for all Ember CLI addons.  The
@@ -53,7 +56,7 @@ module.exports = {
    */
   included: function(app) {
     this._super.included.apply(this, arguments);
-    
+
     let target = app;
 
     if (typeof this.import === 'function') {
@@ -63,17 +66,21 @@ module.exports = {
       // use that.
       if (typeof this._findHost === 'function') {
         target = this._findHost();
+      } else {
+        // Otherwise, we'll use this implementation borrowed from the _findHost()
+        // method in ember-cli.
+        // Keep iterating upward until we don't have a grandparent.
+        // Has to do this grandparent check because at some point we hit the project.
+        let current = this;
+        do {
+          target = current.app || app;
+        } while (current.parent.parent && (current = current.parent));
       }
-
-      // Otherwise, we'll use this implementation borrowed from the _findHost()
-      // method in ember-cli.
-      // Keep iterating upward until we don't have a grandparent.
-      // Has to do this grandparent check because at some point we hit the project.
-      let current = this;
-      do {
-       target = current.app || app;
-      } while (current.parent.parent && (current = current.parent));
+      // If this.import is not a function, app and target should point to the same EmberApp
+      app = target;
     }
+
+    this.buildConfig = app.options['ember-fetch'] || { preferNative: false };
 
     target.import('vendor/ember-fetch.js', {
       exports: {
@@ -93,13 +100,17 @@ module.exports = {
    * directory is kind of a junk drawer; nothing we put in it is used unless we
    * explicitly `import()` a file (which we do in the `included` hook, above).
    *
-   * To build our tree, we first detect whether we're in a FastBoot build or
-   * not. Based on that, we return a tree that contains the correct version of
-   * the polyfill at the `vendor/fetch.js` path.
+   * To build our tree, we first pass in option flags and detect whether we're
+   * in a FastBoot build or not. Based on that, we return a tree that contains
+   * the correct version of the polyfill at the `vendor/ember-fetch.js` path.
    */
   treeForVendor: function() {
-    var browserTree = treeForBrowserFetch();
-    browserTree = map(browserTree, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
+    let browserTree = treeForBrowserFetch();
+    const preferNative = this.buildConfig.preferNative;
+    browserTree = map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
+      var preferNative = ${preferNative};
+      ${content}
+    }`);
     return browserTree;
   },
 
@@ -112,20 +123,19 @@ module.exports = {
 
 // Path to the template that contains the shim wrapper around the browser
 // polyfill
-var templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
+const templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
 
 
-// Returns a tree containing the browser polyfill (from `yetch` and `abortcontroller-polyfill`),
+// Returns a tree containing the browser polyfill (from `whatwg-fetch` and `abortcontroller-polyfill`),
 // wrapped in a shim that stops it from exporting a global and instead turns it into a module
 // that can be used by the Ember app.
 function treeForBrowserFetch() {
-  var fetchPath = require.resolve('yetch/polyfill');
-  var abortcontrollerPath = require.resolve('abortcontroller-polyfill');
-
-  var expandedFetchPath = expand(fetchPath, 'dist/yetch-polyfill.js');
-  var expandedAbortcontrollerPath = expand(abortcontrollerPath, 'abortcontroller-polyfill-only.js');
-
-  var polyfillTree = concat(new MergeTrees([find(expandedFetchPath), find(expandedAbortcontrollerPath)]), {
+  // Fork whatwg-fetch to provide umd build before official release, no extra change made.
+  // We will get back to the official one when new version released.
+  const fetchTree = path.dirname(require.resolve('@xg-wang/whatwg-fetch'));
+  const abortcontrollerTree = path.dirname(require.resolve('abortcontroller-polyfill'));
+  const polyfillTree = concat(new MergeTrees([abortcontrollerTree, fetchTree]), {
+    inputFiles: ['abortcontroller-polyfill-only.js', 'fetch.umd.js'],
     outputFile: 'ember-fetch.js',
     sourceMapConfig: { enabled: false }
   });
@@ -135,9 +145,4 @@ function treeForBrowserFetch() {
       moduleBody: content
     };
   });
-}
-
-function expand(input, file) {
-  var dirname = path.dirname(input);
-  return path.join(dirname, file);
 }

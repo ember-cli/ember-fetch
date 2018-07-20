@@ -2,25 +2,34 @@
   define('fetch', ['exports'], function(self) {
     'use strict';
     var Promise = global.Ember.RSVP.Promise;
-    var window = self;
-    if (global.FormData) {
-      self.FormData = global.FormData;
+    var supportProps = [
+      'FormData',
+      'FileReader',
+      'Blob',
+      'URLSearchParams',
+      'Symbol',
+      'ArrayBuffer'
+    ];
+    var polyfillProps = [
+      'fetch',
+      'Headers',
+      'Request',
+      'Response',
+      'AbortController'
+    ];
+    var combinedProps = supportProps;
+    if (preferNative) {
+      combinedProps = supportProps.concat(polyfillProps);
     }
-    if (global.FileReader) {
-      self.FileReader = global.FileReader;
-    }
-    if (global.Blob) {
-      self.Blob = global.Blob;
-    }
-    if (global.ArrayBuffer) {
-      self.ArrayBuffer = global.ArrayBuffer;
-    }
-    if (global.Symbol) {
-      self.Symbol = global.Symbol;
-    }
-    if (global.URLSearchParams) {
-      self.URLSearchParams = global.URLSearchParams;
-    }
+    combinedProps.forEach(function(prop) {
+      if (global[prop]) {
+        Object.defineProperty(self, prop, {
+          configurable: true,
+          get: function() { return global[prop] },
+          set: function(v) { global[prop] = v }
+        });
+      }
+    });
 
     <%= moduleBody %>
 
@@ -38,7 +47,7 @@
       self['default'] = function() {
         pending++;
 
-        return self.fetch.apply(self, arguments).then(function(response){
+        return self.fetch.apply(global, arguments).then(function(response){
           response.clone().blob().then(decrement, decrement);
           return response;
         }, function(reason) {
@@ -49,6 +58,9 @@
     } else {
       self['default'] = self.fetch;
     }
+    supportProps.forEach(function(prop) {
+      delete self[prop];
+    });
   });
 
   define('fetch/ajax', ['exports'], function() {

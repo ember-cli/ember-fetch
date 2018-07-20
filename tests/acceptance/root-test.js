@@ -98,7 +98,7 @@ module('Acceptance: Root', function(hooks) {
     });
   });
 
-  test('tests await for fetch requests', async function(assert) {
+  test('tests await for fetch requests resolve', async function(assert) {
     server.get('/omg.json', function() {
       return [
         200,
@@ -122,7 +122,7 @@ module('Acceptance: Root', function(hooks) {
     assert.ok(find('.fetched-slow-data-span'), 'Test has waited for data to appear');
   });
 
-  test('tests await for fetch requests', async function(assert) {
+  test('tests await for fetch requests reject', async function(assert) {
     server.get('/omg.json', function() {
       return [
         200,

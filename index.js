@@ -130,6 +130,8 @@ const templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
 // wrapped in a shim that stops it from exporting a global and instead turns it into a module
 // that can be used by the Ember app.
 function treeForBrowserFetch() {
+  // Fork whatwg-fetch to provide umd build before official release, no extra change made.
+  // We will get back to the official one when new version released.
   const fetchTree = path.dirname(require.resolve('@xg-wang/whatwg-fetch'));
   const abortcontrollerTree = path.dirname(require.resolve('abortcontroller-polyfill'));
   const polyfillTree = concat(new MergeTrees([abortcontrollerTree, fetchTree]), {

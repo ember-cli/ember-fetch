@@ -18,10 +18,10 @@ HTML5 [fetch](https://fetch.spec.whatwg.org) polyfill from [github](https://gith
 ## Usage
 
 ```js
+import Route from '@ember/routing/route';
 import fetch from 'fetch';
-import Ember from 'ember';
 
-export default Ember.Route.extend({
+export default Route.extend({
   model() {
     return fetch('/my-cool-end-point.json').then(function(response) {
       return response.json();

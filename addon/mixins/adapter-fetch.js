@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import Mixin from '@ember/object/mixin';
-import { assign } from '@ember/polyfills'
-import { merge } from '@ember/polyfills'
+import { assign, merge } from '@ember/polyfills'
 import RSVP from 'rsvp';
 import fetch from 'fetch';
 

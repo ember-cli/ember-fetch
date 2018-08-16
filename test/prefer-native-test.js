@@ -5,8 +5,6 @@ const expect = require('chai').expect;
 const helpers = require('broccoli-test-helper');
 const vm = require('vm');
 const fs = require('fs');
-const path = require('path');
-const templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
 const RSVP = require('rsvp');
 
 const testCode = `

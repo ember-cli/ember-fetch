@@ -65,6 +65,9 @@ export default {
 }
 ```
 
+For addon that supports Fastboot, `ember-fetch` should also be listed as a [peer dependency](https://docs.npmjs.com/files/package.json#peerdependencies). 
+This is because Fastboot only invokes top-level addon's `updateFastBootManifest`, thus `ember-fetch` has to be a top-level addon installed by the host app.
+
 ### Allow native fetch
 `ember-fetch` allows access to native fetch in browser through a build config flag:
 ```js

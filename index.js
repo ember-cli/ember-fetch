@@ -24,6 +24,7 @@ const MergeTrees = require('broccoli-merge-trees');
 const concat = require('broccoli-concat');
 const map = stew.map;
 const Rollup = require('broccoli-rollup');
+const babel = require('rollup-plugin-babel');
 
 /*
  * The `index.js` file is the main entry point for all Ember CLI addons.  The
@@ -140,7 +141,13 @@ function treeForBrowserFetch() {
         // abortcontroller is polyfill only, the name is only required by rollup iife
         name: 'AbortController',
         format: 'iife'
-      }
+      },
+      plugins: [
+        babel({
+          babelrc: false,
+          presets: [['env', { modules: false }]]
+        })
+      ]
     }
   });
   // Fork whatwg-fetch to provide umd build before official release, no extra change made.

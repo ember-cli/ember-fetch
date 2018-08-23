@@ -16,11 +16,15 @@ const path = require('path');
 //   * find - finds files in a tree based on a glob pattern
 //   * map - map content of files in a tree
 //
+// broccoli-rollup: rollup dependencies to expected module format
+//
 const stew = require('broccoli-stew');
 const Template = require('broccoli-templater');
 const MergeTrees = require('broccoli-merge-trees');
 const concat = require('broccoli-concat');
 const map = stew.map;
+const Rollup = require('broccoli-rollup');
+const babel = require('rollup-plugin-babel');
 
 /*
  * The `index.js` file is the main entry point for all Ember CLI addons.  The
@@ -121,8 +125,7 @@ module.exports = {
   }
 };
 
-// Path to the template that contains the shim wrapper around the browser
-// polyfill
+// Path to the template that contains the shim wrapper around the browser polyfill
 const templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
 
 
@@ -130,17 +133,43 @@ const templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
 // wrapped in a shim that stops it from exporting a global and instead turns it into a module
 // that can be used by the Ember app.
 function treeForBrowserFetch() {
+  const abortcontrollerNode = new Rollup(path.dirname(path.dirname(require.resolve('abortcontroller-polyfill'))), {
+    rollup: {
+      input: 'src/abortcontroller-polyfill.js',
+      output: {
+        file: 'abortcontroller.js',
+        // abortcontroller is polyfill only, the name is only required by rollup iife
+        name: 'AbortController',
+        format: 'iife'
+      },
+      plugins: [
+        babel({
+          babelrc: false,
+          presets: [['env', { modules: false }]]
+        })
+      ]
+    }
+  });
   // Fork whatwg-fetch to provide umd build before official release, no extra change made.
   // We will get back to the official one when new version released.
-  const fetchTree = path.dirname(require.resolve('@xg-wang/whatwg-fetch'));
-  const abortcontrollerTree = path.dirname(require.resolve('abortcontroller-polyfill'));
-  const polyfillTree = concat(new MergeTrees([abortcontrollerTree, fetchTree]), {
-    inputFiles: ['abortcontroller-polyfill-only.js', 'fetch.umd.js'],
+  const fetchNode = new Rollup(path.dirname(path.dirname(require.resolve('@xg-wang/whatwg-fetch'))), {
+    rollup: {
+      input: 'fetch.js',
+      output: {
+        file: 'fetch.js',
+        name: 'WHATWGFetch',
+        format: 'iife'
+      }
+    }
+  });
+
+  const polyfillNode = concat(new MergeTrees([abortcontrollerNode, fetchNode]), {
+    inputFiles: ['abortcontroller.js', 'fetch.js'],
     outputFile: 'ember-fetch.js',
     sourceMapConfig: { enabled: false }
   });
 
-  return new Template(polyfillTree, templatePath, function(content) {
+  return new Template(polyfillNode, templatePath, function(content) {
     return {
       moduleBody: content
     };

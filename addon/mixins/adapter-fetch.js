@@ -1,13 +1,17 @@
 import Ember from 'ember';
 import Mixin from '@ember/object/mixin';
 import { assign, merge } from '@ember/polyfills';
-import { inject as service } from '@ember/service';
+import { computed, get } from '@ember/object';
+import { getOwner } from '@ember/application';
 import RSVP from 'rsvp';
+import fetch from 'fetch';
 
 const {
   Logger: { warn }
 } = Ember;
 
+const httpRegex = /^https?:\/\//;
+const protocolRelativeRegex = /^\/\//;
 const RBRACKET = /\[\]$/;
 
 /**
@@ -165,7 +169,20 @@ export function determineBodyPromise(response, requestData) {
 }
 
 export default Mixin.create({
-  adapter: service(),
+  fastboot: computed(function() {
+    let owner = getOwner(this);
+    return owner && owner.lookup('service:fastboot');
+  }),
+
+  protocol: computed(function() {
+    let protocol = get(this, 'fastboot.request.protocol');
+    // In Prember the protocol is the string 'undefined', so we default to HTTP
+    if (protocol === 'undefined:') {
+      protocol = 'http:';
+    }
+
+    return protocol;
+  }),
 
   /**
    * @param {String} url
@@ -229,7 +246,7 @@ export default Mixin.create({
    * @param {Object} options
    */
   _fetchRequest(url, options) {
-    return this.adapter.fetch(options);
+    return fetch(this.buildServerURL(url), options);
   },
 
   /**
@@ -254,6 +271,31 @@ export default Mixin.create({
     }
   },
 
+  /**
+   * Determine fastboot compliant urls
+   * @param url
+   * @returns {*}
+   */
+  buildServerURL(url) {
+    if (!get(this, 'fastboot.isFastBoot')) {
+      return url;
+    }
+    let protocol = get(this, 'protocol');
+    let host = get(this, 'fastboot.request.host');
+
+    if (protocolRelativeRegex.test(url)) {
+      return `${protocol}${url}`;
+    } else if (!httpRegex.test(url)) {
+      try {
+        return `${protocol}//${host}${url}`;
+      } catch (fbError) {
+        throw new Error(
+          'You are using Fetch Adapter with no host defined in your adapter. This will attempt to use the host of the FastBoot request, which is not configured for the current host of this request. Please set the hostWhitelist property for in your environment.js. FastBoot Error: ' +
+          fbError.message
+        );
+      }
+    }
+  },
 
   /**
    * Allows for the error to be selected from either the

@@ -22,6 +22,7 @@
   "dependencies": {
     "@xg-wang/whatwg-fetch": "^3.0.0",
     "abortcontroller-polyfill": "^1.1.9",
+    "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "broccoli-concat": "^3.2.2",
     "broccoli-merge-trees": "^3.0.0",

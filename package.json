@@ -29,6 +29,7 @@
     "broccoli-stew": "^2.0.0",
     "broccoli-templater": "^2.0.1",
     "ember-cli-babel": "^6.8.2",
+    "ember-fetch-adapter": "^0.4.3",
     "node-fetch": "^2.0.0-alpha.9",
     "rollup-plugin-babel": "^3.0.7"
   },

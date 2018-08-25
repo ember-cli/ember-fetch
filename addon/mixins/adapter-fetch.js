@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import Mixin from '@ember/object/mixin';
-import { assign, merge } from '@ember/polyfills'
+import { assign, merge } from '@ember/polyfills';
+import { inject as service } from '@ember/service';
 import RSVP from 'rsvp';
-import fetch from 'fetch';
 
 const {
   Logger: { warn }
@@ -87,6 +87,7 @@ export function headersToObject(headers) {
 
   return headersObject;
 }
+
 /**
  * Helper function that translates the options passed to `jQuery.ajax` into a format that `fetch` expects.
  * @param {Object} _options
@@ -97,7 +98,7 @@ export function mungOptionsForFetch(_options, adapter) {
   // This allows this mixin to be backward compatible with Ember < 2.5.
   const combineObjs = (assign || merge);
   const options = combineObjs({
-    credentials: 'same-origin',
+    credentials: 'same-origin'
   }, _options);
 
   let adapterHeaders = adapter.get('headers');
@@ -134,6 +135,7 @@ export function mungOptionsForFetch(_options, adapter) {
 
   return options;
 }
+
 /**
  * Function that always attempts to parse the response as json, and if an error is thrown,
  * returns an object with 'data' set to null if the response is
@@ -163,14 +165,15 @@ export function determineBodyPromise(response, requestData) {
 }
 
 export default Mixin.create({
-/**
- * @param {String} url
- * @param {String} type
- * @param {Object} _options
- * @returns {Object}
- * @override
- */
+  adapter: service(),
 
+  /**
+   * @param {String} url
+   * @param {String} type
+   * @param {Object} _options
+   * @returns {Object}
+   * @override
+   */
   ajaxOptions(url, type, options = {}) {
     options.url = url;
     options.type = type;
@@ -186,7 +189,7 @@ export default Mixin.create({
   ajax(url, type, options) {
     const requestData = {
       url,
-      method: type,
+      method: type
     };
 
     const hash = this.ajaxOptions(url, type, options);
@@ -226,7 +229,7 @@ export default Mixin.create({
    * @param {Object} options
    */
   _fetchRequest(url, options) {
-    return fetch(url, options);
+    return this.adapter.fetch(options);
   },
 
   /**
@@ -252,12 +255,12 @@ export default Mixin.create({
   },
 
 
-/**
- * Allows for the error to be selected from either the
- * response object, or the response data.
- * @param {Object} response
- * @param {Object} payload
- */
+  /**
+   * Allows for the error to be selected from either the
+   * response object, or the response data.
+   * @param {Object} response
+   * @param {Object} payload
+   */
   parseFetchResponseForError(response, payload) {
     return payload || response.statusTest;
   },

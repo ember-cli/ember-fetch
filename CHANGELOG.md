@@ -1,3 +1,8 @@
+5.1.3 / 2018-08-25
+==================
+
+  * Add babel-core 6 to dependency to avoid babel-core 5 being resolved
+
 5.1.2 / 2018-08-23
 ==================
 

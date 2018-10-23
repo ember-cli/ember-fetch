@@ -1,14 +1,8 @@
-import Ember from 'ember';
 import Mixin from '@ember/object/mixin';
-import { assign, merge } from '@ember/polyfills'
+import { assign } from '@ember/polyfills'
 import RSVP from 'rsvp';
 import fetch from 'fetch';
-
-import { serializeQueryParams } from 'ember-fetch/utils/serialize-query-params';
-
-const {
-  Logger: { warn }
-} = Ember;
+import { serializeQueryParams } from '../utils/serialize-query-params';
 
 /**
  * Helper function to create a plain object from the response's Headers.
@@ -32,16 +26,13 @@ export function headersToObject(headers) {
  * @returns {Object}
  */
 export function mungOptionsForFetch(_options, adapter) {
-  // This allows this mixin to be backward compatible with Ember < 2.5.
-  const combineObjs = (assign || merge);
-  const options = combineObjs({
+  const options = assign({
     credentials: 'same-origin',
   }, _options);
 
   let adapterHeaders = adapter.get('headers');
   if (adapterHeaders) {
-    // This double use of `combineObjs` is necessary because `merge` only accepts two arguments.
-    options.headers = combineObjs(combineObjs({}, options.headers || {}), adapterHeaders);
+    options.headers = assign(options.headers || {}, adapterHeaders);
   }
 
   // Default to 'GET' in case `type` is not passed in (mimics jQuery.ajax).
@@ -93,7 +84,7 @@ export function determineBodyPromise(response, requestData) {
       if (response.ok && (status === 204 || status === 205 || requestData.method === 'HEAD')) {
         payload = { data: null };
       } else {
-        warn('This response was unable to be parsed as json.', payload);
+        console.warn('This response was unable to be parsed as json.', payload);
       }
     }
     return payload;

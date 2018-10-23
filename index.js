@@ -150,9 +150,7 @@ function treeForBrowserFetch() {
       ]
     }
   });
-  // Fork whatwg-fetch to provide umd build before official release, no extra change made.
-  // We will get back to the official one when new version released.
-  const fetchNode = new Rollup(path.dirname(path.dirname(require.resolve('@xg-wang/whatwg-fetch'))), {
+  const fetchNode = new Rollup(path.dirname(path.dirname(require.resolve('whatwg-fetch'))), {
     rollup: {
       input: 'fetch.js',
       output: {

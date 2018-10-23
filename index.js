@@ -49,7 +49,7 @@ const babel = require('rollup-plugin-babel');
  *    global, but we can rely on the fact that Ember users are using modules.)
  */
 module.exports = {
-  name: 'ember-fetch',
+  name: require('./package').name,
 
   /*
    * The `included` hook is invoked at the very beginning of the build process.

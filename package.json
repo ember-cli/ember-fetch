@@ -20,9 +20,9 @@
     "test:node": "mocha"
   },
   "dependencies": {
+    "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "abortcontroller-polyfill": "^1.1.9",
-    "babel-core": "^6.26.3",
     "broccoli-concat": "^3.7.3",
     "broccoli-merge-trees": "^3.0.1",
     "broccoli-rollup": "^2.1.1",

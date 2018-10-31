@@ -1,3 +1,11 @@
+
+6.0.0 / 2018-10-30
+==================
+
+  * Set body to undefined for 204/205/HEAD responses
+  * Deprecate Logger and remove Ember.merge
+  * Move serializeQueryParams to its own file so that consuming applications and addons can import it directly
+
 5.1.3 / 2018-08-25
 ==================
 

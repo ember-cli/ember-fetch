@@ -180,14 +180,14 @@ export default Mixin.create({
   },
 
 
-/**
- * Allows for the error to be selected from either the
- * response object, or the response data.
- * @param {Object} response
- * @param {Object} payload
- */
+  /**
+   * Allows for the error to be selected from either the
+   * response object, or the response data.
+   * @param {Object} response
+   * @param {Object} payload
+   */
   parseFetchResponseForError(response, payload) {
-    return payload || response.statusTest;
+    return payload || response.statusText;
   },
 
   /**

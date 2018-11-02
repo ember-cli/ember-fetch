@@ -1,24 +1,8 @@
-import EmberObject from '@ember/object';
-import DS from 'ember-data';
 import { module, test } from 'qunit';
-import AdapterFetchMixin from 'ember-fetch/mixins/adapter-fetch';
 import { serializeQueryParams } from 'ember-fetch/utils/serialize-query-params';
 
-const { JSONAPIAdapter } = DS;
 
-module('Unit | params', function(hooks) {
-  hooks.beforeEach(function() {
-    this.JSONAPIAdapter = JSONAPIAdapter.extend(AdapterFetchMixin, {
-      init() {
-        this._super();
-        this.headers = {
-          'custom-header': 'foo'
-        };
-      }
-    }).create();
-    this.basicAdapter = EmberObject.extend(AdapterFetchMixin).create();
-  });
-
+module('Unit | serializeQueryParams', function() {
   test('serializeQueryParams turns deeply nested objects into queryParams like $.param', function(assert) {
     assert.expect(1);
 

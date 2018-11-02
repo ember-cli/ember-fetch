@@ -516,7 +516,7 @@ module('Unit | Mixin | adapter-fetch', function(hooks) {
 
     this.errorAdapter = JSONAPIAdapter.extend(AdapterFetchMixin, {
       _fetchRequest() {
-        const response = new Response(``, { status: 500 });
+        const response = new Response(``, { status: 500, statusText: 'Internal server error' });
         return Promise.resolve(response);
       }
     }).create();
@@ -527,8 +527,8 @@ module('Unit | Mixin | adapter-fetch', function(hooks) {
 
     return fetchReturn.catch(body => {
       const error = body.errors[0];
-      assert.equal(error.detail, '');
       assert.equal(error.status, '500');
+      assert.equal(error.detail, 'Internal server error');
     });
   });
 

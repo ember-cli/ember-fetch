@@ -1,4 +1,11 @@
 
+6.1.0 / 2018-11-02
+==================
+
+  * Export mixin helper functions separately
+  * Fix typo/bug in parseFetchResponseForError
+  * If POST body is a string, don't stringify it
+
 6.0.0 / 2018-10-30
 ==================
 

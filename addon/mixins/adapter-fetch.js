@@ -2,8 +2,8 @@ import Mixin from '@ember/object/mixin';
 import { assign } from '@ember/polyfills'
 import RSVP from 'rsvp';
 import fetch from 'fetch';
-import { serializeQueryParams } from '../utils/serialize-query-params';
-
+import mungOptionsForFetch from '../utils/mung-options-for-fetch';
+import determineBodyPromise from '../utils/determine-body-promise';
 /**
  * Helper function to create a plain object from the response's Headers.
  * Consumed by the adapter's `handleResponse`.
@@ -19,77 +19,6 @@ export function headersToObject(headers) {
 
   return headersObject;
 }
-/**
- * Helper function that translates the options passed to `jQuery.ajax` into a format that `fetch` expects.
- * @param {Object} _options
- * @param {DS.Adapter} adapter
- * @returns {Object}
- */
-export function mungOptionsForFetch(_options, adapter) {
-  const options = assign({
-    credentials: 'same-origin',
-  }, _options);
-
-  let adapterHeaders = adapter.get('headers');
-  if (adapterHeaders) {
-    options.headers = assign(options.headers || {}, adapterHeaders);
-  }
-
-  // Default to 'GET' in case `type` is not passed in (mimics jQuery.ajax).
-  options.method = options.type || 'GET';
-
-  if (options.data) {
-    // GET and HEAD requests can't have a `body`
-    if ((options.method === 'GET' || options.method === 'HEAD')) {
-      // If no options are passed, Ember Data sets `data` to an empty object, which we test for.
-      if (Object.keys(options.data).length) {
-        // Test if there are already query params in the url (mimics jQuey.ajax).
-        const queryParamDelimiter = options.url.indexOf('?') > -1 ? '&' : '?';
-        options.url += `${queryParamDelimiter}${serializeQueryParams(options.data)}`;
-      }
-    } else {
-      // NOTE: a request's body cannot be an object, so we stringify it if it is.
-      // JSON.stringify removes keys with values of `undefined` (mimics jQuery.ajax).
-      // If the data is already a string, we assume it's already been stringified.
-      options.body = typeof options.data !== 'string' ? JSON.stringify(options.data) : options.data;
-    }
-  }
-
-  // Mimics the default behavior in Ember Data's `ajaxOptions`, namely to set the
-  // 'Content-Type' header to application/json if it is not a GET request and it has a body.
-  if (options.method !== 'GET' && options.body && (options.headers === undefined || !(options.headers['Content-Type'] || options.headers['content-type']))) {
-    options.headers = options.headers || {};
-    options.headers['Content-Type'] = 'application/json; charset=utf-8';
-  }
-
-  return options;
-}
-/**
- * Function that always attempts to parse the response as json, and if an error is thrown,
- * returns `undefined` if the response is successful and has a status code of 204 (No Content),
- * or 205 (Reset Content) or if the request method was 'HEAD', and the plain payload otherwise.
- * @param {Response} response
- * @param {Object} requestData
- * @returns {Promise}
- */
-export function determineBodyPromise(response, requestData) {
-  return response.text().then(function(payload) {
-    try {
-      payload = JSON.parse(payload);
-    } catch(error) {
-      if (!(error instanceof SyntaxError)) {
-        throw error;
-      }
-      const status = response.status;
-      if (response.ok && (status === 204 || status === 205 || requestData.method === 'HEAD')) {
-        payload = undefined;
-      } else {
-        console.warn('This response was unable to be parsed as json.', payload);
-      }
-    }
-    return payload;
-  });
-}
 
 export default Mixin.create({
 /**
@@ -103,7 +32,13 @@ export default Mixin.create({
   ajaxOptions(url, type, options = {}) {
     options.url = url;
     options.type = type;
-    return mungOptionsForFetch(options, this);
+
+    // Add headers set on the Adapter
+    let adapterHeaders = this.get('headers');
+    if (adapterHeaders) {
+      options.headers = assign(options.headers || {}, adapterHeaders);
+    }
+    return mungOptionsForFetch(options);
   },
 
   /**

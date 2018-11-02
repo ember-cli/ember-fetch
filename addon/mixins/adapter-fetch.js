@@ -50,7 +50,8 @@ export function mungOptionsForFetch(_options, adapter) {
     } else {
       // NOTE: a request's body cannot be an object, so we stringify it if it is.
       // JSON.stringify removes keys with values of `undefined` (mimics jQuery.ajax).
-      options.body = JSON.stringify(options.data);
+      // If the data is already a string, we assume it's already been stringified.
+      options.body = typeof options.data !== 'string' ? JSON.stringify(options.data) : options.data;
     }
   }
 

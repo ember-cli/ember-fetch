@@ -325,7 +325,7 @@ module('Unit | Mixin | adapter-fetch', function(hooks) {
   });
 
   test("mungOptionsForFetch sets the request body correctly when the method is POST and 'data' is a string", function(assert) {
-    assert.expect(2);
+    assert.expect(1);
 
     // Tests stringified objects.
     const stringifiedData = JSON.stringify({ a: 1, b: 2 });
@@ -336,14 +336,8 @@ module('Unit | Mixin | adapter-fetch', function(hooks) {
     };
 
     let options = mungOptionsForFetch(optionsWithStringData, this.basicAdapter);
-    assert.deepEqual(options.body, JSON.stringify(stringifiedData));
-
-    // Tests plain strings.
-    const data = 'foo';
-    optionsWithStringData.data = data;
-
-    options = mungOptionsForFetch(optionsWithStringData, this.JSONAPIAdapter);
-    assert.equal(options.body, JSON.stringify(data));
+    // data should not be stringified twice
+    assert.deepEqual(options.body, stringifiedData);
   });
 
   test('mungOptionsForFetch does not set a request body when the method is GET or HEAD', function(assert) {

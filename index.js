@@ -137,7 +137,7 @@ module.exports = {
   },
 
   //add node version of fetch.js into fastboot package.json manifest vendorFiles array
-  updateFastBootManifest: function (manifest) {
+  updateFastBootManifest: function(manifest) {
     manifest.vendorFiles.push('ember-fetch/fastboot-fetch.js');
     return manifest;
   },

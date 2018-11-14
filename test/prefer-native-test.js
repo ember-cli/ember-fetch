@@ -16,7 +16,9 @@ require('fetch-test');
 `;
 
 [true, false].forEach(preferNative => {
-  describe(`Build browser assets with preferNative = ${preferNative}`, function() {
+  describe(`Build browser assets with preferNative = ${preferNative}`, function () {
+    this.timeout(5000);
+
     let output, subject, addon;
 
     beforeEach(function() {

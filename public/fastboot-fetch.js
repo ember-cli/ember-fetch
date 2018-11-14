@@ -7,22 +7,11 @@ define('fetch/setup', ['exports'], function(self) {
     'abortcontroller-polyfill/dist/cjs-ponyfill'
   );
   var nodeFetch = FastBoot.require('node-fetch');
-  var abortableFetch = AbortControllerPolyfill.abortableFetch({
-    fetch: nodeFetch,
-    Request: nodeFetch.Request
-  });
 
   self['default'] = function(protocol, host) {
     return function() {
       define('fetch', ['exports'], function(exports) {
-        /**
-         * Setup the exported fetch for a given origin so it can handle:
-         * - protocol-relative URL (//can-be-http-or-https.com/)
-         * - path-relative URL (/file/under/root)
-         * @param {String} url
-         * @param {Object} [options]
-         */
-        exports['default'] = function fetch(url, options) {
+        function buildAbsoluteUrl(url, protocol, host) {
           if (protocolRelativeRegex.test(url)) {
             url = host + url;
           } else if (!httpRegex.test(url)) {
@@ -33,9 +22,24 @@ define('fetch/setup', ['exports'], function(self) {
             }
             url = protocol + '//' + host + url;
           }
-          return abortableFetch.fetch(url, options);
+          return url;
+        }
+        /**
+         * Setup the exported fetch for a given origin so it can handle:
+         * - protocol-relative URL (//can-be-http-or-https.com/)
+         * - path-relative URL (/file/under/root)
+         * @param {String|Object} input
+         * @param {Object} [options]
+         */
+        exports['default'] = function fetch(input, options) {
+          if (typeof input === 'object') {
+            input.url = buildAbsoluteUrl(input.url, protocol, host);
+          } else {
+            input = buildAbsoluteUrl(input, protocol, host);
+          }
+          return nodeFetch(input, options);
         };
-        exports['Request'] = abortableFetch.Request;
+        exports['Request'] = nodeFetch.Request;
         exports['Headers'] = nodeFetch.Headers;
         exports['Response'] = nodeFetch.Response;
         exports['AbortController'] = AbortControllerPolyfill.AbortController;

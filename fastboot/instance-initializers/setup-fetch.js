@@ -7,8 +7,10 @@ import setupFetch from 'fetch/setup';
 function patchFetchForRelativeURLs(instance) {
   const fastboot = instance.lookup('service:fastboot');
   const request = fastboot.get('request');
+  // Prember is not sending protocol
+  const protocol = request.protocol === 'undefined:' ? 'http:' : request.protocol;
   // host is cp
-  setupFetch(request.protocol, request.get('host'))();
+  setupFetch(protocol, request.get('host'))();
 }
 
 export default {

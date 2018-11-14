@@ -14,7 +14,7 @@
   "repository": "https://github.com/ember-cli/ember-fetch",
   "scripts": {
     "build": "ember build",
-    "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
+    "lint:js": "eslint .",
     "start": "ember server",
     "test": "npm run test:node && ember try:each",
     "test:node": "mocha"

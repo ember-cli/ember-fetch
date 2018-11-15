@@ -20,9 +20,9 @@
     "test:node": "mocha"
   },
   "dependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
     "abortcontroller-polyfill": "^1.1.9",
-    "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0",
     "broccoli-concat": "^3.2.2",
     "broccoli-merge-trees": "^3.0.0",
     "broccoli-rollup": "^2.1.1",
@@ -30,7 +30,7 @@
     "broccoli-templater": "^2.0.1",
     "ember-cli-babel": "^6.8.2",
     "node-fetch": "^2.0.0-alpha.9",
-    "rollup-plugin-babel": "^3.0.7",
+    "rollup-plugin-babel": "^4.0.3",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
@@ -52,7 +52,7 @@
     "ember-load-initializers": "^2.0.0",
     "ember-maybe-import-regenerator": "^0.1.6",
     "ember-resolver": "^4.0.0",
-    "ember-source": "~3.0.0",
+    "ember-source": "~2.16.0",
     "ember-source-channel-url": "^1.0.1",
     "ember-try": "^1.1.0",
     "eslint-plugin-ember": "^5.0.0",

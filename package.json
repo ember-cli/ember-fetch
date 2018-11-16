@@ -14,6 +14,7 @@
   "repository": "https://github.com/ember-cli/ember-fetch",
   "scripts": {
     "build": "ember build",
+    "changelog": "lerna-changelog",
     "lint:js": "eslint . --cache",
     "start": "ember server",
     "test": "npm run test:node && ember try:each",
@@ -55,6 +56,7 @@
     "eslint": "^5.9.0",
     "eslint-plugin-ember": "^6.0.1",
     "eslint-plugin-node": "^5.2.1",
+    "lerna-changelog": "^0.8.2",
     "loader.js": "^4.2.3",
     "mocha": "^5.2.0"
   },

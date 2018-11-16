@@ -24,7 +24,6 @@ const MergeTrees = require('broccoli-merge-trees');
 const concat = require('broccoli-concat');
 const map = stew.map;
 const Rollup = require('broccoli-rollup');
-const babel = require('rollup-plugin-babel');
 const BroccoliDebug = require('broccoli-debug');
 
 const debug = BroccoliDebug.buildDebugCallback('ember-fetch');
@@ -115,13 +114,21 @@ module.exports = {
    * the correct version of the polyfill at the `vendor/ember-fetch.js` path.
    */
   treeForVendor: function() {
+    let babelAddon = this.addons.find(addon => addon.name === 'ember-cli-babel');
+
     let browserTree = this.treeForBrowserFetch();
+    let transpiledBrowserTree = debug(babelAddon.transpileTree(browserTree, {
+      'ember-cli-babel': {
+        compileModules: false,
+      },
+    }), 'after-babel');
+
     const preferNative = this.buildConfig.preferNative;
-    browserTree = debug(map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
+
+    return debug(map(transpiledBrowserTree, (content) => `if (typeof FastBoot === 'undefined') {
       var preferNative = ${preferNative};
       ${content}
     }`), 'wrapped');
-    return browserTree;
   },
 
   //add node version of fetch.js into fastboot package.json manifest vendorFiles array
@@ -143,12 +150,6 @@ module.exports = {
           name: 'AbortController',
           format: 'iife'
         },
-        plugins: [
-          babel({
-            babelrc: false,
-            presets: [['env', { modules: false }]]
-          })
-        ]
       }
     }), 'abortcontroller');
 

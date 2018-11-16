@@ -22,9 +22,13 @@ require('fetch-test');
     beforeEach(function() {
       addon = Object.create(AddonFactory);
       Object.assign(addon, {
+        addons: [],
         buildConfig: {
           preferNative
-        }
+        },
+        ui: {
+          writeWarnLine() {},
+        },
       });
       subject = addon.treeForVendor();
       output = helpers.createBuilder(subject);

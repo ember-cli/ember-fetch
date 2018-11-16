@@ -117,15 +117,20 @@ module.exports = {
     let babelAddon = this.addons.find(addon => addon.name === 'ember-cli-babel');
 
     let browserTree = this.treeForBrowserFetch();
-    let transpiledBrowserTree = debug(babelAddon.transpileTree(browserTree, {
-      'ember-cli-babel': {
-        compileModules: false,
-      },
-    }), 'after-babel');
+    if (babelAddon) {
+      browserTree = debug(babelAddon.transpileTree(browserTree, {
+        'ember-cli-babel': {
+          compileModules: false,
+        },
+      }), 'after-babel');
+
+    } else {
+      this.ui.writeWarnLine('[ember-fetch] Could not find `ember-cli-babel` addon, opting out of transpilation!')
+    }
 
     const preferNative = this.buildConfig.preferNative;
 
-    return debug(map(transpiledBrowserTree, (content) => `if (typeof FastBoot === 'undefined') {
+    return debug(map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
       var preferNative = ${preferNative};
       ${content}
     }`), 'wrapped');

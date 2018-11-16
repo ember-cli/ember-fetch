@@ -1,5 +1,14 @@
 # Changelog
 
+## v6.2.0 (2018-11-16)
+
+#### :rocket: Enhancement
+* [#143](https://github.com/ember-cli/ember-fetch/pull/143) Enable Fastboot relative URL ([@xg-wang](https://github.com/xg-wang))
+
+#### Committers: 1
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+
+
 ## v6.1.1 (2018-11-16)
 
 #### :bug: Bug Fix

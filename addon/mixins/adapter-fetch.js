@@ -4,6 +4,7 @@ import RSVP from 'rsvp';
 import fetch from 'fetch';
 import mungOptionsForFetch from '../utils/mung-options-for-fetch';
 import determineBodyPromise from '../utils/determine-body-promise';
+
 /**
  * Helper function to create a plain object from the response's Headers.
  * Consumed by the adapter's `handleResponse`.
@@ -21,14 +22,13 @@ export function headersToObject(headers) {
 }
 
 export default Mixin.create({
-/**
- * @param {String} url
- * @param {String} type
- * @param {Object} _options
- * @returns {Object}
- * @override
+  /**
+   * @param {String} url
+   * @param {String} type
+   * @param {Object} _options
+   * @returns {Object}
+   * @override
  */
-
   ajaxOptions(url, type, options = {}) {
     options.url = url;
     options.type = type;

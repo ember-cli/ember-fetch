@@ -1,66 +1,80 @@
+# Changelog
 
-6.1.0 / 2018-11-02
-==================
+## v6.1.1 (2018-11-16)
+
+#### :bug: Bug Fix
+* [#165](https://github.com/ember-cli/ember-fetch/pull/165)  Use `ember-cli-babel` to transpile vendor tree  ([@Turbo87](https://github.com/Turbo87))
+
+#### :house: Internal
+* [#164](https://github.com/ember-cli/ember-fetch/pull/164) Improve ESLint setup ([@Turbo87](https://github.com/Turbo87))
+* [#162](https://github.com/ember-cli/ember-fetch/pull/162) refactor(test/prefer-native): use co instead of async fn & run in CI ([@buschtoens](https://github.com/buschtoens))
+
+#### Committers: 2
+- Jan Buschtöns ([@buschtoens](https://github.com/buschtoens))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
+
+## v6.1.0 (2018-11-02)
 
   * Export mixin helper functions separately
   * Fix typo/bug in parseFetchResponseForError
   * If POST body is a string, don't stringify it
 
-6.0.0 / 2018-10-30
-==================
+
+## v6.0.0 (2018-10-30)
 
   * Set body to undefined for 204/205/HEAD responses
   * Deprecate Logger and remove Ember.merge
   * Move serializeQueryParams to its own file so that consuming applications and addons can import it directly
 
-5.1.3 / 2018-08-25
-==================
+
+## v5.1.3 (2018-08-25)
 
   * Add babel-core 6 to dependency to avoid babel-core 5 being resolved
 
-5.1.2 / 2018-08-23
-==================
+
+## v5.1.2 (2018-08-23)
 
   * Rollup `abortcontroller` and `fetch` as iife.
 
-5.1.1 / 2018-07-20
-==================
+
+## v5.1.1 (2018-07-20)
 
   * added supports latest Pretender!
   * added support for opt-in native fetch (see readme for details)
   * added support for AbortController (see readme for details)
 
-5.0.0 / 2018-06-05
-==================
+
+## v5.0.0 (2018-06-05)
 
   * Drop Node 4, 5, 7, and 9 support.
   * Update dependencies to prevent warnings RE: legacy broccoli APIs.
 
-4.0.2 / 2018-05-23
-==================
+
+## v4.0.2 (2018-05-23)
 
   * Use `yetch` and add support for `AbortController`.
 
-3.4.4 / 2017-12-20
-==================
+
+## v3.4.4 (2017-12-20)
 
   * Ensure `fetch` can be used with `ArrayBuffer`s.
   * Switch typings to newer style.
 
-3.4.3 / 2017-10-16
-==================
+
+## v3.4.3 (2017-10-16)
 
   * Fix non GET/HEAD requests not having body set
 
-3.4.2 / 2017-10-16
-==================
+
+## v3.4.2 (2017-10-16)
 
   * Remove `app` tree re-export of `ember-fetch/mixins/ember-fetch.js`
   * Drop requirement of host apps having ember-cli-shims
   * Upgrade ember-cli and other dependencies
 
-3.4.1 / 2017-10-13
-==================
+
+## v3.4.1 (2017-10-13)
 
   * Restore POST body being stringified
   * fix 'serializeQueryParams' typo
@@ -68,80 +82,81 @@
   * add chrome and firefox to travis
   * fix tests by using yarn in ember-try
 
-3.4.0 / 2017-09-15
-==================
+
+## v3.4.0 (2017-09-15)
 
   * Override Ember Data's RESTAdapter#ajaxOptions
   * Add `globals` to eslint config
   * Add CHANGELOG through 3.0.1
   * fix minor typo around DS
 
-3.3.1 / 2017-08-23
-==================
+
+## v3.3.1 (2017-08-23)
 
   * Don't process empty options.data, don't filter out 'null' query param values
   * Bump Ember-CLI, ember-cli-babel
 
-3.3.0 / 2017-08-16
-==================
+
+## v3.3.0 (2017-08-16)
 
   * Make dealing with response body more robust, bring ajaxError and ajaxSuccess methods more inline with standard ember data methods
 
-3.2.9 / 2017-07-14
-==================
+
+## v3.2.9 (2017-07-14)
 
   * fix: use this for import if this.import present
   * fix: remove include options
   * fix: support nested addons/engines
 
-3.2.8 / 2017-07-10
-==================
+
+## v3.2.8 (2017-07-10)
 
   * Stringify data for a POST request
 
-3.2.7 / 2017-07-02
-==================
+
+## v3.2.7 (2017-07-02)
 
   * Filter out query params with undefined values, as $.ajax does
 
-3.2.6 - 3.2.4 / 2017-07-29
-==========================
+
+## v3.2.4 - v3.2.6 (2017-07-29)
+
   * Mimic $.ajax behavior, improve robustness
   * another stefanpenner remnant
   * update travis location
 
-3.2.3 / 2017-07-25
-==================
+
+## v3.2.3 (2017-07-25)
 
   * update repo link
 
-3.2.2 / 2017-07-24
-==================
+
+## v3.2.2 (2017-07-24)
 
   * [FIXES #35] ensure rejections remain rejections in tests
   * Rejections must be forwarded
   * Fix logic to automatically add a Content-Type header
 
-3.1.0 / 2017-07-21
-==================
+
+## v3.1.0 (2017-07-21)
 
   * Add hook into fetch behavior
 
-3.0.2 / 2017-07-19
-==================
+
+## v3.0.2 (2017-07-19)
 
   * Better handle empty body responses
 
-3.0.1 / 2017-07-19
-==================
+
+## v3.0.1 (2017-07-19)
 
   * Make sure Content-Length is greater than zero
   * Use Number over parseInt, return promise over done
   * Add bodyPromise helper function and test
   * Empty response should yield Promise not empty object
 
-3.0.1 / 2017-07-19
-==================
+
+## v3.0.1 (2017-07-19)
 
   * remove redundant try/catch
   * tidy-up

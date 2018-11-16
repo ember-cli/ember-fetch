@@ -29,6 +29,9 @@ const BroccoliDebug = require('broccoli-debug');
 
 const debug = BroccoliDebug.buildDebugCallback('ember-fetch');
 
+// Path to the template that contains the shim wrapper around the browser polyfill
+const TEMPLATE_PATH = path.resolve(__dirname + '/assets/browser-fetch.js.t');
+
 /*
  * The `index.js` file is the main entry point for all Ember CLI addons.  The
  * object we export from this file is turned into an Addon class
@@ -128,8 +131,6 @@ module.exports = {
   }
 };
 
-// Path to the template that contains the shim wrapper around the browser polyfill
-const templatePath = path.resolve(__dirname + '/assets/browser-fetch.js.t');
 
 
 // Returns a tree containing the browser polyfill (from `whatwg-fetch` and `abortcontroller-polyfill`),
@@ -171,7 +172,7 @@ function treeForBrowserFetch() {
     sourceMapConfig: { enabled: false }
   }), 'after-concat');
 
-  return debug(new Template(polyfillNode, templatePath, function(content) {
+  return debug(new Template(polyfillNode, TEMPLATE_PATH, function(content) {
     return {
       moduleBody: content
     };

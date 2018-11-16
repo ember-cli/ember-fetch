@@ -115,7 +115,7 @@ module.exports = {
    * the correct version of the polyfill at the `vendor/ember-fetch.js` path.
    */
   treeForVendor: function() {
-    let browserTree = treeForBrowserFetch();
+    let browserTree = this.treeForBrowserFetch();
     const preferNative = this.buildConfig.preferNative;
     browserTree = debug(map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
       var preferNative = ${preferNative};
@@ -128,53 +128,51 @@ module.exports = {
   updateFastBootManifest: function (manifest) {
     manifest.vendorFiles.push('ember-fetch/fastboot-fetch.js');
     return manifest;
-  }
-};
+  },
 
-
-
-// Returns a tree containing the browser polyfill (from `whatwg-fetch` and `abortcontroller-polyfill`),
-// wrapped in a shim that stops it from exporting a global and instead turns it into a module
-// that can be used by the Ember app.
-function treeForBrowserFetch() {
-  const abortcontrollerNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('abortcontroller-polyfill'))), {
-    rollup: {
-      input: 'src/abortcontroller-polyfill.js',
-      output: {
-        file: 'abortcontroller.js',
-        // abortcontroller is polyfill only, the name is only required by rollup iife
-        name: 'AbortController',
-        format: 'iife'
-      },
-      plugins: [
-        babel({
-          babelrc: false,
-          presets: [['env', { modules: false }]]
-        })
-      ]
-    }
-  }), 'abortcontroller');
-
-  const fetchNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('whatwg-fetch'))), {
-    rollup: {
-      input: 'fetch.js',
-      output: {
-        file: 'fetch.js',
-        name: 'WHATWGFetch',
-        format: 'iife'
+  // Returns a tree containing the browser polyfill (from `whatwg-fetch` and `abortcontroller-polyfill`),
+  // wrapped in a shim that stops it from exporting a global and instead turns it into a module
+  // that can be used by the Ember app.
+  treeForBrowserFetch() {
+    const abortcontrollerNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('abortcontroller-polyfill'))), {
+      rollup: {
+        input: 'src/abortcontroller-polyfill.js',
+        output: {
+          file: 'abortcontroller.js',
+          // abortcontroller is polyfill only, the name is only required by rollup iife
+          name: 'AbortController',
+          format: 'iife'
+        },
+        plugins: [
+          babel({
+            babelrc: false,
+            presets: [['env', { modules: false }]]
+          })
+        ]
       }
-    }
-  }), 'whatwg-fetch');
+    }), 'abortcontroller');
 
-  const polyfillNode = debug(concat(new MergeTrees([abortcontrollerNode, fetchNode]), {
-    inputFiles: ['abortcontroller.js', 'fetch.js'],
-    outputFile: 'ember-fetch.js',
-    sourceMapConfig: { enabled: false }
-  }), 'after-concat');
+    const fetchNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('whatwg-fetch'))), {
+      rollup: {
+        input: 'fetch.js',
+        output: {
+          file: 'fetch.js',
+          name: 'WHATWGFetch',
+          format: 'iife'
+        }
+      }
+    }), 'whatwg-fetch');
 
-  return debug(new Template(polyfillNode, TEMPLATE_PATH, function(content) {
-    return {
-      moduleBody: content
-    };
-  }), 'browser-fetch');
-}
+    const polyfillNode = debug(concat(new MergeTrees([abortcontrollerNode, fetchNode]), {
+      inputFiles: ['abortcontroller.js', 'fetch.js'],
+      outputFile: 'ember-fetch.js',
+      sourceMapConfig: { enabled: false }
+    }), 'after-concat');
+
+    return debug(new Template(polyfillNode, TEMPLATE_PATH, function(content) {
+      return {
+        moduleBody: content
+      };
+    }), 'browser-fetch');
+  },
+};

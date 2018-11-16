@@ -16,14 +16,19 @@ module.exports = {
     // node files
     {
       files: [
+        '.eslintrc.js',
+        '.template-lintrc.js',
+        'ember-cli-build.js',
         'index.js',
         'testem.js',
-        'ember-cli-build.js',
+        'blueprints/*/index.js',
         'config/**/*.js',
+        'test/**/*.js',
         'tests/dummy/config/**/*.js'
       ],
       excludedFiles: [
         'app/**',
+        'addon-test-support/**',
         'addon/**',
         'tests/dummy/app/**'
       ],
@@ -39,6 +44,19 @@ module.exports = {
       rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
         // add your custom rules and overrides for node files here
       })
+    },
+    // node tests
+    {
+      files: [
+        'test/**/*.js',
+      ],
+      env: {
+        mocha: true,
+      },
+      rules: {
+        'node/no-unpublished-require': 'off',
+        'node/no-extraneous-require': 'off'
+      }
     }
   ]
 };

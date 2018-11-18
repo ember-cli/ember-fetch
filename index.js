@@ -97,7 +97,7 @@ module.exports = {
    * in a FastBoot build or not. Based on that, we return a tree that contains
    * the correct version of the polyfill at the `vendor/ember-fetch.js` path.
    */
-  treeForVendor: function() {
+  treeForVendor() {
     let babelAddon = this.addons.find(addon => addon.name === 'ember-cli-babel');
 
     let browserTree = this.treeForBrowserFetch();
@@ -121,9 +121,22 @@ module.exports = {
     }`), 'wrapped');
   },
 
-  //add node version of fetch.js into fastboot package.json manifest vendorFiles array
-  updateFastBootManifest: function(manifest) {
-    manifest.vendorFiles.push('ember-fetch/fastboot-fetch.js');
+  // Only include public/fetch-fastboot.js if top level addon
+  treeForPublic() {
+    return !this.parent.parent ? this._super.treeForPublic.apply(this, arguments) : null;
+  },
+
+  cacheKeyForTree(treeType) {
+    if (treeType === 'public') {
+      return require('calculate-cache-key-for-tree')('public', this, [!this.parent.parent]);
+    } else {
+      return this._super.cacheKeyForTree.call(this, treeType);
+    }
+  },
+
+  // Add node version of fetch.js into fastboot package.json manifest vendorFiles array
+  updateFastBootManifest(manifest) {
+    manifest.vendorFiles.push('ember-fetch/fetch-fastboot.js');
     return manifest;
   },
 

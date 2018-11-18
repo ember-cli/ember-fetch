@@ -1,8 +1,8 @@
-import setupFetch from 'fetch/setup';
+import { setupFastboot } from 'fetch';
 
 /**
  * To allow relative URLs for Fastboot mode, we need the per request information
- * from the fastboot service. Then we re-define the `fetch` amd module.
+ * from the fastboot service. Then we set the protocol and host to fetch module.
  */
 function patchFetchForRelativeURLs(instance) {
   const fastboot = instance.lookup('service:fastboot');
@@ -10,7 +10,7 @@ function patchFetchForRelativeURLs(instance) {
   // Prember is not sending protocol
   const protocol = request.protocol === 'undefined:' ? 'http:' : request.protocol;
   // host is cp
-  setupFetch(protocol, request.get('host'))();
+  setupFastboot(protocol, request.get('host'));
 }
 
 export default {

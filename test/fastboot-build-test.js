@@ -28,7 +28,7 @@ describe('it builds with ember-cli-fastboot', function() {
   it('builds into dist/ember-fetch/fetch-fastboot.js', function() {
     return app.runEmberCommand('build').then(function() {
       expect(app.filePath('dist/index.html')).to.be.a.file();
-      expect(app.filePath('dist/ember-fetch/fastboot-fetch.js')).to.be.a.file();
+      expect(app.filePath('dist/ember-fetch/fetch-fastboot.js')).to.be.a.file();
       expect(app.filePath('dist/assets/dummy-fastboot.js')).to.be.a.file();
     });
   });
@@ -38,9 +38,9 @@ describe('it builds with ember-cli-fastboot', function() {
       .runEmberCommand('build', '--environment=production')
       .then(function() {
         expect(app.filePath('dist/index.html')).to.be.a.file();
-        expect(find('dist/ember-fetch/fastboot-fetch-*.js')).to.be.a.file();
-        expect(find('dist/ember-fetch/fastboot-fetch-*.js')).to.match(
-          /fastboot-fetch-\w{32}/,
+        expect(find('dist/ember-fetch/fetch-fastboot-*.js')).to.be.a.file();
+        expect(find('dist/ember-fetch/fetch-fastboot-*.js')).to.match(
+          /fetch-fastboot-\w{32}/,
           'file name should contain MD5 fingerprint'
         );
 

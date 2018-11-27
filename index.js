@@ -1,5 +1,6 @@
 'use strict';
 
+const caniuse = require('caniuse-api');
 const path = require('path');
 // We use a few different Broccoli plugins to build our trees:
 //
@@ -73,7 +74,9 @@ module.exports = {
       importTarget = this;
     }
 
-    app._fetchBuildConfig = app.options['ember-fetch'] || { preferNative: false };
+    const options = app.options['ember-fetch'] || { preferNative: false };
+    options.browsers = options.browsers || this.project.targets && this.project.targets.browsers;
+    app._fetchBuildConfig = options;
 
     importTarget.import('vendor/ember-fetch.js', {
       exports: {
@@ -113,7 +116,8 @@ module.exports = {
     }
 
     const app = this._findApp();
-    const preferNative = app._fetchBuildConfig.preferNative;
+    // If the polyfill is not included, we force the preferNative behavior
+    const preferNative = app._fetchBuildConfig.preferNative || this._checkSupports('fetch');
 
     return debug(map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
       var preferNative = ${preferNative};
@@ -144,6 +148,8 @@ module.exports = {
   // wrapped in a shim that stops it from exporting a global and instead turns it into a module
   // that can be used by the Ember app.
   treeForBrowserFetch() {
+    const needsFetchPolyfill = !this._checkSupports('fetch');
+
     const abortcontrollerNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('abortcontroller-polyfill'))), {
       rollup: {
         input: 'src/abortcontroller-polyfill.js',
@@ -175,9 +181,21 @@ module.exports = {
 
     return debug(new Template(polyfillNode, TEMPLATE_PATH, function(content) {
       return {
-        moduleBody: content
+        moduleBody: needsFetchPolyfill ? content : ''
       };
     }), 'browser-fetch');
+  },
+
+  _checkSupports(featureName) {
+    const app = this._findApp();
+    const browsers = app._fetchBuildConfig.browsers;
+
+    if (!browsers) {
+      return false;
+    }
+
+    let browserList = browsers.join(', ');
+    return caniuse.isSupported(featureName, browserList);
   },
 
   _findApp() {

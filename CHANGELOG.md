@@ -1,5 +1,14 @@
 # Changelog
 
+## v6.2.1 (2018-11-27)
+
+#### :rocket: Bug Fix
+* [#137](https://github.com/ember-cli/ember-fetch/pull/137) Use package name of AbortController polyfill in whitelisted dependencies ([@bobisjan](https://github.com/bobisjan))
+
+#### Committers: 1
+- Jan Bobisud ([@bobisjan](https://github.com/bobisjan))
+
+
 ## v6.2.0 (2018-11-16)
 
 #### :rocket: Enhancement

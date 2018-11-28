@@ -1,5 +1,14 @@
 # Changelog
 
+## v6.2.2 (2018-11-28)
+
+#### :bug: Bug Fix
+* [#172](https://github.com/ember-cli/ember-fetch/pull/172) Make configuration work in engines ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
+
 ## v6.2.1 (2018-11-27)
 
 #### :rocket: Bug Fix

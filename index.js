@@ -63,35 +63,19 @@ module.exports = {
    * which allows us to use the `import()` method to tell it to include a file
    * from our `vendor` tree into the final built app.
    */
-  included: function(app) {
+  included: function() {
     this._super.included.apply(this, arguments);
 
-    let target = app;
+    let app = this._findApp();
+    let importTarget = app;
 
     if (typeof this.import === 'function') {
-      target = this;
-    } else {
-      // If the addon has the _findHost() method (in ember-cli >= 2.7.0), we'll just
-      // use that.
-      if (typeof this._findHost === 'function') {
-        target = this._findHost();
-      } else {
-        // Otherwise, we'll use this implementation borrowed from the _findHost()
-        // method in ember-cli.
-        // Keep iterating upward until we don't have a grandparent.
-        // Has to do this grandparent check because at some point we hit the project.
-        let current = this;
-        do {
-          target = current.app || app;
-        } while (current.parent.parent && (current = current.parent));
-      }
-      // If this.import is not a function, app and target should point to the same EmberApp
-      app = target;
+      importTarget = this;
     }
 
-    this.buildConfig = app.options['ember-fetch'] || { preferNative: false };
+    app._fetchBuildConfig = app.options['ember-fetch'] || { preferNative: false };
 
-    target.import('vendor/ember-fetch.js', {
+    importTarget.import('vendor/ember-fetch.js', {
       exports: {
         default: [
           'default',
@@ -128,7 +112,8 @@ module.exports = {
       this.ui.writeWarnLine('[ember-fetch] Could not find `ember-cli-babel` addon, opting out of transpilation!')
     }
 
-    const preferNative = this.buildConfig.preferNative;
+    const app = this._findApp();
+    const preferNative = app._fetchBuildConfig.preferNative;
 
     return debug(map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
       var preferNative = ${preferNative};
@@ -180,5 +165,23 @@ module.exports = {
         moduleBody: content
       };
     }), 'browser-fetch');
+  },
+
+  _findApp() {
+    if (typeof this._findHost === 'function') {
+      return this._findHost();
+    } else {
+      // Otherwise, we'll use this implementation borrowed from the _findHost()
+      // method in ember-cli.
+      // Keep iterating upward until we don't have a grandparent.
+      // Has to do this grandparent check because at some point we hit the project.
+      let app;
+      let current = this;
+      do {
+         app = current.app || this;
+      } while (current.parent && current.parent.parent && (current = current.parent));
+
+      return app;
+    }
   },
 };

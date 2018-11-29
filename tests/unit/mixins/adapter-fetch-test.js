@@ -62,6 +62,120 @@ module('Unit | Mixin | adapter-fetch', function(hooks) {
     );
   });
 
+  test('mixin adds a default "Content-Type" header if none is present', function(assert) {
+    assert.expect(2);
+    const optionsNoHeaders = {
+      url: 'https://emberjs.com',
+      type: 'POST',
+      data: { a: 1 }
+    };
+    const optionsHeadersWithoutContentType = {
+      url: 'https://emberjs.com',
+      type: 'POST',
+      headers: {
+        'X-foo': 'bar'
+      },
+      data: { a: 1 }
+    };
+    let options = this.JSONAPIAdapter.ajaxOptions(optionsNoHeaders.url, optionsNoHeaders.type, optionsNoHeaders);
+    assert.deepEqual(
+      options.headers,
+      {
+        'Content-Type': 'application/json; charset=utf-8',
+        'custom-header': 'foo',
+      },
+      "POST call's options without a headers object now has a headers object which has a content-type header"
+    );
+
+    options = this.JSONAPIAdapter.ajaxOptions(
+      optionsHeadersWithoutContentType.url,
+      optionsHeadersWithoutContentType.type,
+      optionsHeadersWithoutContentType
+    );
+    assert.deepEqual(
+      options.headers,
+      {
+        'Content-Type': 'application/json; charset=utf-8',
+        'X-foo': 'bar',
+        'custom-header': 'foo',
+      },
+      "POST call's options with a headers object now has a content-type header"
+    );
+  });
+
+  test('mixin does not add a "Content-Type" header if it is a GET request', function(assert) {
+    assert.expect(1);
+    const getOptions = {
+      url: 'https://emberjs.com',
+      type: 'GET',
+      headers: {
+        foo: 'bar'
+      }
+    };
+
+    let options = this.JSONAPIAdapter.ajaxOptions(getOptions.url, getOptions.type, getOptions);
+    assert.deepEqual(
+      options.headers,
+      {
+        foo: 'bar',
+        'custom-header': 'foo',
+      },
+      "GET call's options has no added content-type header"
+    );
+  });
+
+  test('mixin does not add a "Content-Type" header if a POST request has no body', function(assert) {
+    assert.expect(1);
+    const postNoDataOptions = {
+      url: 'https://emberjs.com',
+      type: 'GET',
+      headers: {
+        foo: 'bar',
+        'custom-header': 'foo',
+      }
+    };
+
+    let options = this.JSONAPIAdapter.ajaxOptions(
+      postNoDataOptions.url,
+      postNoDataOptions.type,
+      postNoDataOptions
+    );
+    assert.deepEqual(
+      options.headers,
+      {
+        foo: 'bar',
+        'custom-header': 'foo',
+      },
+      'POST call with no body has no added content-type header'
+    );
+  });
+
+  test('mixin respects the "Content-Type" header if present', function(assert) {
+    assert.expect(1);
+    const optionsHeadersWithContentType = {
+      url: 'https://emberjs.com',
+      type: 'POST',
+      headers: {
+        'Content-Type': 'application/special-type'
+      },
+      data: { a: 1 }
+    };
+
+    let options = this.JSONAPIAdapter.ajaxOptions(
+      optionsHeadersWithContentType.url,
+      optionsHeadersWithContentType.type,
+      optionsHeadersWithContentType
+    );
+    assert.deepEqual(
+      options.headers,
+      {
+        'Content-Type': 'application/special-type',
+        'custom-header': 'foo',
+      },
+      "POST call's options has the original content-type header"
+    );
+  });
+
   test('parseFetchResponseForError is able to be overwritten to mutate the error payload that gets passed along', function(assert) {
     assert.expect(1);
 

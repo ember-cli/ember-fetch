@@ -53,111 +53,12 @@ module('Unit | mungOptionsForFetch', function() {
         url: 'https://emberjs.com',
         method: 'POST',
         type: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8'
-        },
         body: '{"a":1}',
         data: {
           a: 1
         }
       },
       "POST call's options are correct"
-    );
-  });
-
-  test('mungOptionsForFetch adds a default "Content-Type" header if none is present', function(assert) {
-    assert.expect(2);
-    const optionsNoHeaders = {
-      url: 'https://emberjs.com',
-      type: 'POST',
-      data: { a: 1 }
-    };
-    const optionsHeadersWithoutContentType = {
-      url: 'https://emberjs.com',
-      type: 'POST',
-      headers: {
-        'X-foo': 'bar'
-      },
-      data: { a: 1 }
-    };
-    let options = mungOptionsForFetch(optionsNoHeaders);
-    assert.deepEqual(
-      options.headers,
-      {
-        'Content-Type': 'application/json; charset=utf-8'
-      },
-      "POST call's options without a headers object now has a headers object which has a content-type header"
-    );
-
-    options = mungOptionsForFetch(optionsHeadersWithoutContentType);
-    assert.deepEqual(
-      options.headers,
-      {
-        'Content-Type': 'application/json; charset=utf-8',
-        'X-foo': 'bar'
-      },
-      "POST call's options with a headers object now has a content-type header"
-    );
-  });
-
-  test('mungOptionsForFetch does not add a "Content-Type" header if it is a GET request', function(assert) {
-    assert.expect(1);
-    const getOptions = {
-      url: 'https://emberjs.com',
-      type: 'GET',
-      headers: {
-        foo: 'bar'
-      }
-    };
-
-    let options = mungOptionsForFetch(getOptions);
-    assert.deepEqual(
-      options.headers,
-      {
-        foo: 'bar'
-      },
-      "GET call's options has no added content-type header"
-    );
-  });
-
-  test('mungOptionsForFetch does not add a "Content-Type" header if a POST request has no body', function(assert) {
-    assert.expect(1);
-    const PostNoDataOptions = {
-      url: 'https://emberjs.com',
-      type: 'GET',
-      headers: {
-        foo: 'bar'
-      }
-    };
-
-    let options = mungOptionsForFetch(PostNoDataOptions);
-    assert.deepEqual(
-      options.headers,
-      {
-        foo: 'bar'
-      },
-      'POST call with no body has no added content-type header'
-    );
-  });
-
-  test('mungOptionsForFetch respects the "Content-Type" header if present', function(assert) {
-    assert.expect(1);
-    const optionsHeadersWithContentType = {
-      url: 'https://emberjs.com',
-      type: 'POST',
-      headers: {
-        'Content-Type': 'application/special-type'
-      },
-      data: { a: 1 }
-    };
-
-    let options = mungOptionsForFetch(optionsHeadersWithContentType);
-    assert.deepEqual(
-      options.headers,
-      {
-        'Content-Type': 'application/special-type'
-      },
-      "POST call's options has the original content-type header"
     );
   });
 

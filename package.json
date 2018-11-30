@@ -16,9 +16,10 @@
     "build": "ember build",
     "changelog": "lerna-changelog",
     "lint:js": "eslint . --cache",
-    "start": "ember server",
-    "test": "npm run test:node && ember try:each",
-    "test:node": "mocha"
+    "start": "ember serve",
+    "test": "ember test",
+    "test:node": "mocha",
+    "test:all": "mocha && ember try:each"
   },
   "dependencies": {
     "abortcontroller-polyfill": "^1.2.1",

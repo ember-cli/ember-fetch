@@ -32,7 +32,7 @@ jobs:
       script:
         - yarn lint:js
         - yarn test
-        - yarn test:node
+        - npm run test:node
 
     - name: "Floating Dependencies"
       script:

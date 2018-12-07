@@ -38,7 +38,25 @@ export default Mixin.create({
     if (adapterHeaders) {
       options.headers = assign(options.headers || {}, adapterHeaders);
     }
-    return mungOptionsForFetch(options);
+
+    const mungedOptions = mungOptionsForFetch(options);
+
+    // Mimics the default behavior in Ember Data's `ajaxOptions`, namely to set the
+    // 'Content-Type' header to application/json if it is not a GET request and it has a body.
+    if (
+      mungedOptions.method !== 'GET' &&
+      mungedOptions.body &&
+      (mungedOptions.headers === undefined ||
+        !(
+          mungedOptions.headers['Content-Type'] ||
+          mungedOptions.headers['content-type']
+        ))
+    ) {
+      mungedOptions.headers = mungedOptions.headers || {};
+      mungedOptions.headers['Content-Type'] = 'application/json; charset=utf-8';
+    }
+
+    return mungedOptions;
   },
 
   /**

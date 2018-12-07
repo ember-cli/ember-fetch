@@ -36,12 +36,5 @@ export default function mungOptionsForFetch(_options) {
     }
   }
 
-  // Mimics the default behavior in Ember Data's `ajaxOptions`, namely to set the
-  // 'Content-Type' header to application/json if it is not a GET request and it has a body.
-  if (options.method !== 'GET' && options.body && (options.headers === undefined || !(options.headers['Content-Type'] || options.headers['content-type']))) {
-    options.headers = options.headers || {};
-    options.headers['Content-Type'] = 'application/json; charset=utf-8';
-  }
-
   return options;
 }

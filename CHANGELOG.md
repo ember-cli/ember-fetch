@@ -1,5 +1,20 @@
 # Changelog
 
+## v6.2.3 (2018-12-07)
+
+#### :bug: Bug Fix
+* [#167](https://github.com/ember-cli/ember-fetch/pull/167) Fix fetch public/fastboot-fetch.js module definition for Fastboot ([@xg-wang](https://github.com/xg-wang))
+
+#### :house: Internal
+* [#171](https://github.com/ember-cli/ember-fetch/pull/171) Setup addon tests ([@xg-wang](https://github.com/xg-wang))
+* [#183](https://github.com/ember-cli/ember-fetch/pull/183) Remove mistakenly committed release tarball ([@Turbo87](https://github.com/Turbo87))
+* [#182](https://github.com/ember-cli/ember-fetch/pull/182) TravisCI: Remove deprecated `sudo: false` option ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 2
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
+
 ## v6.2.2 (2018-11-28)
 
 #### :bug: Bug Fix

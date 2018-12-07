@@ -49,6 +49,7 @@ export default DS.RESTAdapter.extend(AdapterFetch, {
 ```
 
 ### Use with Fastboot
+#### ajax-service
 Currently, Fastboot supplies its own server-side ajax functionality, and including `ember-fetch` and the `adapter-fetch` mixin in a Fastboot app will not work without some modifications. To allow the `node-fetch` polyfill that is included with this addon to make your API calls, you must add an initializer to the consuming app's `fastboot` directory that overrides the one Fastboot utilizes to inject its own ajax.
 
 Example:
@@ -65,6 +66,17 @@ export default {
 }
 ```
 
+#### relative url
+`ember-fetch` uses `node-fetch` in Fastboot, which [doesn't allow relative URL](https://github.com/bitinn/node-fetch/tree/v2.3.0#fetchurl-options).
+
+> `url` should be an absolute url, such as `https://example.com/`.
+> A path-relative URL (`/file/under/root`) or protocol-relative URL (`//can-be-http-or-https.com/`)
+> will result in a rejected promise.
+
+However, `ember-fetch` grabs the `protocol` and `host` info from fastboot request after the `instance-initializes`.
+This allows you to make a relative URL request unless the app is not initialized, e.g. `initializers` and `app.js`.
+
+#### top-level addon
 For addon authors, if the addon supports Fastboot mode, `ember-fetch` should also be listed as a [peer dependency](https://docs.npmjs.com/files/package.json#peerdependencies).
 This is because Fastboot only invokes top-level addon's `updateFastBootManifest` ([detail](https://github.com/ember-fastboot/ember-cli-fastboot/issues/597)), thus `ember-fetch` has to be a top-level addon installed by the host app.
 

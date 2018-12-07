@@ -20,6 +20,8 @@ describe('renders in fastboot build', function() {
       .then(app =>
         app.editPackageJSON(pkg => {
           pkg.devDependencies['ember-cli-fastboot'] = '*';
+          // ember-fetch-adapter@0.4.0 has ember-fetch as dependency, we want to test
+          pkg.devDependencies['ember-fetch-adapter'] = '0.4.0';
           // These 2 are in ember-fetch's package.json, symlinking to dummy won't help resolve
           pkg.devDependencies['abortcontroller-polyfill'] = '*';
           pkg.devDependencies['node-fetch'] = '*';
@@ -37,6 +39,12 @@ describe('renders in fastboot build', function() {
 
   afterEach(function() {
     return app.stopServer();
+  });
+
+  it('builds into dist/ember-fetch/fetch-fastboot.js ignoring sub dependency version conflict', function() {
+    expect(app.filePath('dist/index.html')).to.be.a.file();
+    expect(app.filePath('dist/ember-fetch/fetch-fastboot.js')).to.be.a.file();
+    expect(app.filePath('dist/assets/dummy-fastboot.js')).to.be.a.file();
   });
 
   it('fetches in fastboot mode', function() {

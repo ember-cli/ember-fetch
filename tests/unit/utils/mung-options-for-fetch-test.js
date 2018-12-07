@@ -172,6 +172,25 @@ module('Unit | mungOptionsForFetch', function() {
     assert.equal(options.method, 'GET');
   });
 
+  test('mungOptionsForFetch sets the method to an uppercase string', function(assert) {
+    assert.expect(2);
+    const getOptions = {
+      url: 'https://emberjs.com',
+      type: 'get',
+    };
+
+    let options = mungOptionsForFetch(getOptions);
+    assert.equal(options.method, 'GET');
+
+    const postOptions = {
+      url: 'https://emberjs.com',
+      method: 'post',
+    };
+
+    options = mungOptionsForFetch(postOptions);
+    assert.equal(options.method, 'POST');
+  });
+
   test('mungOptionsForFetch adds string query params to the url correctly', function(assert) {
     assert.expect(2);
 
@@ -339,5 +358,19 @@ module('Unit | mungOptionsForFetch', function() {
 
     const postOptions = mungOptionsForFetch(postData);
     assert.equal(postOptions.body, '{}', "'options.body' is an empty object");
+  });
+
+  test("mungOptionsForFetch sets the request body correctly when 'data' is FormData", function(assert) {
+    assert.expect(1);
+
+    const formData = new FormData()
+    const postData = {
+      url: 'https://emberjs.com',
+      type: 'POST',
+      data: formData,
+    };
+
+    const postOptions = mungOptionsForFetch(postData);
+    assert.equal(postOptions.body, formData, "'options.body' is the FormData passed in");
   });
 });

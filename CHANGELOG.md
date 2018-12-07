@@ -1,5 +1,10 @@
 # Changelog
 
+## v6.3.0 (2018-12-07)
+
+  * Support POST body of all valid types
+  * Only set default Content-Type header in adapter mixin
+
 ## v6.2.3 (2018-12-07)
 
 #### :bug: Bug Fix

@@ -2225,13 +2225,13 @@ browserslist@^3.2.6:
     electron-to-chromium "^1.3.47"
 
 browserslist@^4.0.0, browserslist@^4.1.0:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.3.4.tgz#4477b737db6a1b07077275b24791e680d4300425"
-  integrity sha512-u5iz+ijIMUlmV8blX82VGFrB9ecnUg5qEt55CMZ/YJEhha+d8qpBfOFuutJ6F/VKRXjZoD33b6uvarpPxcl3RA==
+  version "4.3.6"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.3.6.tgz#0f9d9081afc66b36f477c6bdf3813f784f42396a"
+  integrity sha512-kMGKs4BTzRWviZ8yru18xBpx+CyHG9eqgRbj9XbE3IMgtczf4aiA0Y1YCpVdvUieKGZ03kolSPXqTcscBCb9qw==
   dependencies:
-    caniuse-lite "^1.0.30000899"
-    electron-to-chromium "^1.3.82"
-    node-releases "^1.0.1"
+    caniuse-lite "^1.0.30000921"
+    electron-to-chromium "^1.3.92"
+    node-releases "^1.1.1"
 
 bser@^2.0.0:
   version "2.0.0"
@@ -2395,15 +2395,10 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0:
-  version "1.0.30000911"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000911.tgz#5dfb8139ee479722da27000ca92dec47913b9605"
-  integrity sha512-x/E/SNwD80I0bT+fF9Y3Kbwo7Xd1xSafCAmFlpJmaVg3SQoJJOH4Ivb9fi9S0WjfqewQ6Ydt1zEVZpmMVYNeDA==
-
-caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30000899:
-  version "1.0.30000907"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000907.tgz#0b9899bde53fb1c30e214fb12402361e02ff5c42"
-  integrity sha512-No5sQ/OB2Nmka8MNOOM6nJx+Hxt6MQ6h7t7kgJFu9oTuwjykyKRSBP/+i/QAyFHxeHB+ddE0Da1CG5ihx9oehQ==
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30000921:
+  version "1.0.30000921"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000921.tgz#7a607c1623444b22351d834e093aedda3c42fbe8"
+  integrity sha512-Bu09ciy0lMWLgpYC77I0YGuI8eFRBPPzaSOYJK1jTI64txCphYCqnWbxJYjHABYVt/TYX/p3jNjLBR87u1Bfpw==
 
 capture-exit@^1.2.0:
   version "1.2.0"
@@ -3128,10 +3123,15 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
-electron-to-chromium@^1.3.47, electron-to-chromium@^1.3.82:
+electron-to-chromium@^1.3.47:
   version "1.3.84"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.84.tgz#2e55df59e818f150a9f61b53471ebf4f0feecc65"
   integrity sha512-IYhbzJYOopiTaNWMBp7RjbecUBsbnbDneOP86f3qvS0G0xfzwNSvMJpTrvi5/Y1gU7tg2NAgeg8a8rCYvW9Whw==
+
+electron-to-chromium@^1.3.92:
+  version "1.3.92"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.92.tgz#9027b5abaea400045edd652c0e4838675c814399"
+  integrity sha512-En051LMzMl3/asMWGZEtU808HOoVWIpmmZx1Ep8N+TT9e7z/X8RcLeBU2kLSNLGQ+5SuKELzMx+MVuTBXk6Q9w==
 
 ember-assign-polyfill@~2.4.0:
   version "2.4.0"
@@ -6810,10 +6810,10 @@ node-pre-gyp@^0.10.0:
     semver "^5.3.0"
     tar "^4"
 
-node-releases@^1.0.1:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.0.3.tgz#3414ed84595096459c251699bfcb47d88324a9e4"
-  integrity sha512-ZaZWMsbuDcetpHmYeKWPO6e63pSXLb50M7lJgCbcM2nC/nQC3daNifmtp5a2kp7EWwYfhuvH6zLPWkrF8IiDdw==
+node-releases@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.1.tgz#8fff8aea1cfcad1fb4205f805149054fbf73cafd"
+  integrity sha512-2UXrBr6gvaebo5TNF84C66qyJJ6r0kxBObgZIDX3D3/mt1ADKiHux3NJPWisq0wxvJJdkjECH+9IIKYViKj71Q==
   dependencies:
     semver "^5.3.0"
 

@@ -74,8 +74,13 @@ module.exports = {
       importTarget = this;
     }
 
-    const options = app.options['ember-fetch'] || { preferNative: false };
-    options.browsers = options.browsers || this.project.targets && this.project.targets.browsers;
+    const options = app.options['ember-fetch'] || {};
+    const { preferNative = false, alwaysIncludePolyfill = true } = options;
+
+    options.browsers = this.project.targets && this.project.targets.browsers;
+    options.preferNative = preferNative;
+    options.alwaysIncludePolyfill = alwaysIncludePolyfill;
+
     app._fetchBuildConfig = options;
 
     importTarget.import('vendor/ember-fetch.js', {
@@ -117,7 +122,8 @@ module.exports = {
 
     const app = this._findApp();
     // If the polyfill is not included, we force the preferNative behavior
-    const preferNative = app._fetchBuildConfig.preferNative || this._checkSupports('fetch');
+    const options = app._fetchBuildConfig;
+    const preferNative = options.preferNative || (!options.alwaysIncludePolyfill && this._checkSupports('fetch'));
 
     return debug(map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
       var preferNative = ${preferNative};
@@ -148,7 +154,10 @@ module.exports = {
   // wrapped in a shim that stops it from exporting a global and instead turns it into a module
   // that can be used by the Ember app.
   treeForBrowserFetch() {
-    const needsFetchPolyfill = !this._checkSupports('fetch');
+    const app = this._findApp();
+    const alwaysIncludePolyfill = app._fetchBuildConfig.alwaysIncludePolyfill;
+    const needsFetchPolyfill = alwaysIncludePolyfill || !this._checkSupports('fetch');
+    const needsAbortControllerPolyfill = alwaysIncludePolyfill || !this._checkSupports('abortcontroller');
 
     const abortcontrollerNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('abortcontroller-polyfill'))), {
       rollup: {
@@ -173,15 +182,23 @@ module.exports = {
       }
     }), 'whatwg-fetch');
 
-    const polyfillNode = debug(concat(new MergeTrees([abortcontrollerNode, fetchNode]), {
-      inputFiles: ['abortcontroller.js', 'fetch.js'],
+    let inputNodes = [abortcontrollerNode, fetchNode];
+    let inputFiles = ['abortcontroller.js', 'fetch.js'];
+
+    if (!needsFetchPolyfill && needsAbortControllerPolyfill) {
+      inputNodes = [abortcontrollerNode];
+      inputFiles = ['abortcontroller.js'];
+    }
+
+    const polyfillNode = debug(concat(new MergeTrees(inputNodes), {
+      inputFiles,
       outputFile: 'ember-fetch.js',
       sourceMapConfig: { enabled: false }
     }), 'after-concat');
 
     return debug(new Template(polyfillNode, TEMPLATE_PATH, function(content) {
       return {
-        moduleBody: needsFetchPolyfill ? content : ''
+        moduleBody: needsFetchPolyfill || needsAbortControllerPolyfill ? content : ''
       };
     }), 'browser-fetch');
   },

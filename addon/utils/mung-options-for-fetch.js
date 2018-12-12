@@ -26,9 +26,10 @@ export default function mungOptionsForFetch(_options) {
     } else {
       // NOTE: a request's body cannot be a POJO, so we stringify it if it is.
       // JSON.stringify removes keys with values of `undefined` (mimics jQuery.ajax).
+      // If the data has no constructor we assume it is a POJO created with Object.create(null).
       // If the data is not a POJO (it's a String, FormData, etc), we just set it.
       // If the data is a string, we assume it's a stringified object.
-      if (options.data.constructor === Object) {
+      if (!options.data.constructor || options.data.constructor === Object) {
         options.body = JSON.stringify(options.data);
       } else {
         options.body = options.data;

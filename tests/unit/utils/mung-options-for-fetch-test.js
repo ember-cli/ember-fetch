@@ -274,4 +274,19 @@ module('Unit | mungOptionsForFetch', function() {
     const postOptions = mungOptionsForFetch(postData);
     assert.equal(postOptions.body, formData, "'options.body' is the FormData passed in");
   });
+
+  test("mungOptionsForFetch sets the request body correctly when 'data' has no constructor", function(assert) {
+    assert.expect(1);
+
+    const data = Object.create(null);
+    data.request = "body";
+    const postData = {
+      url: 'https://emberjs.com',
+      type: 'POST',
+      data: data,
+    };
+
+    const postOptions = mungOptionsForFetch(postData);
+    assert.equal(postOptions.body, JSON.stringify(data), "'options.body' is properly converted to a string");
+  });
 });

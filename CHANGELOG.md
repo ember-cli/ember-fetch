@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.3.1 (2018-12-13)
+
+#### :rocket: Enhancement
+* [#186](https://github.com/ember-cli/ember-fetch/pull/186) handle stringifying data that was created with Object.create(null) ([@meirish](https://github.com/meirish))
+
+#### Committers: 1
+- Matthew Irish ([@meirish](https://github.com/meirish))
+
 ## v6.3.0 (2018-12-07)
 
   * Support POST body of all valid types

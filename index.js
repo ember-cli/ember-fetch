@@ -74,12 +74,8 @@ module.exports = {
       importTarget = this;
     }
 
-    const options = app.options['ember-fetch'] || {};
-    const { preferNative = false, alwaysIncludePolyfill = true } = options;
-
+    const options = Object.assign({ preferNative: false, alwaysIncludePolyfill: true}, app.options['ember-fetch'] || {});
     options.browsers = this.project.targets && this.project.targets.browsers;
-    options.preferNative = preferNative;
-    options.alwaysIncludePolyfill = alwaysIncludePolyfill;
 
     app._fetchBuildConfig = options;
 
@@ -121,9 +117,8 @@ module.exports = {
     }
 
     const app = this._findApp();
-    // If the polyfill is not included, we force the preferNative behavior
     const options = app._fetchBuildConfig;
-    const preferNative = options.preferNative || (!options.alwaysIncludePolyfill && this._checkSupports('fetch'));
+    const preferNative = options.preferNative;
 
     return debug(map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
       var preferNative = ${preferNative};
@@ -155,9 +150,12 @@ module.exports = {
   // that can be used by the Ember app.
   treeForBrowserFetch() {
     const app = this._findApp();
-    const alwaysIncludePolyfill = app._fetchBuildConfig.alwaysIncludePolyfill;
-    const needsFetchPolyfill = alwaysIncludePolyfill || !this._checkSupports('fetch');
-    const needsAbortControllerPolyfill = alwaysIncludePolyfill || !this._checkSupports('abortcontroller');
+    const options = app._fetchBuildConfig;
+    const browsers = options.browsers;
+    // To skip including the polyfill, you need to set `preferNative=true` AND `alwaysIncludePolyfill=false`
+    const alwaysIncludePolyfill = !options.preferNative || options.alwaysIncludePolyfill;
+    const needsFetchPolyfill = alwaysIncludePolyfill || !this._checkSupports('fetch', browsers);
+    const needsAbortControllerPolyfill = alwaysIncludePolyfill || !this._checkSupports('abortcontroller', browsers);
 
     const abortcontrollerNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('abortcontroller-polyfill'))), {
       rollup: {
@@ -203,10 +201,7 @@ module.exports = {
     }), 'browser-fetch');
   },
 
-  _checkSupports(featureName) {
-    const app = this._findApp();
-    const browsers = app._fetchBuildConfig.browsers;
-
+  _checkSupports(featureName, browsers) {
     if (!browsers) {
       return false;
     }

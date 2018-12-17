@@ -40,7 +40,7 @@ describe(`Do not include the polyfill if the browser targets match`, function() 
 
 });
 
-describe(`Force preferNative to true if the polyfill is not included`, function() {
+describe(`Ignore target browsers if preferNative is false`, function() {
   let output, subject, addon;
 
   beforeEach(function() {
@@ -68,9 +68,9 @@ describe(`Force preferNative to true if the polyfill is not included`, function(
     yield output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');
-    expect(files['ember-fetch.js']).to.include(`var preferNative = true`);
-    expect(files['ember-fetch.js']).to.not.include(`fetch.polyfill = true`);
-    expect(files['ember-fetch.js']).to.not.include(`class AbortController`);
+    expect(files['ember-fetch.js']).to.include(`var preferNative = false`);
+    expect(files['ember-fetch.js']).to.include(`fetch.polyfill = true`);
+    expect(files['ember-fetch.js']).to.include(`class AbortController`);
   }));
 
 });
@@ -83,7 +83,7 @@ describe(`Include the polyfill if the browser targets do not match`, function() 
     Object.assign(addon, {
       addons: [],
       _fetchBuildConfig: {
-        preferNative: false,
+        preferNative: true,
         browsers: ['ie 11']
       },
       ui: {
@@ -103,7 +103,7 @@ describe(`Include the polyfill if the browser targets do not match`, function() 
     yield output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');
-    expect(files['ember-fetch.js']).to.include(`var preferNative = false`);
+    expect(files['ember-fetch.js']).to.include(`var preferNative = true`);
     expect(files['ember-fetch.js']).to.include(`fetch.polyfill = true`);
     expect(files['ember-fetch.js']).to.include(`class AbortController`);
   }));
@@ -118,7 +118,7 @@ describe(`Include the abortcontroller polyfill only if the browser targets suppo
     Object.assign(addon, {
       addons: [],
       _fetchBuildConfig: {
-        preferNative: false,
+        preferNative: true,
         browsers: ['safari 11']
       },
       ui: {
@@ -153,7 +153,7 @@ describe(`Include the polyfill if alwaysIncludePolyfill=true`, function() {
     Object.assign(addon, {
       addons: [],
       _fetchBuildConfig: {
-        preferNative: false,
+        preferNative: true,
         alwaysIncludePolyfill: true,
         browsers: ['last 1 chrome versions']
       },
@@ -174,7 +174,7 @@ describe(`Include the polyfill if alwaysIncludePolyfill=true`, function() {
     yield output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');
-    expect(files['ember-fetch.js']).to.include(`var preferNative = false`);
+    expect(files['ember-fetch.js']).to.include(`var preferNative = true`);
     expect(files['ember-fetch.js']).to.include(`fetch.polyfill = true`);
     expect(files['ember-fetch.js']).to.include(`class AbortController`);
   }));

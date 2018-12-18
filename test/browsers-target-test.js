@@ -14,6 +14,7 @@ describe(`Do not include the polyfill if the browser targets match`, function() 
       addons: [],
       _fetchBuildConfig: {
         preferNative: true,
+        alwaysIncludePolyfill: false,
         browsers: ['last 1 chrome versions']
       },
       ui: {
@@ -29,7 +30,7 @@ describe(`Do not include the polyfill if the browser targets match`, function() 
     yield output.dispose();
   }));
 
-  it('preferNative is built into vendor file', co.wrap(function* () {
+  it('fetch & AbortController polyfills are not included', co.wrap(function* () {
     yield output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');
@@ -49,6 +50,7 @@ describe(`Ignore target browsers if preferNative is false`, function() {
       addons: [],
       _fetchBuildConfig: {
         preferNative: false,
+        alwaysIncludePolyfill: false,
         browsers: ['last 1 chrome versions']
       },
       ui: {
@@ -64,7 +66,7 @@ describe(`Ignore target browsers if preferNative is false`, function() {
     yield output.dispose();
   }));
 
-  it('preferNative is built into vendor file', co.wrap(function* () {
+  it('fetch & AbortController polyfills are included', co.wrap(function* () {
     yield output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');
@@ -84,6 +86,7 @@ describe(`Include the polyfill if the browser targets do not match`, function() 
       addons: [],
       _fetchBuildConfig: {
         preferNative: true,
+        alwaysIncludePolyfill: false,
         browsers: ['ie 11']
       },
       ui: {
@@ -99,7 +102,7 @@ describe(`Include the polyfill if the browser targets do not match`, function() 
     yield output.dispose();
   }));
 
-  it('preferNative is built into vendor file', co.wrap(function* () {
+  it('fetch & AbortController polyfills are included', co.wrap(function* () {
     yield output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');
@@ -119,6 +122,7 @@ describe(`Include the abortcontroller polyfill only if the browser targets suppo
       addons: [],
       _fetchBuildConfig: {
         preferNative: true,
+        alwaysIncludePolyfill: false,
         browsers: ['safari 11']
       },
       ui: {
@@ -134,7 +138,7 @@ describe(`Include the abortcontroller polyfill only if the browser targets suppo
     yield output.dispose();
   }));
 
-  it('preferNative is built into vendor file', co.wrap(function* () {
+  it('AbortController polyfill is included', co.wrap(function* () {
     yield output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');
@@ -170,7 +174,7 @@ describe(`Include the polyfill if alwaysIncludePolyfill=true`, function() {
     yield output.dispose();
   }));
 
-  it('preferNative is built into vendor file', co.wrap(function* () {
+  it('fetch & AbortController polyfills are included', co.wrap(function* () {
     yield output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');

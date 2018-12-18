@@ -74,10 +74,11 @@ module.exports = {
       importTarget = this;
     }
 
-    const options = Object.assign({ preferNative: false, alwaysIncludePolyfill: true}, app.options['ember-fetch'] || {});
-    options.browsers = this.project.targets && this.project.targets.browsers;
-
-    app._fetchBuildConfig = options;
+    app._fetchBuildConfig = Object.assign({
+      preferNative: false,
+      alwaysIncludePolyfill: false,
+      browsers: this.project.targets && this.project.targets.browsers
+    }, app.options['ember-fetch']);
 
     importTarget.import('vendor/ember-fetch.js', {
       exports: {
@@ -104,7 +105,10 @@ module.exports = {
   treeForVendor() {
     let babelAddon = this.addons.find(addon => addon.name === 'ember-cli-babel');
 
-    let browserTree = this.treeForBrowserFetch();
+    const app = this._findApp();
+    const options = app._fetchBuildConfig;
+
+    let browserTree = this.treeForBrowserFetch(options);
     if (babelAddon) {
       browserTree = debug(babelAddon.transpileTree(browserTree, {
         'ember-cli-babel': {
@@ -116,8 +120,6 @@ module.exports = {
       this.ui.writeWarnLine('[ember-fetch] Could not find `ember-cli-babel` addon, opting out of transpilation!')
     }
 
-    const app = this._findApp();
-    const options = app._fetchBuildConfig;
     const preferNative = options.preferNative;
 
     return debug(map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
@@ -148,55 +150,59 @@ module.exports = {
   // Returns a tree containing the browser polyfill (from `whatwg-fetch` and `abortcontroller-polyfill`),
   // wrapped in a shim that stops it from exporting a global and instead turns it into a module
   // that can be used by the Ember app.
-  treeForBrowserFetch() {
-    const app = this._findApp();
-    const options = app._fetchBuildConfig;
+  treeForBrowserFetch(options) {
     const browsers = options.browsers;
-    // To skip including the polyfill, you need to set `preferNative=true` AND `alwaysIncludePolyfill=false`
+    // To skip including the polyfill, `preferNative` needs to be `true` AND `alwaysIncludePolyfill` needs to be `false` (default)
     const alwaysIncludePolyfill = !options.preferNative || options.alwaysIncludePolyfill;
     const needsFetchPolyfill = alwaysIncludePolyfill || !this._checkSupports('fetch', browsers);
     const needsAbortControllerPolyfill = alwaysIncludePolyfill || !this._checkSupports('abortcontroller', browsers);
 
-    const abortcontrollerNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('abortcontroller-polyfill'))), {
-      rollup: {
-        input: 'src/abortcontroller-polyfill.js',
-        output: {
-          file: 'abortcontroller.js',
-          // abortcontroller is polyfill only, the name is only required by rollup iife
-          name: 'AbortController',
-          format: 'iife'
-        },
-      }
-    }), 'abortcontroller');
+    const inputNodes = [];
+    const inputFiles = [];
 
-    const fetchNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('whatwg-fetch'))), {
-      rollup: {
-        input: 'fetch.js',
-        output: {
-          file: 'fetch.js',
-          name: 'WHATWGFetch',
-          format: 'iife'
+    if (needsAbortControllerPolyfill) {
+      const abortcontrollerNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('abortcontroller-polyfill'))), {
+        rollup: {
+          input: 'src/abortcontroller-polyfill.js',
+          output: {
+            file: 'abortcontroller.js',
+            // abortcontroller is polyfill only, the name is only required by rollup iife
+            name: 'AbortController',
+            format: 'iife'
+          }
         }
-      }
-    }), 'whatwg-fetch');
+      }), 'abortcontroller');
 
-    let inputNodes = [abortcontrollerNode, fetchNode];
-    let inputFiles = ['abortcontroller.js', 'fetch.js'];
+      inputNodes.push(abortcontrollerNode);
+      inputFiles.push('abortcontroller.js');
+    }
 
-    if (!needsFetchPolyfill && needsAbortControllerPolyfill) {
-      inputNodes = [abortcontrollerNode];
-      inputFiles = ['abortcontroller.js'];
+    if (needsFetchPolyfill) {
+      const fetchNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('whatwg-fetch'))), {
+        rollup: {
+          input: 'fetch.js',
+          output: {
+            file: 'fetch.js',
+            name: 'WHATWGFetch',
+            format: 'iife'
+          }
+        }
+      }), 'whatwg-fetch');
+
+      inputNodes.push(fetchNode);
+      inputFiles.push('fetch.js');
     }
 
     const polyfillNode = debug(concat(new MergeTrees(inputNodes), {
       inputFiles,
+      allowNone: true,
       outputFile: 'ember-fetch.js',
       sourceMapConfig: { enabled: false }
     }), 'after-concat');
 
     return debug(new Template(polyfillNode, TEMPLATE_PATH, function(content) {
       return {
-        moduleBody: needsFetchPolyfill || needsAbortControllerPolyfill ? content : ''
+        moduleBody: content
       };
     }), 'browser-fetch');
   },

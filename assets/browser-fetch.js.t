@@ -33,6 +33,10 @@
 
     <%= moduleBody %>
 
+    if (!self.fetch) {
+      throw new Error('fetch is not defined - maybe your browser targets are not covering everything you need?');
+    }
+
     var pending = 0;
     function decrement(result) {
       pending--;

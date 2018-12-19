@@ -30,6 +30,7 @@
     "broccoli-stew": "^2.0.0",
     "broccoli-templater": "^2.0.1",
     "calculate-cache-key-for-tree": "^1.1.0",
+    "caniuse-api": "^3.0.0",
     "ember-cli-babel": "^6.8.2",
     "node-fetch": "^2.3.0",
     "whatwg-fetch": "^3.0.0"

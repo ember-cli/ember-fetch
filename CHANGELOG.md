@@ -1,5 +1,14 @@
 # Changelog
 
+## 6.4.0 (2018-12-19)
+
+#### :rocket: Enhancement
+* [#173](https://github.com/ember-cli/ember-fetch/pull/173) Do not include polyfill if browser targets don't need it ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
+
 ## 6.3.1 (2018-12-13)
 
 #### :rocket: Enhancement
@@ -8,10 +17,12 @@
 #### Committers: 1
 - Matthew Irish ([@meirish](https://github.com/meirish))
 
+
 ## v6.3.0 (2018-12-07)
 
   * Support POST body of all valid types
   * Only set default Content-Type header in adapter mixin
+
 
 ## v6.2.3 (2018-12-07)
 

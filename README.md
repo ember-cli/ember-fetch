@@ -96,7 +96,7 @@ otherwise the polyfilled `fetch` will be installed during the first pass of the 
 
 If set to `false`, the polyfilled `fetch` will replace native `fetch` be there or not.
 
-If all your browser targets (defined in `config/targets.js`) support native `fetch`, and `preferNative: true`, the polyfill will not be included in the output build. If, for some reason, you still need the polyfill to be included in the bundle, you can set `alwaysIncludePolyfill: true`.
+If all your [browser targets](https://guides.emberjs.com/release/configuring-ember/build-targets/) support native `fetch`, and `preferNative: true`, the polyfill will not be included in the output build. If, for some reason, you still need the polyfill to be included in the bundle, you can set `alwaysIncludePolyfill: true`.
 
 The way you do import remains same.
 

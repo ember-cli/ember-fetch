@@ -1,5 +1,5 @@
 import { assign } from '@ember/polyfills'
-import { serializeQueryParams } from '../utils/serialize-query-params';
+import { serializeQueryParams } from './serialize-query-params';
 
 /**
  * Helper function that translates the options passed to `jQuery.ajax` into a format that `fetch` expects.

@@ -1,40 +1,49 @@
-import { assign } from '@ember/polyfills'
+import { assign } from '@ember/polyfills';
 import { serializeQueryParams } from './serialize-query-params';
+import {
+  Method,
+  FetchOptions,
+  AjaxOptions,
+  isPlainObject
+} from 'ember-fetch/types';
 
 /**
  * Helper function that translates the options passed to `jQuery.ajax` into a format that `fetch` expects.
- * @param {Object} _options
- * @returns {Object}
  */
-export default function mungOptionsForFetch(_options) {
-  const options = assign({
-    credentials: 'same-origin',
-  }, _options);
+export default function mungOptionsForFetch(
+  options: AjaxOptions
+): FetchOptions {
+  const hash = assign(
+    {
+      credentials: 'same-origin'
+    },
+    options
+  ) as FetchOptions;
 
   // Default to 'GET' in case `type` is not passed in (mimics jQuery.ajax).
-  options.method = (options.method || options.type || 'GET').toUpperCase();
+  hash.method = (hash.method || hash.type || 'GET').toUpperCase() as Method;
 
-  if (options.data) {
+  if (hash.data) {
     // GET and HEAD requests can't have a `body`
-    if ((options.method === 'GET' || options.method === 'HEAD')) {
+    if (hash.method === 'GET' || hash.method === 'HEAD') {
       // If no options are passed, Ember Data sets `data` to an empty object, which we test for.
-      if (Object.keys(options.data).length) {
+      if (Object.keys(hash.data).length) {
         // Test if there are already query params in the url (mimics jQuey.ajax).
-        const queryParamDelimiter = options.url.indexOf('?') > -1 ? '&' : '?';
-        options.url += `${queryParamDelimiter}${serializeQueryParams(options.data)}`;
+        const queryParamDelimiter = hash.url.indexOf('?') > -1 ? '&' : '?';
+        hash.url += `${queryParamDelimiter}${serializeQueryParams(hash.data)}`;
       }
     } else {
       // NOTE: a request's body cannot be a POJO, so we stringify it if it is.
       // JSON.stringify removes keys with values of `undefined` (mimics jQuery.ajax).
       // If the data is not a POJO (it's a String, FormData, etc), we just set it.
       // If the data is a string, we assume it's a stringified object.
-      if (Object.prototype.toString.call(options.data) === "[object Object]") {
-        options.body = JSON.stringify(options.data);
+      if (isPlainObject(hash.data)) {
+        hash.body = JSON.stringify(hash.data);
       } else {
-        options.body = options.data;
+        hash.body = hash.data;
       }
     }
   }
 
-  return options;
+  return hash;
 }

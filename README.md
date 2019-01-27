@@ -35,6 +35,12 @@ Available imports:
 import fetch, { Headers, Request, Response, AbortController } from 'fetch';
 ```
 
+### Use with TypeScript
+To use `ember-fetch` with TypeScript or enable editor's type support, add `"fetch": "ember-cli/ember-fetch"` to your app's `devDependencies`.
+This will get the current state of `ember-fetch` from this GitHub repo as a dependency.
+
+You can also add `"fetch": ["node_modules/ember-fetch"]` to your `tsconfig.json`.
+
 ### Use with Ember Data
 To have Ember Data utilize `fetch` instead of jQuery.ajax to make calls to your backend, extend your project's `application` adapter with the `adapter-fetch` mixin.
 

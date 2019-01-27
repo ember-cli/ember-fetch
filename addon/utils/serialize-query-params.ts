@@ -1,15 +1,17 @@
+import { isPlainObject } from 'ember-fetch/types';
+
 const RBRACKET = /\[\]$/;
 
 /**
  * Helper function that turns the data/body of a request into a query param string.
  * This is directly copied from jQuery.param.
- * @param {Object} queryParamsObject
- * @returns {String}
  */
-export function serializeQueryParams(queryParamsObject) {
-  var s = [];
+export function serializeQueryParams(
+  queryParamsObject: object | string
+): string {
+  var s: any[] = [];
 
-  function buildParams(prefix, obj) {
+  function buildParams(prefix: string, obj: any) {
     var i, len, key;
 
     if (prefix) {
@@ -18,10 +20,13 @@ export function serializeQueryParams(queryParamsObject) {
           if (RBRACKET.test(prefix)) {
             add(s, prefix, obj[i]);
           } else {
-            buildParams(prefix + '[' + (typeof obj[i] === 'object' ? i : '') + ']', obj[i]);
+            buildParams(
+              prefix + '[' + (typeof obj[i] === 'object' ? i : '') + ']',
+              obj[i]
+            );
           }
         }
-      } else if (obj && String(obj) === '[object Object]') {
+      } else if (isPlainObject(obj)) {
         for (key in obj) {
           buildParams(prefix + '[' + key + ']', obj[key]);
         }
@@ -40,16 +45,15 @@ export function serializeQueryParams(queryParamsObject) {
     return s;
   }
 
-  return buildParams('', queryParamsObject).join('&').replace(/%20/g, '+');
+  return buildParams('', queryParamsObject)
+    .join('&')
+    .replace(/%20/g, '+');
 }
 
 /**
  * Part of the `serializeQueryParams` helper function.
- * @param {Array} s
- * @param {String} k
- * @param {String} v
  */
-function add(s, k, v) {
+function add(s: Array<any>, k: string, v?: string | (() => string)) {
   // Strip out keys with undefined value and replace null values with
   // empty strings (mimics jQuery.ajax)
   if (v === undefined) {

@@ -22,7 +22,7 @@
     "test:all": "mocha && ember try:each"
   },
   "dependencies": {
-    "abortcontroller-polyfill": "^1.2.2",
+    "abortcontroller-polyfill": "^1.2.3",
     "broccoli-concat": "^3.2.2",
     "broccoli-debug": "^0.6.5",
     "broccoli-merge-trees": "^3.0.0",

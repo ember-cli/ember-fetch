@@ -1,7 +1,7 @@
 
 import fetch from 'fetch';
 
-export default async function ajax(
+export default function ajax(
   input: RequestInfo,
   init?: RequestInit
 ): Promise<Response> {

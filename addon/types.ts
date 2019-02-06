@@ -2,12 +2,12 @@ import Mix from '@ember/polyfills/types';
 
 export type Nullable<T> = T | null | undefined;
 
-export interface PlainObject {
-  [key: string]: string | PlainObject | PlainObject[];
+export type PlainObject<T = string | number | boolean> = {
+  [key: string]: T | PlainObject<T> | PlainObject<T>[];
 }
 
-export interface PlainHeaders {
-  [key: string]: string | undefined | null;
+export type PlainHeaders = {
+  [key: string]: string;
 }
 
 export type Method =
@@ -22,13 +22,15 @@ export type Method =
 export type AjaxOptions = {
   url: string;
   type: Method;
-  data?: PlainObject | BodyInit;
+  data?: PlainObject<string> | BodyInit;
   headers?: PlainHeaders;
 };
 
+export type Credentials = 'omit' | 'same-origin' | 'include';
+
 export type FetchOptions = Mix<
   AjaxOptions,
-  { body?: BodyInit | null; method?: Method }
+  { body?: BodyInit | null; method?: Method, credentials: Credentials }
 >;
 
 export function isPlainObject(obj: any): obj is PlainObject {

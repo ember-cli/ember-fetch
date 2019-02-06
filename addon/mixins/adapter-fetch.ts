@@ -15,13 +15,14 @@ import {
   Nullable,
   AjaxOptions
 } from 'ember-fetch/types';
+import { Fix } from '@ember/object/-private/types';
 
 /**
  * Helper function to create a plain object from the response's Headers.
  * Consumed by the adapter's `handleResponse`.
  */
-export function headersToObject(headers: Headers): PlainObject {
-  let headersObject: PlainObject = {};
+export function headersToObject(headers: Headers) {
+  let headersObject: PlainObject<string> = {};
 
   if (headers) {
     headers.forEach((value, key) => (headersObject[key] = value));
@@ -30,8 +31,35 @@ export function headersToObject(headers: Headers): PlainObject {
   return headersObject;
 }
 
-export default Mixin.create({
-  headers: undefined as undefined | PlainHeaders,
+export interface FetchAdapter {
+  headers: undefined | PlainHeaders;
+  ajaxOptions(url: string, type: Method, options: object): FetchOptions;
+  ajax(url: string, type: Method, options: object): RSVP.Promise<void>;
+  _ajaxRequest(
+    options: Mix<RequestInit, { url: string }>
+  ): RSVP.Promise<Response>;
+  _fetchRequest(url: string, options: RequestInit): RSVP.Promise<Response>;
+  ajaxSuccess(
+    adapter: DS.RESTAdapter,
+    response: Response,
+    payload: Nullable<string | object>,
+    requestData: { url: string; method: string }
+  ): object | DS.AdapterError | RSVP.Promise<void>;
+  parseFetchResponseForError(
+    response: Response,
+    payload: Nullable<object | string>
+  ): object | string;
+  ajaxError(
+    adapter: any,
+    response: Response,
+    payload: Nullable<string | object>,
+    requestData: object,
+    error?: Error
+  ): Error | object | DS.AdapterError;
+}
+
+export default Mixin.create<FetchAdapter, DS.RESTAdapter>({
+  headers: undefined,
   /**
    * @override
    */
@@ -129,18 +157,22 @@ export default Mixin.create({
    * @override
    */
   ajaxSuccess(
-    adapter: any,
+    adapter: DS.RESTAdapter,
     response: Response,
     payload: Nullable<string | object>,
     requestData: { url: string; method: string }
-  ): object | DS.AdapterError | RSVP.Promise<never> {
+  ): object | DS.AdapterError | RSVP.Promise<void> {
     const returnResponse = adapter.handleResponse(
       response.status,
       headersToObject(response.headers),
+      // TODO: DS.RESTAdapter annotates payload: {}
+      // @ts-ignore
       payload,
       requestData
     );
 
+    // TODO: DS.RESTAdapter annotates response: {}
+    // @ts-ignore
     if (returnResponse && returnResponse.isAdapterError) {
       return reject(returnResponse);
     } else {
@@ -154,7 +186,7 @@ export default Mixin.create({
    */
   parseFetchResponseForError(
     response: Response,
-    payload: object | string
+    payload: Nullable<object | string>
   ): object | string {
     return payload || response.statusText;
   },
@@ -163,7 +195,7 @@ export default Mixin.create({
    * @override
    */
   ajaxError(
-    adapter: any,
+    adapter: Fix<FetchAdapter & DS.RESTAdapter>,
     response: Response,
     payload: Nullable<string | object>,
     requestData: object,
@@ -179,6 +211,8 @@ export default Mixin.create({
       return adapter.handleResponse(
         response.status,
         headersToObject(response.headers),
+        // TODO: parseErrorResponse is DS.RESTAdapter private API
+        // @ts-ignore
         adapter.parseErrorResponse(parsedResponse) || payload,
         requestData
       );

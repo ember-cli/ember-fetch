@@ -36,10 +36,19 @@ import fetch, { Headers, Request, Response, AbortController } from 'fetch';
 ```
 
 ### Use with TypeScript
-To use `ember-fetch` with TypeScript or enable editor's type support, add `"fetch": "ember-cli/ember-fetch"` to your app's `devDependencies`.
-This will get the current state of `ember-fetch` from this GitHub repo as a dependency.
+To use `ember-fetch` with TypeScript or enable editor's type support, You can add `"fetch": ["node_modules/ember-fetch"]` to your `tsconfig.json`.
 
-You can also add `"fetch": ["node_modules/ember-fetch"]` to your `tsconfig.json`.
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "fetch": [
+        "node_modules/ember-fetch"
+      ]
+    }
+  }
+}
+```
 
 ### Use with Ember Data
 To have Ember Data utilize `fetch` instead of jQuery.ajax to make calls to your backend, extend your project's `application` adapter with the `adapter-fetch` mixin.
@@ -112,7 +121,8 @@ The way you do import remains same.
 
 ## Q & A
 ### Does it work with pretender?
-Yes, [pretender v2.1](https://github.com/pretenderjs/pretender/tree/v2.1.0) comes with `fetch` support.
+
+* Yes, [pretender v2.1](https://github.com/pretenderjs/pretender/tree/v2.1.0) comes with `fetch` support.
 
 ### Does this replace ic-ajax?
 

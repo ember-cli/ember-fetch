@@ -13,6 +13,16 @@ module.exports = {
     'no-console': ["error", { allow: ['warn'] }]
   },
   overrides: [
+    // TypeScript files
+    {
+      files: ['addon/**/*.ts'],
+      parser: '@typescript-eslint/parser',
+      plugins: ['@typescript-eslint'],
+      rules: {
+        'no-undef': 'off',
+        'no-unused-var': 'off'
+      }
+    },
     // node files
     {
       files: [

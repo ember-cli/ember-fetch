@@ -868,7 +868,7 @@
     requireindex "^1.2.0"
     tsutils "^3.7.0"
 
-"@typescript-eslint/parser@1.4.0", "@typescript-eslint/parser@^1.1.0":
+"@typescript-eslint/parser@1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-1.4.0.tgz#44f29af2d97f635a8aedb295eb32ada099cf457f"
   integrity sha512-OvXhpgFCKLxuvoGgtFHQP5gvJvqKGpGjarSPg27E07+OPIcZJ3EpZDdELZuY+0hCA4wqnQ9JzHoTBhdEOMo9Pg==
@@ -877,10 +877,27 @@
     eslint-scope "^4.0.0"
     eslint-visitor-keys "^1.0.0"
 
+"@typescript-eslint/parser@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-1.4.1.tgz#a7cd1a41722da6a37088ea90c0009ea56a27a372"
+  integrity sha512-W+9qep7F4Rn5Eq8F2vkOGbxiy639quYBGvDO6c4p4kIYnKdWj1rBGh3PoyOlaA1v1Dttj23yCRl9Ca9NmdgWCQ==
+  dependencies:
+    "@typescript-eslint/typescript-estree" "1.4.1"
+    eslint-scope "^4.0.0"
+    eslint-visitor-keys "^1.0.0"
+
 "@typescript-eslint/typescript-estree@1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-1.4.0.tgz#d49f6506c4e0ce37c8a5022240d6a440ecf4008f"
   integrity sha512-s0Y1/nMSRwIRK+8umAkvUoKsP12Ze8QMAdjVSYLZbrWy8NlsrTLLhpTR5rPEEW7uCnmJtv40kr51PrYAyaJVOw==
+  dependencies:
+    lodash.unescape "4.0.1"
+    semver "5.5.0"
+
+"@typescript-eslint/typescript-estree@1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-1.4.1.tgz#6ca30b1770db0aee62b92a1c4ac5eaabc332c116"
+  integrity sha512-23nw1CtVklWvkN9RotPjYqpVSzAoXtF9rdqGwyjJ4Bzd6q82CSXOQ+KBRnKePAcwJ2YtOlQQRi9lDX+DIdpCOA==
   dependencies:
     lodash.unescape "4.0.1"
     semver "5.5.0"

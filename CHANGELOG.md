@@ -1,6 +1,15 @@
 # Changelog
 
-## 6.4.0 (2018-12-19)
+## v6.5.0 (2019-03-11)
+
+#### :rocket: Enhancement
+* [#136](https://github.com/ember-cli/ember-fetch/pull/136) TypeScript support ([@xg-wang](https://github.com/xg-wang))
+
+#### Committers: 1
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+
+
+## v6.4.0 (2018-12-19)
 
 #### :rocket: Enhancement
 * [#173](https://github.com/ember-cli/ember-fetch/pull/173) Do not include polyfill if browser targets don't need it ([@mydea](https://github.com/mydea))
@@ -9,7 +18,7 @@
 - Francesco Novy ([@mydea](https://github.com/mydea))
 
 
-## 6.3.1 (2018-12-13)
+## v6.3.1 (2018-12-13)
 
 #### :rocket: Enhancement
 * [#186](https://github.com/ember-cli/ember-fetch/pull/186) handle stringifying data that was created with Object.create(null) ([@meirish](https://github.com/meirish))

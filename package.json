@@ -18,8 +18,8 @@
     "lint:js": "eslint . --cache",
     "start": "ember serve",
     "test": "ember test",
-    "test:node": "mocha",
-    "test:all": "mocha && ember try:each",
+    "test:node": "yarn run prepublishOnly && mocha && yarn run postpublish",
+    "test:all": "yarn run test:node && ember try:each",
     "prepublishOnly": "ember ts:precompile",
     "postpublish": "ember ts:clean"
   },

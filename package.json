@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@types/ember": "^3.1.0",
-    "@types/ember-data": "^3.1.6",
+    "@types/ember-data": "^3.1.7",
     "@types/ember-qunit": "^3.4.6",
     "@types/ember-test-helpers": "^1.0.5",
     "@types/ember-testing-helpers": "^0.0.3",

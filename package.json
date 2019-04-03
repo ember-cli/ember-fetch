@@ -72,7 +72,7 @@
     "ember-source": "~3.8.0",
     "ember-source-channel-url": "^1.0.1",
     "ember-try": "^1.1.0",
-    "eslint": "^5.15.3",
+    "eslint": "^5.16.0",
     "eslint-plugin-ember": "^6.3.0",
     "eslint-plugin-node": "^8.0.0",
     "fs-extra": "^7.0.1",

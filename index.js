@@ -137,7 +137,9 @@ module.exports = {
     if (treeType === 'public') {
       return require('calculate-cache-key-for-tree')('public', this, [!this.parent.parent]);
     } else {
-      return this._super.cacheKeyForTree.call(this, treeType);
+      // make sure results of other treeFor* methods won't get opt-out of cache
+      // including the "treeForVendor"
+      return require('calculate-cache-key-for-tree')(treeType, this);
     }
   },
 

@@ -26,6 +26,7 @@ const concat = require('broccoli-concat');
 const map = stew.map;
 const Rollup = require('broccoli-rollup');
 const BroccoliDebug = require('broccoli-debug');
+const calculateCacheKeyForTree = require('calculate-cache-key-for-tree');
 
 const debug = BroccoliDebug.buildDebugCallback('ember-fetch');
 
@@ -135,11 +136,11 @@ module.exports = {
 
   cacheKeyForTree(treeType) {
     if (treeType === 'public') {
-      return require('calculate-cache-key-for-tree')('public', this, [!this.parent.parent]);
+      return calculateCacheKeyForTree('public', this, [!this.parent.parent]);
     } else {
       // make sure results of other treeFor* methods won't get opt-out of cache
       // including the "treeForVendor"
-      return require('calculate-cache-key-for-tree')(treeType, this);
+      return calculateCacheKeyForTree(treeType, this);
     }
   },
 

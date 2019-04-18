@@ -1,5 +1,14 @@
 # Changelog
 
+## v6.5.1 (2019-04-18)
+
+#### :bug: Bug Fix
+* [#279](https://github.com/ember-cli/ember-fetch/pull/279) Update cacheKeyForTree to cache the treeForVendor ([@2hu12](https://github.com/2hu12))
+
+#### Committers: 1
+- 2hu ([@2hu12](https://github.com/2hu12))
+
+
 ## v6.5.0 (2019-03-11)
 
 #### :rocket: Enhancement

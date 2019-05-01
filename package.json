@@ -34,7 +34,7 @@
     "calculate-cache-key-for-tree": "^2.0.0",
     "caniuse-api": "^3.0.0",
     "ember-cli-babel": "^6.8.2",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.5.0",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {

@@ -68,6 +68,16 @@ module.exports = {
   included: function() {
     this._super.included.apply(this, arguments);
 
+    let isApp = !this.project.isEmberCLIAddon();
+
+    let hasEmberFetch = !!this.project.findAddonByName('ember-fetch');
+    let hasEmberCliFastboot = !!this.project.findAddonByName('ember-cli-fastboot');
+
+    if(isApp && hasEmberCliFastboot && !hasEmberFetch) {
+      throw new Error(`Ember fetch is not installed as top-level dependency of the application using fastboot. Add ember-fetch as dependecy in application's package.json.
+      For details check here - https://github.com/ember-cli/ember-fetch#top-level-addon`);
+    }
+
     let app = this._findApp();
     let importTarget = app;
 

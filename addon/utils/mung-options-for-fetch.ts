@@ -28,7 +28,7 @@ export default function mungOptionsForFetch(
     if (hash.method === 'GET' || hash.method === 'HEAD') {
       // If no options are passed, Ember Data sets `data` to an empty object, which we test for.
       if (Object.keys(hash.data).length) {
-        // Test if there are already query params in the url (mimics jQuey.ajax).
+        // Test if there are already query params in the url (mimics jQuery.ajax).
         const queryParamDelimiter = hash.url.indexOf('?') > -1 ? '&' : '?';
         hash.url += `${queryParamDelimiter}${serializeQueryParams(hash.data)}`;
       }

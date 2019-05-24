@@ -289,4 +289,16 @@ module('Unit | mungOptionsForFetch', function() {
     const postOptions = mungOptionsForFetch(postData);
     assert.equal(postOptions.body, JSON.stringify(data), "'options.body' is properly converted to a string");
   });
+
+  test("mungOptionsForFetch uses a custom serializeQueryParams function when it is specified",assert => {
+    const data = { paramName: [1,2,3]};
+    const postData = {
+      url: 'https://emberjs.com',
+      type: 'GET',
+      data
+    };
+
+    const postOptions = mungOptionsForFetch(postData, () => "custom=0");
+    assert.equal(postOptions.url, "https://emberjs.com?custom=0", "custom serializeQueryParams is used");
+  });
 });

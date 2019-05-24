@@ -1,12 +1,12 @@
 import Mixin from '@ember/object/mixin';
-import { assign } from '@ember/polyfills';
-import RSVP, { reject } from 'rsvp';
+import {assign} from '@ember/polyfills';
+import RSVP, {reject} from 'rsvp';
 import fetch from 'fetch';
 import mungOptionsForFetch from '../utils/mung-options-for-fetch';
 import determineBodyPromise from '../utils/determine-body-promise';
 import DS from 'ember-data';
 import Mix from '@ember/polyfills/types';
-import { get } from '@ember/object';
+import {get} from '@ember/object';
 import {
   PlainObject,
   PlainHeaders,
@@ -56,10 +56,12 @@ export interface FetchAdapter {
     requestData: object,
     error?: Error
   ): Error | object | DS.AdapterError;
+  serializeQueryParams?(queryParamsObject: object | string): string
 }
 
 export default Mixin.create<FetchAdapter, DS.RESTAdapter>({
   headers: undefined,
+  serializeQueryParams: undefined,
   /**
    * @override
    */
@@ -74,7 +76,7 @@ export default Mixin.create<FetchAdapter, DS.RESTAdapter>({
       hash.headers = assign(hash.headers || {}, adapterHeaders);
     }
 
-    const mungedOptions = mungOptionsForFetch(hash);
+    const mungedOptions = mungOptionsForFetch(hash, this.serializeQueryParams);
 
     // Mimics the default behavior in Ember Data's `ajaxOptions`, namely to set the
     // 'Content-Type' header to application/json if it is not a GET request and it has a body.
@@ -107,7 +109,7 @@ export default Mixin.create<FetchAdapter, DS.RESTAdapter>({
 
     return (
       this._ajaxRequest(hash)
-        // @ts-ignore
+      // @ts-ignore
         .catch((error, response, requestData) => {
           throw this.ajaxError(this, response, null, requestData, error);
         })
@@ -119,9 +121,9 @@ export default Mixin.create<FetchAdapter, DS.RESTAdapter>({
         })
         .then(
           ({
-            response,
-            payload
-          }: {
+             response,
+             payload
+           }: {
             response: Response;
             payload: string | object | undefined;
           }) => {

@@ -266,4 +266,34 @@ module('Unit | Mixin | adapter-fetch', function(hooks) {
       }
     });
   });
+
+  test('an overridden serializeQueryParams function is correctly used', function(assert) {
+    const adapter = EmberObject.extend(AdapterFetchMixin, {
+      serializeQueryParams() {
+        return "custom=0"
+      }
+    }).create();
+
+    const options = {
+      url: 'https://emberjs.com',
+      type: 'GET',
+      data: { a: 1 }
+    };
+
+    let returnedOptions = adapter.ajaxOptions(options.url, options.type, options);
+    assert.equal(returnedOptions.url, `${options.url}?custom=0`);
+  });
+
+  test('a set serializeQueryParams function is correctly used', function(assert) {
+    this.basicAdapter.serializeQueryParams = () => "custom=0";
+
+    const options = {
+      url: 'https://emberjs.com',
+      type: 'GET',
+      data: { a: 1 }
+    };
+
+    let returnedOptions = this.basicAdapter.ajaxOptions(options.url, options.type, options);
+    assert.equal(returnedOptions.url, `${options.url}?custom=0`);
+  });
 });

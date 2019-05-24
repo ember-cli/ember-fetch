@@ -1,5 +1,5 @@
 import { assign } from '@ember/polyfills';
-import { serializeQueryParams } from './serialize-query-params';
+import { serializeQueryParams as defaultSerializeQueryParams } from './serialize-query-params';
 import {
   Method,
   FetchOptions,
@@ -11,8 +11,10 @@ import {
  * Helper function that translates the options passed to `jQuery.ajax` into a format that `fetch` expects.
  */
 export default function mungOptionsForFetch(
-  options: AjaxOptions
+  options: AjaxOptions,
+  serializeQueryParams?: (queryParamsObject: object | string) => string
 ): FetchOptions {
+  serializeQueryParams = serializeQueryParams || defaultSerializeQueryParams;
   const hash = assign(
     {
       credentials: 'same-origin'

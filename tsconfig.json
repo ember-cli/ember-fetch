@@ -30,6 +30,7 @@
       "ember-fetch/*": ["addon/*"],
       "ember-fetch/test-support": ["addon-test-support"],
       "ember-fetch/test-support/*": ["addon-test-support/*"],
+      "@ember/debug": ["types/deprecate.d"],
       "*": ["types/*"]
     }
   },

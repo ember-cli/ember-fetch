@@ -1,5 +1,6 @@
 import Mixin from '@ember/object/mixin';
 import { assign } from '@ember/polyfills';
+import { deprecate } from '@ember/debug';
 import RSVP, { reject } from 'rsvp';
 import fetch from 'fetch';
 import mungOptionsForFetch from '../utils/mung-options-for-fetch';
@@ -33,6 +34,7 @@ export function headersToObject(headers: Headers) {
 
 export interface FetchAdapter {
   headers: undefined | PlainHeaders;
+  init(): void;
   ajaxOptions(url: string, type: Method, options: object): FetchOptions;
   ajax(url: string, type: Method, options: object): RSVP.Promise<void>;
   _ajaxRequest(
@@ -60,6 +62,15 @@ export interface FetchAdapter {
 
 export default Mixin.create<FetchAdapter, DS.RESTAdapter>({
   headers: undefined,
+
+  init() {
+    this._super(...arguments);
+    deprecate('FetchAdapter is deprecated, it is no longer required for ember-data>=3.9.2', false, {
+      id: 'deprecate-fetch-ember-data-support',
+      until: '7.0.0'
+    });
+  },
+
   /**
    * @override
    */

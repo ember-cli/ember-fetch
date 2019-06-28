@@ -51,6 +51,9 @@ To use `ember-fetch` with TypeScript or enable editor's type support, You can ad
 ```
 
 ### Use with Ember Data
+
+> ember-data@3.9.2 was released with built-in fetch support, this mixin is no longer needed and will be removed in next major bump.
+
 To have Ember Data utilize `fetch` instead of jQuery.ajax to make calls to your backend, extend your project's `application` adapter with the `adapter-fetch` mixin.
 
 ```js

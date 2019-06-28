@@ -9,6 +9,13 @@ module.exports = {
   env: {
     browser: true
   },
+  globals: {
+    fetch: 'off',
+    Headers: 'off',
+    Request: 'off',
+    Response: 'off',
+    AbortController: 'off',
+  },
   rules: {
     'no-console': ["error", { allow: ['warn'] }]
   },

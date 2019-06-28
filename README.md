@@ -115,6 +115,51 @@ If all your [browser targets](https://guides.emberjs.com/release/configuring-emb
 
 The way you do import remains same.
 
+### Error Handling
+
+`ember-fetch` comes with utility functions for matching responses and their response status codes.
+These utilities are to assist when transitioning from [`ember-ajax`](https://github.com/ember-cli/ember-ajax#error-handling)
+These include
+
+  - `isBadRequestResponse` (400)
+  - `isUnauthorizedResponse` (401)
+  - `isForbiddenResponse` (403)
+  - `isNotFoundResponse` (404)
+  - `isConflictResponse` (409)
+  - `isGoneResponse` (410)
+  - `isInvalidResponse` (422)
+  - `isServerErrorResponse` (5XX)
+  - `isSuccessResponse`
+
+And for aborted requests
+
+  - `isAbortError`
+
+
+```js
+import Route from '@ember/routing/route';
+import fetch from 'fetch';
+import {
+  isUnauthorizedResponse
+} from 'ember-fetch/errors';
+
+export default Route.extend({
+  model: function() {
+    const response = await fetch('/omg.json');
+    
+    if (response.ok) {
+      return response.json();
+    }
+    
+    if (isUnauthorizedResponse(response)) {
+      // handle 401 response
+      return;
+    }
+  }
+});
+
+```
+
 ## Browser Support
 
 * evergreen / IE10+ / Safari 6.1+ https://github.com/github/fetch#browser-support

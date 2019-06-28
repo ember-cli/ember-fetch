@@ -1,5 +1,14 @@
 # Changelog
 
+## v6.6.0 (2019-06-28)
+
+#### :memo: Documentation
+* [#308](https://github.com/ember-cli/ember-fetch/pull/308) Deprecate ember-data adapter mixin ([@xg-wang](https://github.com/xg-wang))
+
+#### Committers: 2
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v6.5.1 (2019-04-18)
 
 #### :bug: Bug Fix

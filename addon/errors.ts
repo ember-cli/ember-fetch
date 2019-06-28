@@ -1,113 +1,70 @@
 /**
- * Checks if the given response is a FetchError
- */
-export function isFetchError(response: Response): boolean {
-  return response.ok === false
-}
-
-/**
  * Checks if the given response represents an unauthorized request error
  */
-export function isUnauthorizedError(response: Response): boolean {
-  if (isFetchError(response)) {
-    return response.status === 401;
-  }
-
-  return false
+export function isUnauthorizedResponse(response: Response): boolean {
+  return response.status === 401;
 }
 
 /**
  * Checks if the given response represents a forbidden request error
  */
-export function isForbiddenError(response: Response): boolean {
-  if (isFetchError(response)) {
-    return response.status === 403;
-  }
-
-  return false
+export function isForbiddenResponse(response: Response): boolean {
+  return response.status === 403;
 }
 
 /**
  * Checks if the given response represents an invalid request error
  */
-export function isInvalidError(response: Response): boolean {
-  if (isFetchError(response)) {
-    return response.status === 422;
-  }
-
-  return false
+export function isInvalidResponse(response: Response): boolean {
+  return response.status === 422;
 }
 
 /**
  * Checks if the given response represents a bad request error
  */
-export function isBadRequestError(response: Response): boolean {
-  if (isFetchError(response)) {
-    return response.status === 400;
-  }
-
-  return false
+export function isBadRequestResponse(response: Response): boolean {
+  return response.status === 400;
 }
 
 /**
  * Checks if the given response represents a "not found" error
  */
-export function isNotFoundError(response: Response): boolean {
-  if (isFetchError(response)) {
-    return response.status === 404;
-  }
-
-  return false
+export function isNotFoundResponse(response: Response): boolean {
+  return response.status === 404;
 }
 
 /**
  * Checks if the given response represents a "gone" error
  */
-export function isGoneError(response: Response): boolean {
-  if (isFetchError(response)) {
-    return response.status === 410;
-  }
-
-  return false
+export function isGoneResponse(response: Response): boolean {
+  return response.status === 410;
 }
 
 /**
- * Checks if the given response represents an "abort" error
+ * Checks if the given error is an "abort" error
  */
-export function isAbortError(response: Response): boolean {
-  if (isFetchError(response)) {
-    return response.status === 0;
-  }
-
-  return false
+export function isAbortError(error: DOMException): boolean {
+  return error.name == 'AbortError';
 }
 
 /**
  * Checks if the given response represents a conflict error
  */
-export function isConflictError(response: Response): boolean {
-  if (isFetchError(response)) {
-    return response.status === 409;
-  }
-
-  return false
+export function isConflictResponse(response: Response): boolean {
+  return response.status === 409;
 }
 
 /**
  * Checks if the given response represents a server error
  */
-export function isServerError(response: Response): boolean {
-  if (isFetchError(response)) {
-    return response.status >= 500 && response.status < 600;
-  }
-
-  return false
+export function isServerErrorResponse(response: Response): boolean {
+  return response.status >= 500 && response.status < 600;
 }
 
 /**
  * Checks if the given status code represents a successful request
  */
-export function isSuccess(response: Response): boolean {
-  const s = response.status
-  return (s >= 200 && s < 300) || s === 304;
+export function isSuccessResponse(response: Response): boolean {
+  const {status, ok} = response;
+  return ok && (status >= 200 && status < 300);
 }

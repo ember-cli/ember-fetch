@@ -1,19 +1,17 @@
 import { module, test } from 'qunit';
 import Pretender from 'pretender';
-import { later } from '@ember/runloop'
 import fetch, {AbortController} from 'fetch';
 import {
-  isFetchError,
-  isUnauthorizedError,
-  isForbiddenError,
-  isNotFoundError,
-  isGoneError,
-  isInvalidError,
-  isBadRequestError,
-  isServerError,
-  isSuccess,
+  isUnauthorizedResponse,
+  isForbiddenResponse,
+  isNotFoundResponse,
+  isGoneResponse,
+  isInvalidResponse,
+  isBadRequestResponse,
+  isServerErrorResponse,
+  isSuccessResponse,
   isAbortError,
-  isConflictError
+  isConflictResponse
 } from 'ember-fetch/errors';
 
 module('Acceptance: Errors', function(hooks) {
@@ -27,7 +25,7 @@ module('Acceptance: Errors', function(hooks) {
     server.shutdown();
   });
 
-  test('isSuccess', async function(assert) {
+  test('isSuccessResponse', async function(assert) {
     server.get('/success', function() {
       return [
         200,
@@ -38,119 +36,105 @@ module('Acceptance: Errors', function(hooks) {
 
     const response = await fetch('/success')
 
-    assert.ok(isSuccess(response))
+    assert.ok(isSuccessResponse(response))
   });
 
-  test('isFetchError', async function(assert) {
-    server.get('/fetch-error', function() {
-      return [
-        999,
-        { 'Content-Type': 'text/json'},
-        JSON.stringify({ name: 'fetch-error' })
-      ];
-    });
-
-    const response = await fetch('/fetch-error')
-
-    assert.ok(isFetchError(response))
-  });
-
-  test('isInvalidError', async function(assert) {
-    server.get('/invalid-error', function() {
+  test('isInvalidResponse', async function(assert) {
+    server.get('/invalid-response', function() {
       return [
         422,
         { 'Content-Type': 'text/json'},
-        JSON.stringify({ name: 'invalid-error' })
+        JSON.stringify({ name: 'invalid-response' })
       ];
     });
 
-    const response = await fetch('/invalid-error')
+    const response = await fetch('/invalid-response')
 
-    assert.ok(isInvalidError(response))
+    assert.ok(isInvalidResponse(response))
   });
 
-  test('isUnauthorizedError', async function(assert) {
-    server.get('/unauthorized-error', function() {
+  test('isUnauthorizedResponse', async function(assert) {
+    server.get('/unauthorized-response', function() {
       return [
         401,
         { 'Content-Type': 'text/json'},
-        JSON.stringify({ name: 'unauthorized-error' })
+        JSON.stringify({ name: 'unauthorized-response' })
       ];
     });
 
-    const response = await fetch('/unauthorized-error')
+    const response = await fetch('/unauthorized-response')
 
-    assert.ok(isUnauthorizedError(response))
+    assert.ok(isUnauthorizedResponse(response))
   });
 
-  test('isForbiddenError', async function(assert) {
-    server.get('/forbidden-error', function() {
+  test('isForbiddenResponse', async function(assert) {
+    server.get('/forbidden-response', function() {
       return [
         403,
         { 'Content-Type': 'text/json'},
-        JSON.stringify({ name: 'forbidden-error' })
+        JSON.stringify({ name: 'forbidden-response' })
       ];
     });
 
-    const response = await fetch('/forbidden-error')
+    const response = await fetch('/forbidden-response')
 
-    assert.ok(isForbiddenError(response))
+    assert.ok(isForbiddenResponse(response))
   });
 
-  test('isNotFoundError', async function(assert) {
-    server.get('/not-found-error', function() {
+  test('isNotFoundResponse', async function(assert) {
+    server.get('/not-found-response', function() {
       return [
         404,
         { 'Content-Type': 'text/json'},
-        JSON.stringify({ name: 'not-found-error' })
+        JSON.stringify({ name: 'not-found-response' })
       ];
     });
 
-    const response = await fetch('/not-found-error')
+    const response = await fetch('/not-found-response')
 
-    assert.ok(isNotFoundError(response))
+    assert.ok(isNotFoundResponse(response))
   });
 
-  test('isGoneError', async function(assert) {
-    server.get('/gone-error', function() {
+  test('isGoneResponse', async function(assert) {
+    server.get('/gone-response', function() {
       return [
         410,
         { 'Content-Type': 'text/json'},
-        JSON.stringify({ name: 'gone-error' })
+        JSON.stringify({ name: 'gone-response' })
       ];
     });
 
-    const response = await fetch('/gone-error')
+    const response = await fetch('/gone-response')
 
-    assert.ok(isGoneError(response))
+    assert.ok(isGoneResponse(response))
   });
 
-  test('isBadRequestError', async function(assert) {
-    server.get('/bad-request-error', function() {
+  test('isBadRequestResponse', async function(assert) {
+    server.get('/bad-request-response', function() {
       return [
         400,
         { 'Content-Type': 'text/json'},
-        JSON.stringify({ name: 'bad-request-error' })
+        JSON.stringify({ name: 'bad-request-response' })
       ];
     });
 
-    const response = await fetch('/bad-request-error')
+    const response = await fetch('/bad-request-response')
 
-    assert.ok(isBadRequestError(response))
+    assert.ok(isBadRequestResponse(response))
   });
 
-  test('isServerError', async function(assert) {
-    server.get('/server-error', function() {
+  test('isServerErrorResponse', async function(assert) {
+    server.get('/server-error-response', function() {
       return [
         555,
         { 'Content-Type': 'text/json'},
-        JSON.stringify({ name: 'server-error' })
+        JSON.stringify({ name: 'server-error-response' })
       ];
     });
 
-    const response = await fetch('/server-error')
+    const response = await fetch('/server-error-response')
 
-    assert.ok(isServerError(response))
+    assert.ok(isServerErrorResponse(response))
   });
 
   test('isAbortError', async function(assert) {
@@ -165,24 +149,24 @@ module('Acceptance: Errors', function(hooks) {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    later(controller, 'abort', 500);
+    controller.abort()
 
-    const response = await fetch('/abort-error', {signal})
-
-    assert.ok(isAbortError(response))
+    assert.rejects(fetch('/abort-error', {signal}), function (error) {
+      return isAbortError(error)
+    })
   });
 
-  test('isConflictError', async function(assert) {
-    server.get('/conflict-error', function() {
+  test('isConflictResponse', async function(assert) {
+    server.get('/conflict-response', function() {
       return [
         409,
         { 'Content-Type': 'text/json'},
-        JSON.stringify({ name: 'conflict-error' })
+        JSON.stringify({ name: 'conflict-response' })
       ];
     });
 
-    const response = await fetch('/conflict-error')
+    const response = await fetch('/conflict-response')
 
-    assert.ok(isConflictError(response))
+    assert.ok(isConflictResponse(response))
   });
 });

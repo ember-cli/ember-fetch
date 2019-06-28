@@ -1,74 +1,65 @@
 import { module, test } from 'qunit';
+import {Response} from 'fetch';
 
 import {
-  isFetchError,
-  isUnauthorizedError,
-  isForbiddenError,
-  isNotFoundError,
-  isGoneError,
-  isInvalidError,
-  isBadRequestError,
-  isServerError,
-  isSuccess,
+  isUnauthorizedResponse,
+  isForbiddenResponse,
+  isNotFoundResponse,
+  isGoneResponse,
+  isInvalidResponse,
+  isBadRequestResponse,
+  isServerErrorResponse,
+  isSuccessResponse,
   isAbortError,
-  isConflictError
+  isConflictResponse
 } from 'ember-fetch/errors';
 
 module('Errors', function() {
-  test('isUnauthorizedError', function(assert) {
-    assert.ok(isUnauthorizedError({ ok: false, status: 401 }));
+  test('isUnauthorizedResponse', function(assert) {
+    assert.ok(isUnauthorizedResponse(new Response(null, { status: 401 })));
   });
 
-  test('isForbiddenError', function(assert) {
-    assert.ok(isForbiddenError({ ok: false, status: 403 }));
+  test('isForbiddenResponse', function(assert) {
+    assert.ok(isForbiddenResponse(new Response(null, { status: 403 })));
   });
 
-  test('isNotFoundError', function(assert) {
-    assert.ok(isNotFoundError({ ok: false, status: 404 }));
-    assert.notOk(isNotFoundError({ ok: false, status: 400 }));
+  test('isNotFoundResponse', function(assert) {
+    assert.ok(isNotFoundResponse(new Response(null, { status: 404 })));
+    assert.notOk(isNotFoundResponse(new Response(null, { status: 400 })));
   });
 
-  test('isGoneError', function(assert) {
-    assert.ok(isGoneError({ ok: false, status: 410 }));
-    assert.notOk(isGoneError({ ok: false, status: 400 }));
+  test('isGoneResponse', function(assert) {
+    assert.ok(isGoneResponse(new Response(null, { status: 410 })));
+    assert.notOk(isGoneResponse(new Response(null, { status: 400 })));
   });
 
-  test('isInvalidError', function(assert) {
-    assert.ok(isInvalidError({ ok: false, status: 422 }));
+  test('isInvalidResponse', function(assert) {
+    assert.ok(isInvalidResponse(new Response(null, { status: 422 })));
   });
 
-  test('isBadRequestError', function(assert) {
-    assert.ok(isBadRequestError({ ok: false, status: 400 }));
+  test('isBadRequestResponse', function(assert) {
+    assert.ok(isBadRequestResponse(new Response(null, { status: 400 })));
   });
 
-  test('isServerError', function(assert) {
-    assert.notOk(isServerError({ ok: false, status: 499 }));
-    assert.ok(isServerError({ ok: false, status: 500 }));
-    assert.ok(isServerError({ ok: false, status: 599 }));
-    assert.notOk(isServerError({ ok: false, status: 600 }));
-  });
-
-  test('isFetchError', function(assert) {
-    assert.ok(isFetchError({ ok: false }));
-    assert.notOk(isFetchError({ ok: true }));
+  test('isServerErrorResponse', function(assert) {
+    assert.notOk(isServerErrorResponse(new Response(null, { status: 499 })));
+    assert.ok(isServerErrorResponse(new Response(null, { status: 500 })));
+    assert.ok(isServerErrorResponse(new Response(null, { status: 599 })));
   });
 
   test('isAbortError', function(assert) {
-    assert.ok(isAbortError({ ok: false, status: 0 }));
+    assert.ok(isAbortError(new DOMException('AbortError', 'AbortError')));
   });
 
-  test('isConflictError', function(assert) {
-    assert.ok(isConflictError({ ok: false, status: 409 }));
+  test('isConflictResponse', function(assert) {
+    assert.ok(isConflictResponse(new Response(null, { status: 409 })));
   });
 
-  test('isSuccess', function(assert) {
-    assert.notOk(isSuccess({ ok: false, status: 100 }));
-    assert.notOk(isSuccess({ ok: false, status: 199 }));
-    assert.ok(isSuccess({ ok: false, status: 200 }));
-    assert.ok(isSuccess({ ok: false, status: 299 }));
-    assert.notOk(isSuccess({ ok: false, status: 300 }));
-    assert.ok(isSuccess({ ok: false, status: 304 }));
-    assert.notOk(isSuccess({ ok: false, status: 400 }));
-    assert.notOk(isSuccess({ ok: false, status: 500 }));
+  test('isSuccessResponse', function(assert) {
+    assert.ok(isSuccessResponse(new Response(null, { status: 200 })));
+    assert.ok(isSuccessResponse(new Response(null, { status: 299 })));
+    assert.notOk(isSuccessResponse(new Response(null, { status: 300 })));
+    assert.notOk(isSuccessResponse(new Response(null, { status: 400 })));
+    assert.notOk(isSuccessResponse(new Response(null, { status: 500 })));
   });
 });

@@ -60,11 +60,3 @@ export function isConflictResponse(response: Response): boolean {
 export function isServerErrorResponse(response: Response): boolean {
   return response.status >= 500 && response.status < 600;
 }
-
-/**
- * Checks if the given status code represents a successful request
- */
-export function isSuccessResponse(response: Response): boolean {
-  const {status, ok} = response;
-  return ok && (status >= 200 && status < 300);
-}

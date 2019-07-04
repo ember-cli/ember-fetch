@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import {Response} from 'fetch';
+import { Response } from 'fetch';
 
 import {
   isUnauthorizedResponse,
@@ -9,7 +9,6 @@ import {
   isInvalidResponse,
   isBadRequestResponse,
   isServerErrorResponse,
-  isSuccessResponse,
   isAbortError,
   isConflictResponse
 } from 'ember-fetch/errors';
@@ -53,13 +52,5 @@ module('Errors', function() {
 
   test('isConflictResponse', function(assert) {
     assert.ok(isConflictResponse(new Response(null, { status: 409 })));
-  });
-
-  test('isSuccessResponse', function(assert) {
-    assert.ok(isSuccessResponse(new Response(null, { status: 200 })));
-    assert.ok(isSuccessResponse(new Response(null, { status: 299 })));
-    assert.notOk(isSuccessResponse(new Response(null, { status: 300 })));
-    assert.notOk(isSuccessResponse(new Response(null, { status: 400 })));
-    assert.notOk(isSuccessResponse(new Response(null, { status: 500 })));
   });
 });

@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import Pretender from 'pretender';
-import fetch, {AbortController} from 'fetch';
+import fetch, { AbortController } from 'fetch';
 import {
   isUnauthorizedResponse,
   isForbiddenResponse,
@@ -9,7 +9,6 @@ import {
   isInvalidResponse,
   isBadRequestResponse,
   isServerErrorResponse,
-  isSuccessResponse,
   isAbortError,
   isConflictResponse
 } from 'ember-fetch/errors';
@@ -23,20 +22,6 @@ module('Acceptance: Errors', function(hooks) {
 
   hooks.afterEach(function() {
     server.shutdown();
-  });
-
-  test('isSuccessResponse', async function(assert) {
-    server.get('/success', function() {
-      return [
-        200,
-        { 'Content-Type': 'text/json'},
-        JSON.stringify({ name: 'success' })
-      ];
-    });
-
-    const response = await fetch('/success')
-
-    assert.ok(isSuccessResponse(response))
   });
 
   test('isInvalidResponse', async function(assert) {

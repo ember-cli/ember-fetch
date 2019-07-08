@@ -1,4 +1,5 @@
 import { module, test } from 'qunit';
+import { Response } from 'fetch';
 import determineBodyPromise from 'ember-fetch/utils/determine-body-promise';
 
 module('Unit | determineBodyPromise', function() {

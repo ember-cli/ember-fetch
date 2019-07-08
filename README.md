@@ -118,6 +118,56 @@ If all your [browser targets](https://guides.emberjs.com/release/configuring-emb
 
 The way you do import remains same.
 
+### Error Handling
+
+A `fetch` response is successful if `response.ok` is true,
+otherwise you can read the status code to determine the bad response type.
+`fetch` will only reject with [network errors](https://fetch.spec.whatwg.org/#concept-network-error).
+
+`ember-fetch` provides some utility functions:
+
+  - `isBadRequestResponse` (400)
+  - `isUnauthorizedResponse` (401)
+  - `isForbiddenResponse` (403)
+  - `isNotFoundResponse` (404)
+  - `isConflictResponse` (409)
+  - `isGoneResponse` (410)
+  - `isInvalidResponse` (422)
+  - `isServerErrorResponse` (5XX)
+  - `isAbortError` [Aborted network error](https://fetch.spec.whatwg.org/#concept-aborted-network-error)
+
+
+```js
+import Route from '@ember/routing/route';
+import fetch from 'fetch';
+import {
+  isAbortError,
+  isServerErrorResponse,
+  isUnauthorizedResponse
+} from 'ember-fetch/errors';
+
+export default Route.extend({
+  model() {
+    return fetch('/omg.json')
+      .then(function(response) {
+        if (response.ok) {
+          return response.json();
+        } else if (isUnauthorizedResponse(response)) {
+          // handle 401 response
+        } else if (isServerErrorResponse(response)) {
+          // handle 5xx respones
+        }
+      })
+      .catch(function(error) {
+        if (isAbortError(error)) {
+          // handle aborted network error
+        }
+        // handle network error
+      });
+  }
+});
+```
+
 ## Browser Support
 
 * evergreen / IE10+ / Safari 6.1+ https://github.com/github/fetch#browser-support

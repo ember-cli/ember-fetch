@@ -144,27 +144,25 @@ import {
 } from 'ember-fetch/errors';
 
 export default Route.extend({
-  model: function() {
-    try {
-      const response = await fetch('/omg.json');
-      
-      if (response.ok) {
-        return response.json();
-      } else if (isUnauthorizedResponse(response)) {
-        // handle 401 response
-      } else if (isServerErrorResponse(response)) {
-        // handle 5xx respones
-      }
-    } catch (e) {
-      if (isAbortError(error)) {
-        // handle aborted network error
-      }
-      // handle network error
-    }
-
+  model() {
+    return fetch('/omg.json')
+      .then(function(response) {
+        if (response.ok) {
+          return response.json();
+        } else if (isUnauthorizedResponse(response)) {
+          // handle 401 response
+        } else if (isServerErrorResponse(response)) {
+          // handle 5xx respones
+        }
+      })
+      .catch(function(error) {
+        if (isAbortError(error)) {
+          // handle aborted network error
+        }
+        // handle network error
+      });
   }
 });
-
 ```
 
 ## Browser Support

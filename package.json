@@ -64,7 +64,7 @@
     "ember-cli-release": "^0.2.9",
     "ember-cli-typescript": "^1.5.0",
     "ember-cli-uglify": "^2.0.0",
-    "ember-data": "~3.10.0",
+    "ember-data": "~3.11.4",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-load-initializers": "^2.0.0",
     "ember-maybe-import-regenerator": "^0.1.6",

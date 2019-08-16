@@ -28,7 +28,7 @@
     "broccoli-concat": "^3.2.2",
     "broccoli-debug": "^0.6.5",
     "broccoli-merge-trees": "^3.0.0",
-    "broccoli-rollup": "^4.1.1",
+    "broccoli-rollup": "^2.1.1",
     "broccoli-stew": "^3.0.0",
     "broccoli-templater": "^2.0.1",
     "calculate-cache-key-for-tree": "^2.0.0",
@@ -39,6 +39,7 @@
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
+    "@ember/optional-features": "^0.7.0",
     "@types/ember": "^3.1.0",
     "@types/ember-data": "^3.1.7",
     "@types/ember-qunit": "^3.4.6",
@@ -49,6 +50,7 @@
     "@types/rsvp": "^4.0.3",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
+    "babel-eslint": "^10.0.2",
     "broccoli-asset-rev": "^3.0.0",
     "broccoli-test-helper": "^2.0.0",
     "chai": "^4.1.2",

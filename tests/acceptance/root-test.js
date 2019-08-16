@@ -3,7 +3,7 @@ import { setupApplicationTest } from 'ember-qunit';
 import { visit, click, find, currentRouteName } from '@ember/test-helpers';
 import Pretender from 'pretender';
 import fetch from 'fetch';
-import $ from 'jquery';
+
 var server;
 
 module('Acceptance: Root', function(hooks) {
@@ -29,8 +29,8 @@ module('Acceptance: Root', function(hooks) {
     await visit('/');
 
     assert.equal(currentRouteName(), 'index');
-    assert.equal($.trim($('.fetch').text()), 'Hello World! fetch');
-    assert.equal($.trim($('.ajax').text()), 'Hello World! ajax');
+    assert.equal(this.element.querySelector('.fetch').textContent.trim(), 'Hello World! fetch');
+    assert.equal(this.element.querySelector('.ajax').textContent.trim(), 'Hello World! ajax');
   });
 
   test('posting a string', function(assert) {

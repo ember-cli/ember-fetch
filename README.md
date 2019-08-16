@@ -15,6 +15,8 @@ HTML5 [fetch](https://fetch.spec.whatwg.org) polyfill from [github](https://gith
 
 * `ember install ember-fetch`
 
+ember-fetch requries ember-cli 2.13 or above.
+
 ## Usage
 
 ```js

@@ -9,6 +9,7 @@
     "alwaysStrict": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
+    "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
@@ -42,4 +43,5 @@
     "test-support/**/*",
     "addon-test-support/**/*"
   ]
+}
 }

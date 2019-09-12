@@ -1,5 +1,14 @@
 # Changelog
 
+## v6.7.1 (2019-09-12)
+
+#### :bug: Bug Fix
+* [#358](https://github.com/ember-cli/ember-fetch/pull/358) Enable absolute url transform for Request in FastBoot ([@xg-wang](https://github.com/xg-wang))
+
+#### Committers: 2
+- Jan Bobisud ([@bobisjan](https://github.com/bobisjan))
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+
 ## v6.7.0 (2019-07-08)
 
 #### :rocket: Enhancement

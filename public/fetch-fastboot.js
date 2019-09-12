@@ -34,6 +34,18 @@ define('fetch', ['exports'], function(exports) {
 
   var FastbootHost, FastbootProtocol;
 
+  class FastBootRequest extends nodeFetch.Request {
+    constructor(input, init) {
+      if (typeof input === 'string') {
+        input = buildAbsoluteUrl(input, FastbootProtocol, FastbootHost);
+      } else if (input && input.href) {
+        // WHATWG URL or Node.js Url Object
+        input = buildAbsoluteUrl(input.href, FastbootProtocol, FastbootHost);
+      }
+      super(input, init);
+    }
+  }
+
   /**
    * Isomorphic `fetch` API for both browser and fastboot
    *
@@ -47,9 +59,9 @@ define('fetch', ['exports'], function(exports) {
    * @param {Object} [options]
    */
   exports.default = function fetch(input, options) {
-    if (typeof input === 'object') {
-      input.url = buildAbsoluteUrl(input.url, FastbootProtocol, FastbootHost);
-    } else {
+    if (input && input.href) {
+      input.url = buildAbsoluteUrl(input.href, FastbootProtocol, FastbootHost);
+    } else if (typeof input === 'string') {
       input = buildAbsoluteUrl(input, FastbootProtocol, FastbootHost);
     }
     return nodeFetch(input, options);
@@ -62,7 +74,7 @@ define('fetch', ['exports'], function(exports) {
     FastbootProtocol = protocol;
     FastbootHost = host;
   }
-  exports.Request = nodeFetch.Request;
+  exports.Request = FastBootRequest;
   exports.Headers = nodeFetch.Headers;
   exports.Response = nodeFetch.Response;
   exports.AbortController = AbortControllerPolyfill.AbortController;

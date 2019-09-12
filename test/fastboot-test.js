@@ -55,6 +55,7 @@ describe('renders in fastboot build', function() {
       }
     }).then(function(response) {
       expect(response.body).to.contain('Hello World! fetch');
+      expect(response.body).to.contain('Hello World! fetch (Request)');
     });
   });
 });

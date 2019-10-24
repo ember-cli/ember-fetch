@@ -68,6 +68,10 @@ export default DS.RESTAdapter.extend(AdapterFetch, {
 });
 ```
 
+### Top Level Addon
+For addon authors, `ember-fetch` should also be listed as a [peer dependency](https://docs.npmjs.com/files/package.json#peerdependencies),
+host app needs to install `ember-fetch` at top level.
+
 ### Use with Fastboot
 #### ajax-service
 Currently, Fastboot supplies its own server-side ajax functionality, and including `ember-fetch` and the `adapter-fetch` mixin in a Fastboot app will not work without some modifications. To allow the `node-fetch` polyfill that is included with this addon to make your API calls, you must add an initializer to the consuming app's `fastboot` directory that overrides the one Fastboot utilizes to inject its own ajax.
@@ -95,10 +99,6 @@ export default {
 
 However, `ember-fetch` grabs the `protocol` and `host` info from fastboot request after the `instance-initializes`.
 This allows you to make a relative URL request unless the app is not initialized, e.g. `initializers` and `app.js`.
-
-#### top-level addon
-For addon authors, if the addon supports Fastboot mode, `ember-fetch` should also be listed as a [peer dependency](https://docs.npmjs.com/files/package.json#peerdependencies).
-This is because Fastboot only invokes top-level addon's `updateFastBootManifest` ([detail](https://github.com/ember-fastboot/ember-cli-fastboot/issues/597)), thus `ember-fetch` has to be a top-level addon installed by the host app.
 
 ### Allow native fetch
 `ember-fetch` allows access to native fetch in browser through a build config flag:

@@ -26,7 +26,7 @@ const concat = require('broccoli-concat');
 const map = stew.map;
 const Rollup = require('broccoli-rollup');
 const BroccoliDebug = require('broccoli-debug');
-const calculateCacheKeyForTree = require('calculate-cache-key-for-tree');
+const SilentError = require('silent-error');
 
 const debug = BroccoliDebug.buildDebugCallback('ember-fetch');
 
@@ -65,23 +65,20 @@ module.exports = {
    * which allows us to use the `import()` method to tell it to include a file
    * from our `vendor` tree into the final built app.
    */
-  included: function() {
+  included(app) {
     this._super.included.apply(this, arguments);
 
-    let app = this._findApp();
-    let importTarget = app;
-
-    if (typeof this.import === 'function') {
-      importTarget = this;
+    if (this.parent.parent) {
+      throw new SilentError(`ember-fetch is found to be dependency of "${this.parent.name}", please only install ember-fetch as top-level addon to avoid conflict versions or duplicate assets.`);
     }
 
-    app._fetchBuildConfig = Object.assign({
+    this._fetchBuildConfig = Object.assign({
       preferNative: false,
       alwaysIncludePolyfill: false,
       browsers: this.project.targets && this.project.targets.browsers
     }, app.options['ember-fetch']);
 
-    importTarget.import('vendor/ember-fetch.js', {
+    app.import('vendor/ember-fetch.js', {
       exports: {
         default: [
           'default',
@@ -106,8 +103,7 @@ module.exports = {
   treeForVendor() {
     let babelAddon = this.addons.find(addon => addon.name === 'ember-cli-babel');
 
-    const app = this._findApp();
-    const options = app._fetchBuildConfig;
+    const options = this._fetchBuildConfig;
 
     let browserTree = this.treeForBrowserFetch(options);
     if (babelAddon) {
@@ -127,21 +123,6 @@ module.exports = {
       var preferNative = ${preferNative};
       ${content}
     }`), 'wrapped');
-  },
-
-  // Only include public/fetch-fastboot.js if top level addon
-  treeForPublic() {
-    return !this.parent.parent ? this._super.treeForPublic.apply(this, arguments) : null;
-  },
-
-  cacheKeyForTree(treeType) {
-    if (treeType === 'public') {
-      return calculateCacheKeyForTree('public', this, [!this.parent.parent]);
-    } else {
-      // make sure results of other treeFor* methods won't get opt-out of cache
-      // including the "treeForVendor"
-      return calculateCacheKeyForTree(treeType, this);
-    }
   },
 
   // Add node version of fetch.js into fastboot package.json manifest vendorFiles array
@@ -217,23 +198,5 @@ module.exports = {
 
     let browserList = browsers.join(', ');
     return caniuse.isSupported(featureName, browserList);
-  },
-
-  _findApp() {
-    if (typeof this._findHost === 'function') {
-      return this._findHost();
-    } else {
-      // Otherwise, we'll use this implementation borrowed from the _findHost()
-      // method in ember-cli.
-      // Keep iterating upward until we don't have a grandparent.
-      // Has to do this grandparent check because at some point we hit the project.
-      let app;
-      let current = this;
-      do {
-         app = current.app || this;
-      } while (current.parent && current.parent.parent && (current = current.parent));
-
-      return app;
-    }
-  },
+  }
 };

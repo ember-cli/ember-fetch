@@ -36,6 +36,7 @@
     "ember-cli-babel": "^7.10.0",
     "ember-cli-typescript": "^2.0.2",
     "node-fetch": "^2.6.0",
+    "silent-error": "^1.1.1",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
@@ -56,6 +57,7 @@
     "chai": "^4.1.2",
     "chai-fs": "^2.0.0",
     "co": "^4.6.0",
+    "core-object": "^3.1.5",
     "ember-cli": "~3.9.0",
     "ember-cli-addon-tests": "^0.11.1",
     "ember-cli-dependency-checker": "^3.2.0",

@@ -8,6 +8,14 @@ define('fetch', ['exports'], function(exports) {
   );
   var nodeFetch = FastBoot.require('node-fetch');
 
+  function _checkHost(host) {
+    if (host === null) {
+      throw new Error(
+        'You are using using fetch with a relative URL, but host is missing from Fastboot request. Please set the hostWhitelist property in your environment.js. https://github.com/ember-fastboot/ember-cli-fastboot#host'
+      );
+    }
+  }
+
   /**
    * Build the absolute url if it's not, can handle:
    * - protocol-relative URL (//can-be-http-or-https.com/)
@@ -20,19 +28,17 @@ define('fetch', ['exports'], function(exports) {
    */
   function buildAbsoluteUrl(url, protocol, host) {
     if (protocolRelativeRegex.test(url)) {
+      _checkHost(host);
       url = host + url;
     } else if (!httpRegex.test(url)) {
-      if (!host) {
-        throw new Error(
-          'You are using using fetch with a path-relative URL, but host is missing from Fastboot request. Please set the hostWhitelist property in your environment.js.'
-        );
-      }
+      _checkHost(host);
       url = protocol + '//' + host + url;
     }
     return url;
   }
 
-  var FastbootHost, FastbootProtocol;
+  var FastbootHost = null;
+  var FastbootProtocol = null;
 
   class FastBootRequest extends nodeFetch.Request {
     constructor(input, init) {

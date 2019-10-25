@@ -9,8 +9,12 @@ function patchFetchForRelativeURLs(instance) {
   const request = fastboot.get('request');
   // Prember is not sending protocol
   const protocol = request.protocol === 'undefined:' ? 'http:' : request.protocol;
-  // host is cp
-  setupFastboot(protocol, request.get('host'));
+  try {
+    // host is cp
+    setupFastboot(protocol, request.get('host'));
+  } catch (_e) {
+    // Do not throw error until request with a relative url.
+  }
 }
 
 export default {

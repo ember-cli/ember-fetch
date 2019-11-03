@@ -8,39 +8,42 @@ define('fetch', ['exports'], function(exports) {
   );
   var nodeFetch = FastBoot.require('node-fetch');
 
+  function parseRequest(request) {
+    if (request === null) {
+      throw new Error('Trying to fetch with relative url but ember-fetch hasn\'t finished loading FastBootInfo, see details at https://github.com/ember-cli/ember-fetch#relative-url');
+    }
+    // Old Prember version is not sending protocol
+    const protocol = request.protocol === 'undefined:' ? 'http:' : request.protocol;
+    return [request.get('host'), protocol];
+  }
+
   /**
    * Build the absolute url if it's not, can handle:
    * - protocol-relative URL (//can-be-http-or-https.com/)
    * - path-relative URL (/file/under/root)
    *
-   * @param {string} url
-   * @param {string} protocol
-   * @param {string} host
    * @returns {string}
    */
-  function buildAbsoluteUrl(url, protocol, host) {
+  function buildAbsoluteUrl(url) {
     if (protocolRelativeRegex.test(url)) {
+      let [host,] = parseRequest(REQUEST);
       url = host + url;
     } else if (!httpRegex.test(url)) {
-      if (!host) {
-        throw new Error(
-          'You are using using fetch with a path-relative URL, but host is missing from Fastboot request. Please set the hostWhitelist property in your environment.js.'
-        );
-      }
+      let [host, protocol] = parseRequest(REQUEST);
       url = protocol + '//' + host + url;
     }
     return url;
   }
 
-  var FastbootHost, FastbootProtocol;
+  var REQUEST = null;
 
   class FastBootRequest extends nodeFetch.Request {
     constructor(input, init) {
       if (typeof input === 'string') {
-        input = buildAbsoluteUrl(input, FastbootProtocol, FastbootHost);
+        input = buildAbsoluteUrl(input);
       } else if (input && input.href) {
         // WHATWG URL or Node.js Url Object
-        input = buildAbsoluteUrl(input.href, FastbootProtocol, FastbootHost);
+        input = buildAbsoluteUrl(input.href);
       }
       super(input, init);
     }
@@ -60,19 +63,18 @@ define('fetch', ['exports'], function(exports) {
    */
   exports.default = function fetch(input, options) {
     if (input && input.href) {
-      input.url = buildAbsoluteUrl(input.href, FastbootProtocol, FastbootHost);
+      input.url = buildAbsoluteUrl(input.href);
     } else if (typeof input === 'string') {
-      input = buildAbsoluteUrl(input, FastbootProtocol, FastbootHost);
+      input = buildAbsoluteUrl(input);
     }
     return nodeFetch(input, options);
   };
   /**
-   * Assign the local protocol and host being used for building absolute URLs
+   * Assign the local REQUEST object for building absolute URLs
    * @private
    */
-  exports.setupFastboot = function setupFastboot(protocol, host) {
-    FastbootProtocol = protocol;
-    FastbootHost = host;
+  exports.setupFastboot = function setupFastboot(fastBootRequest) {
+    REQUEST = fastBootRequest;
   }
   exports.Request = FastBootRequest;
   exports.Headers = nodeFetch.Headers;

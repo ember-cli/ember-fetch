@@ -7,7 +7,7 @@ chai.use(require('chai-fs'));
 
 const AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 
-describe('renders in fastboot build without calling fetch', function() {
+describe('renders in fastboot build', function() {
   this.timeout(300000);
 
   let app;
@@ -16,7 +16,7 @@ describe('renders in fastboot build without calling fetch', function() {
     app = new AddonTestApp();
 
     return app
-      .create('fresh', { skipNpm: true, noFixtures: true })
+      .create('dummy', { skipNpm: true })
       .then(app =>
         app.editPackageJSON(pkg => {
           pkg.devDependencies['ember-cli-fastboot'] = '*';
@@ -41,20 +41,15 @@ describe('renders in fastboot build without calling fetch', function() {
     return app.stopServer();
   });
 
-  it('builds into dist/ember-fetch/fetch-fastboot.js ignoring sub dependency version conflict', function() {
-    expect(app.filePath('dist/index.html')).to.be.a.file();
-    expect(app.filePath('dist/ember-fetch/fetch-fastboot.js')).to.be.a.file();
-    expect(app.filePath('dist/assets/fresh-fastboot.js')).to.be.a.file();
-  });
-
-  it('fresh serve works', function() {
+  it('fetches in fastboot mode', function() {
     return get({
       url: 'http://localhost:49741/',
       headers: {
         Accept: 'text/html'
       }
     }).then(function(response) {
-      expect(response.body).to.contain('Congratulations, you made it!');
+      expect(response.body).to.contain('Hello World! fetch');
+      expect(response.body).to.contain('Hello World! fetch (Request)');
     });
   });
 });

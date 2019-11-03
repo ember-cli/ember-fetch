@@ -1,5 +1,14 @@
 # Changelog
 
+## v6.7.2 (2019-11-03)
+
+#### :bug: Bug Fix
+* [#372](https://github.com/ember-cli/ember-fetch/pull/372) fix: throwing w/ fresh ember-cli-fastboot serve ([@xg-wang](https://github.com/x
+g-wang))
+
+#### Committers: 1
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+
 ## v6.7.1 (2019-09-12)
 
 #### :bug: Bug Fix

@@ -83,7 +83,7 @@
     "lerna-changelog": "^0.8.2",
     "loader.js": "^4.2.3",
     "mocha": "^6.1.4",
-    "typescript": "^3.5.3"
+    "typescript": "^3.7.2"
   },
   "resolutions": {
     "**/engine.io": "~3.3.0"

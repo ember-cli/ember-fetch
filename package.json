@@ -80,7 +80,7 @@
     "eslint-plugin-node": "^10.0.0",
     "fs-extra": "^8.0.1",
     "glob": "^7.1.4",
-    "lerna-changelog": "^0.8.2",
+    "lerna-changelog": "^0.8.3",
     "loader.js": "^4.2.3",
     "mocha": "^6.1.4",
     "typescript": "^3.7.2"

@@ -17,6 +17,7 @@ import {
   AjaxOptions
 } from 'ember-fetch/types';
 import { Fix } from '@ember/object/-private/types';
+import { lte } from 'ember-compatibility-helpers';
 
 /**
  * Helper function to create a plain object from the response's Headers.
@@ -65,7 +66,9 @@ export default Mixin.create<FetchAdapter, DS.RESTAdapter>({
 
   init() {
     this._super(...arguments);
-    deprecate('FetchAdapter is deprecated, it is no longer required for ember-data>=3.9.2', false, {
+    // TS currently fails on the `lte()` check due to https://github.com/pzuraq/ember-compatibility-helpers/issues/34
+    // @ts-ignore
+    deprecate('FetchAdapter is deprecated, it is no longer required for ember-data>=3.9.2', lte('ember-data', '3.9.1'), {
       id: 'deprecate-fetch-ember-data-support',
       until: '7.0.0'
     });

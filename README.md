@@ -199,3 +199,33 @@ export default Route.extend({
 * we actually don't bundle github/fetch rather we merely wrap/transform what
   comes from `node_modules`, so we should be resilient to changes assuming
   semver from the fetch module
+  
+## Deprecations
+
+### deprecate-fetch-ember-data-support
+
+Starting with [`ember-data`](https://www.npmjs.com/package/ember-data) v3.9.2, the library comes with built-in fetch support.
+To address this deprecation, find imports and uses of the `ember-fetch/mixins/adapter-fetch` module:
+
+Before:
+
+```
+// app/adapters/application.js
+import DS from 'ember-data';
+import AdapterFetch from 'ember-fetch/mixins/adapter-fetch';
+
+export default DS.RESTAdapter.extend(AdapterFetch, {
+  …
+});
+```
+
+After:
+
+```
+// app/adapters/application.js
+import DS from 'ember-data';
+
+export default DS.RESTAdapter.extend({
+  …
+});
+```

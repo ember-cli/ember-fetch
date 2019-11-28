@@ -93,6 +93,9 @@
   "engines": {
     "node": "8.* || >= 10"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "fastbootDependencies": [

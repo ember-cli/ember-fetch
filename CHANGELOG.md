@@ -1,3 +1,22 @@
+## v7.0.0 (2019-11-28)
+
+#### :boom: Breaking Change
+* [#292](https://github.com/ember-cli/ember-fetch/pull/292) Added a check to enforce top-level dependency #290. ([@dnalagatla](https://github.com/dnalagatla))
+* [#348](https://github.com/ember-cli/ember-fetch/pull/348) Bump deps, drop node 6 ([@xg-wang](https://github.com/xg-wang))
+
+#### :memo: Documentation
+* [#405](https://github.com/ember-cli/ember-fetch/pull/405) Add release-it ([@xg-wang](https://github.com/xg-wang))
+* [#399](https://github.com/ember-cli/ember-fetch/pull/399) Add section to the README for deprecations ([@locks](https://github.com/locks))
+
+#### :house: Internal
+* [#405](https://github.com/ember-cli/ember-fetch/pull/405) Add release-it ([@xg-wang](https://github.com/xg-wang))
+
+#### Committers: 4
+- Dinesh Nalagatla ([@dnalagatla](https://github.com/dnalagatla))
+- Ricardo Mendes ([@locks](https://github.com/locks))
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v6.7.2 (2019-11-03)
 
 #### :bug: Bug Fix

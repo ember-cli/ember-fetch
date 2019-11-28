@@ -209,23 +209,23 @@ To address this deprecation, find imports and uses of the `ember-fetch/mixins/ad
 
 Before:
 
-```
+```js
 // app/adapters/application.js
 import DS from 'ember-data';
 import AdapterFetch from 'ember-fetch/mixins/adapter-fetch';
 
 export default DS.RESTAdapter.extend(AdapterFetch, {
-  …
+  // …
 });
 ```
 
 After:
 
-```
+```js
 // app/adapters/application.js
 import DS from 'ember-data';
 
 export default DS.RESTAdapter.extend({
-  …
+  // …
 });
 ```

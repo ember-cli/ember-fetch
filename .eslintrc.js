@@ -18,6 +18,7 @@ module.exports = {
     AbortController: 'off'
   },
   rules: {
+    'ember/no-new-mixins': 'off',
     'ember/no-jquery': 'error',
     'no-console': ['error', { allow: ['warn'] }]
   },

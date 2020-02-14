@@ -1,3 +1,35 @@
+
+
+## v7.0.1 (2020-02-13)
+
+#### :house: Internal
+* update dependencies
+  - Bump @ember/optional-features from 1.1.0 to 1.3.0 (9 days ago) <dependabot-preview[bot]>
+  - Bump ember-source from 3.16.0 to 3.16.1 (9 days ago) <dependabot-preview[bot]>
+  - Replace ember-cli-qunit with ember-qunit (#436) (11 days ago) <Thomas Wang>
+  - Replace ember-cli-qunit with ember-qunit (11 days ago) <Thomas Wang>
+  - Bump eslint-plugin-ember from 6.10.1 to 7.7.2 (#420) (11 days ago) <Thomas Wang>
+  - Bump eslint-plugin-ember from 6.10.1 to 7.7.2 (6 weeks ago) <dependabot-preview[bot]>
+  - Bump ember-resolver from 5.3.0 to 7.0.0 (#426) (12 days ago) <Thomas Wang>
+  - Bump ember-resolver from 5.3.0 to 7.0.0 (12 days ago) <dependabot-preview[bot]>
+  - Bump ember-cli-typescript-blueprints from 2.0.0 to 3.0.0 (#396) (12 days ago) <Thomas Wang>
+  - Bump ember-cli-typescript-blueprints from 2.0.0 to 3.0.0 (3 months ago) <dependabot-preview[bot]>
+  - Bump ember-source from 3.14.3 to 3.16.0 (3 weeks ago) <dependabot-preview[bot]>
+  - Bump ember-cli-typescript from 2.0.2 to 3.1.3 (2 weeks ago) <dependabot-preview[bot]>
+  - Bump eslint from 6.7.2 to 6.8.0 (6 weeks ago) <dependabot-preview[bot]>
+  - Bump @typescript-eslint/eslint-plugin from 2.10.0 to 2.13.0 (7 weeks ago) <dependabot-preview[bot]>
+  - Bump ember-cli-htmlbars from 4.1.0 to 4.2.0 (7 weeks ago) <dependabot-preview[bot]>
+  - Bump ember-try from 1.3.0 to 1.4.0 (8 weeks ago) <dependabot-preview[bot]>
+  - Bump ember-cli-babel from 7.13.0 to 7.13.2 (8 weeks ago) <dependabot-preview[bot]>
+  - Bump ember-cli-htmlbars from 4.0.8 to 4.1.0 (9 weeks ago) <dependabot-preview[bot]>
+  - Bump @typescript-eslint/parser from 2.10.0 to 2.11.0 (9 weeks ago) <dependabot-preview[bot]>
+  - Bump eslint from 6.6.0 to 6.7.2 (2 months ago) <dependabot-preview[bot]>
+  - Bump @typescript-eslint/eslint-plugin from 2.9.0 to 2.10.0 (2 months ago) <dependabot-preview[bot]>
+  - Bump ember-source from 3.14.2 to 3.14.3 (2 months ago) <dependabot-preview[bot]>
+  - Bump @typescript-eslint/parser from 2.9.0 to 2.10.0 (2 months ago) <dependabot-preview[bot]>
+* Add code highlighting to readme code (3 months ago) <Thomas Wang>
+* disable ember/no-new-mixins (12 days ago) <Thomas Wang>
+
 ## v7.0.0 (2019-11-28)
 
 #### :boom: Breaking Change

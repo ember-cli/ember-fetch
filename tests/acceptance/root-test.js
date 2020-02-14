@@ -30,7 +30,6 @@ module('Acceptance: Root', function(hooks) {
 
     assert.equal(currentRouteName(), 'index');
     assert.equal(this.element.querySelector('.fetch').textContent.trim(), 'Hello World! fetch');
-    assert.equal(this.element.querySelector('.ajax').textContent.trim(), 'Hello World! ajax');
   });
 
   test('posting a string', function(assert) {

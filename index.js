@@ -141,7 +141,7 @@ module.exports = {
 
   // Only include public/fetch-fastboot.js if top level addon
   treeForPublic() {
-    const fastbootEnabled = process.env.FASTBOOT_DISABLED !== 'true' 
+    const fastbootEnabled = process.env.FASTBOOT_DISABLED !== 'true'
       && !!this.project.findAddonByName('ember-cli-fastboot');
     return !this.parent.parent && fastbootEnabled
       ? this._super.treeForPublic.apply(this, arguments) : null;

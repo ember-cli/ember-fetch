@@ -35,7 +35,9 @@ describe('it builds without ember-cli-fastboot', function() {
     return app.runEmberCommand('build').then(function() {
         expect(app.filePath('dist/index.html')).to.be.a.file();
         expect(app.filePath('dist/ember-fetch')).to.not.be.a.path();
-    }).finally(function() {
+    }).then(function() {
+      delete process.env.FASTBOOT_DISABLED;
+    }, function() {
       delete process.env.FASTBOOT_DISABLED;
     });
   });

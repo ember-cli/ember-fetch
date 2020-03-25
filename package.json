@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "abortcontroller-polyfill": "^1.4.0",
-    "broccoli-concat": "^3.7.5",
+    "broccoli-concat": "^4.2.3",
     "broccoli-debug": "^0.6.5",
     "broccoli-merge-trees": "^3.0.0",
     "broccoli-rollup": "^2.1.1",

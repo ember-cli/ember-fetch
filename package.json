@@ -28,7 +28,7 @@
     "abortcontroller-polyfill": "^1.4.0",
     "broccoli-concat": "^3.7.5",
     "broccoli-debug": "^0.6.5",
-    "broccoli-merge-trees": "^3.0.0",
+    "broccoli-merge-trees": "^4.1.0",
     "broccoli-rollup": "^2.1.1",
     "broccoli-stew": "^3.0.0",
     "broccoli-templater": "^2.0.1",

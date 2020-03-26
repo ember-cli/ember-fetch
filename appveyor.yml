@@ -8,7 +8,6 @@ init:
 environment:
   MOCHA_REPORTER: "mocha-appveyor-reporter"
   matrix:
-    - nodejs_version: "8"
     - nodejs_version: "10"
 
 # Install scripts. (runs after repo cloning)

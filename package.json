@@ -92,7 +92,7 @@
     "**/engine.io": "~3.3.0"
   },
   "engines": {
-    "node": "8.* || >= 10"
+    "node": ">= 10"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"

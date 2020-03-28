@@ -66,8 +66,4 @@
       delete self[prop];
     });
   });
-
-  define('fetch/ajax', ['exports'], function() {
-    throw new Error('You included `fetch/ajax` but it was renamed to `ember-fetch/ajax`');
-  });
 }(typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : this));

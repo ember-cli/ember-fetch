@@ -81,9 +81,3 @@ define('fetch', ['exports'], function(exports) {
   exports.Response = nodeFetch.Response;
   exports.AbortController = AbortControllerPolyfill.AbortController;
 });
-
-define('fetch/ajax', ['exports'], function() {
-  throw new Error(
-    'You included `fetch/ajax` but it was renamed to `ember-fetch/ajax`'
-  );
-});

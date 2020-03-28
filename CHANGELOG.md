@@ -1,3 +1,12 @@
+## v7.1.0 (2020-03-28)
+
+#### :rocket: Enhancement
+* [#468](https://github.com/ember-cli/ember-fetch/pull/468) Ignore fastboot build output file if app unused/disable fastboot ([@houfeng0923](https://github.com/houfeng0923))
+
+#### Committers: 2
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+- houfeng ([@houfeng0923](https://github.com/houfeng0923))
+
 
 
 ## v7.0.1 (2020-02-13)

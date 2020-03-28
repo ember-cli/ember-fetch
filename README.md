@@ -54,38 +54,9 @@ To use `ember-fetch` with TypeScript or enable editor's type support, You can ad
 
 ### Use with Ember Data
 
-> ember-data@3.9.2 was released with built-in fetch support, this mixin is no longer needed and will be removed in next major bump.
-
-To have Ember Data utilize `fetch` instead of jQuery.ajax to make calls to your backend, extend your project's `application` adapter with the `adapter-fetch` mixin.
-
-```js
-// app/adapters/application.js
-import DS from 'ember-data';
-import AdapterFetch from 'ember-fetch/mixins/adapter-fetch';
-
-export default DS.RESTAdapter.extend(AdapterFetch, {
-  ...
-});
-```
+ember-data@3.9.2 was released with built-in fetch support, if your ember-data is below 3.9.2, please checkout [ember-fetch v7.x](https://github.com/ember-cli/ember-fetch/tree/v7.x).
 
 ### Use with Fastboot
-#### ajax-service
-Currently, Fastboot supplies its own server-side ajax functionality, and including `ember-fetch` and the `adapter-fetch` mixin in a Fastboot app will not work without some modifications. To allow the `node-fetch` polyfill that is included with this addon to make your API calls, you must add an initializer to the consuming app's `fastboot` directory that overrides the one Fastboot utilizes to inject its own ajax.
-
-Example:
-```js
-// fastboot/initializers/ajax.js
-
-export default {
-  name: 'ajax-service',
-  initialize() {
-    // noop
-    // This is to override Fastboot's initializer which prevents ember-fetch from working
-    // https://github.com/ember-fastboot/ember-cli-fastboot/blob/master/fastboot/initializers/ajax.js
-  }
-}
-```
-
 #### relative url
 `ember-fetch` uses `node-fetch` in Fastboot, which [doesn't allow relative URL](https://github.com/bitinn/node-fetch/tree/v2.3.0#fetchurl-options).
 
@@ -199,33 +170,3 @@ export default Route.extend({
 * we actually don't bundle github/fetch rather we merely wrap/transform what
   comes from `node_modules`, so we should be resilient to changes assuming
   semver from the fetch module
-  
-## Deprecations
-
-### deprecate-fetch-ember-data-support
-
-Starting with [`ember-data`](https://www.npmjs.com/package/ember-data) v3.9.2, the library comes with built-in fetch support.
-To address this deprecation, find imports and uses of the `ember-fetch/mixins/adapter-fetch` module:
-
-Before:
-
-```js
-// app/adapters/application.js
-import DS from 'ember-data';
-import AdapterFetch from 'ember-fetch/mixins/adapter-fetch';
-
-export default DS.RESTAdapter.extend(AdapterFetch, {
-  // …
-});
-```
-
-After:
-
-```js
-// app/adapters/application.js
-import DS from 'ember-data';
-
-export default DS.RESTAdapter.extend({
-  // …
-});
-```

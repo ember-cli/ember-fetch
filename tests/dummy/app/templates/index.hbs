@@ -2,10 +2,6 @@
   Hello {{model.fetch.name}}! fetch
 </div>
 
-<div class="ajax">
-  Hello {{model.ajax.name}}! ajax
-</div>
-
 <button onclick={{action 'fetchSlowData'}} id="fetch-slow-data-button">Fetch slow data</button>
 {{#if fetchedSlowData}}
   <span class="fetched-slow-data-span">{{fetchedSlowData.content}}</span>

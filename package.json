@@ -26,9 +26,9 @@
   },
   "dependencies": {
     "abortcontroller-polyfill": "^1.4.0",
-    "broccoli-concat": "^3.7.5",
+    "broccoli-concat": "^4.2.3",
     "broccoli-debug": "^0.6.5",
-    "broccoli-merge-trees": "^3.0.0",
+    "broccoli-merge-trees": "^4.1.0",
     "broccoli-rollup": "^2.1.1",
     "broccoli-stew": "^3.0.0",
     "broccoli-templater": "^2.0.1",
@@ -76,20 +76,16 @@
     "ember-source-channel-url": "^2.0.1",
     "ember-try": "^1.4.0",
     "eslint": "^6.8.0",
-    "eslint-plugin-ember": "^7.7.2",
-    "eslint-plugin-node": "^10.0.0",
-    "fs-extra": "^8.0.1",
+    "eslint-plugin-ember": "^8.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "fs-extra": "^9.0.0",
     "glob": "^7.1.6",
-    "lerna-changelog": "^0.8.3",
+    "lerna-changelog": "^1.0.1",
     "loader.js": "^4.2.3",
-    "mocha": "^6.1.4",
-    "release-it": "~12.4.3",
-    "release-it-lerna-changelog": "^1.0.3",
+    "mocha": "^7.1.1",
+    "release-it": "~13.5.0",
+    "release-it-lerna-changelog": "^2.1.2",
     "typescript": "^3.7.2"
-  },
-  "resolutions": {
-    "release-it-lerna-changelog/release-it": "~12.4.3",
-    "**/engine.io": "~3.3.0"
   },
   "engines": {
     "node": ">= 10"

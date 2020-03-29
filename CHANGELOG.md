@@ -1,3 +1,15 @@
+## v8.0.0 (2020-03-29)
+
+#### :boom: Breaking Change
+* [#447](https://github.com/ember-cli/ember-fetch/pull/447) Remove ember-fetch/mixins/adapter-fetch ember-fetch/ajax, drop node 8 ([@stefanpenner](https://github.com/stefanpenner))
+
+#### :memo: Documentation
+* [#447](https://github.com/ember-cli/ember-fetch/pull/447) Remove ember-fetch/mixins/adapter-fetch ember-fetch/ajax, drop node 8 ([@stefanpenner](https://github.com/stefanpenner))
+
+#### Committers: 2
+- Stefan Penner ([@stefanpenner](https://github.com/stefanpenner))
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+
 ## v7.1.0 (2020-03-28)
 
 #### :rocket: Enhancement

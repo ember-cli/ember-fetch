@@ -6,7 +6,6 @@ const helpers = require('broccoli-test-helper');
 const vm = require('vm');
 const fs = require('fs');
 const RSVP = require('rsvp');
-const co = require('co');
 
 const testCode = `
 define('fetch-test', ['fetch'], function(_fetch) {
@@ -34,21 +33,21 @@ require('fetch-test');
       output = helpers.createBuilder(subject);
     });
 
-    afterEach(co.wrap(function* () {
-      yield output.dispose();
-    }));
+    afterEach(async function () {
+      await output.dispose();
+    });
 
-    it('preferNative is built into vendor file', co.wrap(function*() {
-      yield output.build();
+    it('preferNative is built into vendor file', async function () {
+      await output.build();
       let files = output.read();
       expect(files).to.have.all.keys('ember-fetch.js');
       expect(files['ember-fetch.js']).to.include(`var preferNative = ${preferNative}`);
-    }));
+    });
 
     it(`${
       preferNative ? 'Prefers' : "Doesn't prefer"
-    } native fetch as specified`, co.wrap(function*() {
-      yield output.build();
+    } native fetch as specified`, async function () {
+      await output.build();
       let emberFetchCode = output.read()['ember-fetch.js'];
       const amdLoaderCode = fs.readFileSync(require.resolve('loader.js'));
       const sandbox = {
@@ -64,11 +63,11 @@ require('fetch-test');
       const code = amdLoaderCode + emberFetchCode + testCode;
       vm.runInContext(code, sandbox);
       expect(sandbox.__result).to.equal(preferNative);
-    }));
+    });
 
     if (preferNative === true) {
-      it('Has fetch poly fill even if fetch is not there', co.wrap(function*() {
-        yield output.build();
+      it('Has fetch poly fill even if fetch is not there', async function () {
+        await output.build();
         let emberFetchCode = output.read()['ember-fetch.js'];
         const amdLoaderCode = fs.readFileSync(require.resolve('loader.js'));
         const sandbox = {
@@ -92,7 +91,7 @@ require('fetch-test');
         const code = amdLoaderCode + emberFetchCode + testCodeForNonFetch;
         vm.runInContext(code, sandbox);
         expect(sandbox.window.__result).to.equal(true);
-      }))
+      })
     }
   });
 
@@ -121,21 +120,21 @@ require('fetch-test');
       output = helpers.createBuilder(subject);
     });
 
-    afterEach(co.wrap(function* () {
-      yield output.dispose();
-    }));
+    afterEach(async function () {
+      await output.dispose();
+    });
 
-    it('preferNative is built into vendor file', co.wrap(function*() {
-      yield output.build();
+    it('preferNative is built into vendor file', async function () {
+      await output.build();
       let files = output.read();
       expect(files).to.have.all.keys('ember-fetch.js');
       expect(files['ember-fetch.js']).to.include(`var preferNative = ${preferNative}`);
-    }));
+    });
 
     it(`${
       preferNative ? 'Prefers' : "Doesn't prefer"
-      } native fetch as specified`, co.wrap(function*() {
-      yield output.build();
+      } native fetch as specified`, async function () {
+      await output.build();
       let emberFetchCode = output.read()['ember-fetch.js'];
       const amdLoaderCode = fs.readFileSync(require.resolve('loader.js'));
       const sandbox = {
@@ -151,11 +150,11 @@ require('fetch-test');
       const code = amdLoaderCode + emberFetchCode + testCode;
       vm.runInContext(code, sandbox);
       expect(sandbox.__result).to.equal(preferNative);
-    }));
+    });
 
     if (preferNative === true) {
-      it('Has fetch poly fill even if fetch is not there', co.wrap(function*() {
-        yield output.build();
+      it('Has fetch poly fill even if fetch is not there', async function () {
+        await output.build();
         let emberFetchCode = output.read()['ember-fetch.js'];
         const amdLoaderCode = fs.readFileSync(require.resolve('loader.js'));
         const sandbox = {
@@ -179,7 +178,7 @@ require('fetch-test');
         const code = amdLoaderCode + emberFetchCode + testCodeForNonFetch;
         vm.runInContext(code, sandbox);
         expect(sandbox.window.__result).to.equal(true);
-      }))
+      })
     }
   });
 
@@ -212,21 +211,21 @@ require('fetch-test');
       output = helpers.createBuilder(subject);
     });
 
-    afterEach(co.wrap(function* () {
-      yield output.dispose();
-    }));
+    afterEach(async function () {
+      await output.dispose();
+    });
 
-    it('preferNative is built into vendor file', co.wrap(function*() {
-      yield output.build();
+    it('preferNative is built into vendor file', async function () {
+      await output.build();
       let files = output.read();
       expect(files).to.have.all.keys('ember-fetch.js');
       expect(files['ember-fetch.js']).to.include(`var preferNative = ${preferNative}`);
-    }));
+    });
 
     it(`${
       preferNative ? 'Prefers' : "Doesn't prefer"
-      } native fetch as specified`, co.wrap(function*() {
-      yield output.build();
+      } native fetch as specified`, async function () {
+      await output.build();
       let emberFetchCode = output.read()['ember-fetch.js'];
       const amdLoaderCode = fs.readFileSync(require.resolve('loader.js'));
       const sandbox = {
@@ -242,11 +241,11 @@ require('fetch-test');
       const code = amdLoaderCode + emberFetchCode + testCode;
       vm.runInContext(code, sandbox);
       expect(sandbox.__result).to.equal(preferNative);
-    }));
+    });
 
     if (preferNative === true) {
-      it('Has fetch poly fill even if fetch is not there', co.wrap(function*() {
-        yield output.build();
+      it('Has fetch poly fill even if fetch is not there', async function () {
+        await output.build();
         let emberFetchCode = output.read()['ember-fetch.js'];
         const amdLoaderCode = fs.readFileSync(require.resolve('loader.js'));
         const sandbox = {
@@ -270,7 +269,7 @@ require('fetch-test');
         const code = amdLoaderCode + emberFetchCode + testCodeForNonFetch;
         vm.runInContext(code, sandbox);
         expect(sandbox.window.__result).to.equal(true);
-      }))
+      })
     }
   });
 });

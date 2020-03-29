@@ -3,7 +3,6 @@
 const AddonFactory = require('../');
 const expect = require('chai').expect;
 const helpers = require('broccoli-test-helper');
-const co = require('co');
 
 describe(`Do not include the polyfill if the browser targets match`, function() {
   let output, subject, addon;
@@ -26,18 +25,18 @@ describe(`Do not include the polyfill if the browser targets match`, function() 
     output = helpers.createBuilder(subject);
   });
 
-  afterEach(co.wrap(function* () {
-    yield output.dispose();
-  }));
+  afterEach(async function () {
+    await output.dispose();
+  });
 
-  it('fetch & AbortController polyfills are not included', co.wrap(function* () {
-    yield output.build();
+  it('fetch & AbortController polyfills are not included', async function () {
+    await output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');
     expect(files['ember-fetch.js']).to.include(`var preferNative = true`);
     expect(files['ember-fetch.js']).to.not.include(`fetch.polyfill = true`);
     expect(files['ember-fetch.js']).to.not.include(`class AbortController`);
-  }));
+  });
 
 });
 
@@ -62,18 +61,18 @@ describe(`Ignore target browsers if preferNative is false`, function() {
     output = helpers.createBuilder(subject);
   });
 
-  afterEach(co.wrap(function* () {
-    yield output.dispose();
-  }));
+  afterEach(async function () {
+    await output.dispose();
+  });
 
-  it('fetch & AbortController polyfills are included', co.wrap(function* () {
-    yield output.build();
+  it('fetch & AbortController polyfills are included', async function () {
+    await output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');
     expect(files['ember-fetch.js']).to.include(`var preferNative = false`);
     expect(files['ember-fetch.js']).to.include(`fetch.polyfill = true`);
     expect(files['ember-fetch.js']).to.include(`class AbortController`);
-  }));
+  });
 
 });
 
@@ -98,18 +97,18 @@ describe(`Include the polyfill if the browser targets do not match`, function() 
     output = helpers.createBuilder(subject);
   });
 
-  afterEach(co.wrap(function* () {
-    yield output.dispose();
-  }));
+  afterEach(async function () {
+    await output.dispose();
+  });
 
-  it('fetch & AbortController polyfills are included', co.wrap(function* () {
-    yield output.build();
+  it('fetch & AbortController polyfills are included', async function () {
+    await output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');
     expect(files['ember-fetch.js']).to.include(`var preferNative = true`);
     expect(files['ember-fetch.js']).to.include(`fetch.polyfill = true`);
     expect(files['ember-fetch.js']).to.include(`class AbortController`);
-  }));
+  });
 
 });
 
@@ -134,18 +133,18 @@ describe(`Include the abortcontroller polyfill only if the browser targets suppo
     output = helpers.createBuilder(subject);
   });
 
-  afterEach(co.wrap(function* () {
-    yield output.dispose();
-  }));
+  afterEach(async function () {
+    await output.dispose();
+  });
 
-  it('AbortController polyfill is included', co.wrap(function* () {
-    yield output.build();
+  it('AbortController polyfill is included', async function () {
+    await output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');
     expect(files['ember-fetch.js']).to.include(`var preferNative = true`);
     expect(files['ember-fetch.js']).to.not.include(`fetch.polyfill = true`);
     expect(files['ember-fetch.js']).to.include(`class AbortController`);
-  }));
+  });
 
 });
 
@@ -170,17 +169,17 @@ describe(`Include the polyfill if alwaysIncludePolyfill=true`, function() {
     output = helpers.createBuilder(subject);
   });
 
-  afterEach(co.wrap(function* () {
-    yield output.dispose();
-  }));
+  afterEach(async function () {
+    await output.dispose();
+  });
 
-  it('fetch & AbortController polyfills are included', co.wrap(function* () {
-    yield output.build();
+  it('fetch & AbortController polyfills are included', async function () {
+    await output.build();
     let files = output.read();
     expect(files).to.have.all.keys('ember-fetch.js');
     expect(files['ember-fetch.js']).to.include(`var preferNative = true`);
     expect(files['ember-fetch.js']).to.include(`fetch.polyfill = true`);
     expect(files['ember-fetch.js']).to.include(`class AbortController`);
-  }));
+  });
 
 });

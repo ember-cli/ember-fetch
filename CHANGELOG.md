@@ -1,3 +1,16 @@
+## v8.0.1 (2020-03-30)
+
+#### :bug: Bug Fix
+* [#478](https://github.com/ember-cli/ember-fetch/pull/478) Bump broccoli-concat to pick up transitive dependency fix ([@stefanpenner](https://github.com/stefanpenner))
+
+#### :house: Internal
+* [#479](https://github.com/ember-cli/ember-fetch/pull/479) Bump broccoli-merge-trees ([@xg-wang](https://github.com/xg-wang))
+
+#### Committers: 3
+- Stefan Penner ([@stefanpenner](https://github.com/stefanpenner))
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v8.0.0 (2020-03-29)
 
 #### :boom: Breaking Change

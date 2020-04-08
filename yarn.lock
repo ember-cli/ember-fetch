@@ -3061,15 +3061,7 @@ broccoli-merge-trees@^3.0.0, broccoli-merge-trees@^3.0.1, broccoli-merge-trees@^
     broccoli-plugin "^1.3.0"
     merge-trees "^2.0.0"
 
-broccoli-merge-trees@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/broccoli-merge-trees/-/broccoli-merge-trees-4.1.0.tgz#a30e2e4c5bb0f5eb8981e8af33a8077714c11f1a"
-  integrity sha512-1OXsksKPFiRdiZZOfh1z1mm7ZqKezlMS+DPBpHMDLSb6AhYHvoQfjf0KuMXbY8aoYskj7+Z+EJ5SsS/OC2v5yw==
-  dependencies:
-    broccoli-plugin "^3.1.0"
-    merge-trees "^2.0.0"
-
-broccoli-merge-trees@^4.2.0:
+broccoli-merge-trees@^4.1.0, broccoli-merge-trees@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/broccoli-merge-trees/-/broccoli-merge-trees-4.2.0.tgz#692d3c163ecea08c5714a9434d664e628919f47c"
   integrity sha512-nTrQe5AQtCrW4enLRvbD/vTLHqyW2tz+vsLXQe4IEaUhepuMGVKJJr+I8n34Vu6fPjmPLwTjzNC8izMIDMtHPw==
@@ -5087,10 +5079,10 @@ ember-source-channel-url@^2.0.1:
   dependencies:
     got "^8.0.1"
 
-ember-source@~3.17.2:
-  version "3.17.2"
-  resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-3.17.2.tgz#9732ff0786034a1195b3ba250f671e7939cabbce"
-  integrity sha512-evoOkJp9wsxTndR4hVYH5jEN7SlsYtjrG58TELGG6aVim+7nM2bidNGO011f0c+1aI67blqmejmoS/MhfLfNRA==
+ember-source@~3.17.3:
+  version "3.17.3"
+  resolved "https://registry.yarnpkg.com/ember-source/-/ember-source-3.17.3.tgz#315b198848bcc1699928579b2d7fc2d607ebf63e"
+  integrity sha512-mZ2a4MRJm+QsZ61q7p4Ulq+07IERgEF7mEzOPmqES+J4PpeXyWHAYh1MnSWHz3W5jQhwHQAPs6WTZE0TbAsS2Q==
   dependencies:
     "@babel/helper-module-imports" "^7.8.3"
     "@babel/plugin-transform-block-scoping" "^7.8.3"

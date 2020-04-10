@@ -93,9 +93,12 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "fastbootDependencies": [
-      "node-fetch",
-      "abortcontroller-polyfill",
-      "abortcontroller-polyfill/dist/cjs-ponyfill"
+      "buffer",
+      "http",
+      "https",
+      "stream",
+      "url",
+      "zlib"
     ]
   }
 }

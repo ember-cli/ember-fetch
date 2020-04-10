@@ -1,12 +1,10 @@
-/* globals define FastBoot */
+/* globals define requirejs */
 define('fetch', ['exports'], function(exports) {
   var httpRegex = /^https?:\/\//;
   var protocolRelativeRegex = /^\/\//;
 
-  var AbortControllerPolyfill = FastBoot.require(
-    'abortcontroller-polyfill/dist/cjs-ponyfill'
-  );
-  var nodeFetch = FastBoot.require('node-fetch');
+  var AbortControllerPolyfill = requirejs('node-abortcontroller');
+  var nodeFetch = requirejs('node-fetch')['default'];
 
   function parseRequest(request) {
     if (request === null) {

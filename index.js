@@ -143,8 +143,50 @@ module.exports = {
   treeForPublic() {
     const fastbootEnabled = process.env.FASTBOOT_DISABLED !== 'true'
       && !!this.project.findAddonByName('ember-cli-fastboot');
-    return !this.parent.parent && fastbootEnabled
-      ? this._super.treeForPublic.apply(this, arguments) : null;
+
+    const include = !this.parent.parent && fastbootEnabled;
+
+    if (!include) {
+      return null;
+    }
+
+    let abortcontrollerNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('abortcontroller-polyfill'))), {
+      rollup: {
+        input: 'src/ponyfill.js',
+        output: {
+          file: 'node-abortcontroller.js',
+          name: 'NodeAbortcontroller',
+          format: 'amd',
+          amd: {
+            id: 'node-abortcontroller',
+          }
+        }
+      }
+    }), 'node-abortcontroller');
+
+    let fetchNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('node-fetch'))), {
+      rollup: {
+        input: 'lib/index.js',
+        output: {
+          file: 'node-fetch.js',
+          name: 'NodeFetch',
+          format: 'iife'
+        }
+      }
+    }), 'node-fetch');
+
+    fetchNode = debug(map(fetchNode, (content) => `define('node-fetch', ['exports'], function(exports) {
+      var _exports = exports;
+      exports = {};
+      var module = {};
+      var global = window.self;
+      var Buffer = FastBoot.require('buffer').Buffer;
+      var require = FastBoot.require;
+      ${content}
+      _exports.default = exports;
+    });`), 'node-fetch wrapped');
+
+    return this._super.treeForPublic.apply(this, [new MergeTrees([...arguments, abortcontrollerNode, fetchNode])]);
   },
 
   cacheKeyForTree(treeType) {
@@ -159,6 +201,8 @@ module.exports = {
 
   // Add node version of fetch.js into fastboot package.json manifest vendorFiles array
   updateFastBootManifest(manifest) {
+    manifest.vendorFiles.push('ember-fetch/node-abortcontroller.js');
+    manifest.vendorFiles.push('ember-fetch/node-fetch.js');
     manifest.vendorFiles.push('ember-fetch/fetch-fastboot.js');
     return manifest;
   },

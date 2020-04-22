@@ -80,7 +80,7 @@
     "lerna-changelog": "^1.0.1",
     "loader.js": "^4.2.3",
     "mocha": "^7.1.1",
-    "release-it": "~13.5.2",
+    "release-it": "~13.5.5",
     "release-it-lerna-changelog": "^2.1.2",
     "typescript": "^3.7.2"
   },

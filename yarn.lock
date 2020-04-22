@@ -9384,17 +9384,18 @@ regjsparser@^0.6.4:
   dependencies:
     jsesc "~0.5.0"
 
-release-it-lerna-changelog@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/release-it-lerna-changelog/-/release-it-lerna-changelog-2.1.2.tgz#7173be48422d873c5160ce5a3231863fcd8ef513"
-  integrity sha512-JxOVXjBcdsuwW6r2EgWhjF3ta3Fu3lxOt8yw9VdnEJjM6uOD7S0WMR4L5B3zu9Z+1UXF1VqOasUi0mMliU6fmw==
+release-it-lerna-changelog@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/release-it-lerna-changelog/-/release-it-lerna-changelog-2.2.0.tgz#645824f413ebbba999aa24de4cda5491bbb55b23"
+  integrity sha512-gM/Ly3k0hX7cpU05wjVB6pYqbjCxg1yewBSa1HJOKWlBHNTOFnKZkNxQ26oiprXCeDDj8j7b2tM6Trgr73a5Ww==
   dependencies:
     execa "^4.0.0"
     lerna-changelog "^1.0.1"
-    release-it "^13.3.2"
+    release-it "^13.5.4"
     tmp "^0.1.0"
+    which "^2.0.2"
 
-release-it@^13.3.2, release-it@~13.5.5:
+release-it@^13.5.4, release-it@~13.5.5:
   version "13.5.5"
   resolved "https://registry.yarnpkg.com/release-it/-/release-it-13.5.5.tgz#052a9d154063b19ad3fd33683c83b77e1686cc5d"
   integrity sha512-wdgtDUOtNtGPSHienHObzvYKaACpGlEU/yJhonHoDBkpSSBHF/RBdt3f3f3r+3ugB3i0ogUeUZrRZ4uAq/GWtA==
@@ -11080,7 +11081,7 @@ which@1.3.1, which@^1.2.14, which@^1.2.9, which@^1.3.0:
   dependencies:
     isexe "^2.0.0"
 
-which@^2.0.1:
+which@^2.0.1, which@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/which/-/which-2.0.2.tgz#7c6a8dd0a636a0327e10b59c9286eee93f3f51b1"
   integrity sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==

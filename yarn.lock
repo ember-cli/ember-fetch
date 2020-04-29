@@ -9366,17 +9366,18 @@ regjsparser@^0.6.4:
   dependencies:
     jsesc "~0.5.0"
 
-release-it-lerna-changelog@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/release-it-lerna-changelog/-/release-it-lerna-changelog-2.1.2.tgz#7173be48422d873c5160ce5a3231863fcd8ef513"
-  integrity sha512-JxOVXjBcdsuwW6r2EgWhjF3ta3Fu3lxOt8yw9VdnEJjM6uOD7S0WMR4L5B3zu9Z+1UXF1VqOasUi0mMliU6fmw==
+release-it-lerna-changelog@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/release-it-lerna-changelog/-/release-it-lerna-changelog-2.3.0.tgz#4bcaa0934d2fa2c48b3de47fb993cb0ce061d415"
+  integrity sha512-UBoquh1Vv5fSICr6ur/j0ZqlVu4qK4MMoGzNp003GJYoj+sg/3gAN0FpAdm1r2jn//XG0PGooadq8uCYX0d08Q==
   dependencies:
     execa "^4.0.0"
     lerna-changelog "^1.0.1"
-    release-it "^13.3.2"
-    tmp "^0.1.0"
+    release-it "^13.5.5"
+    tmp "^0.2.0"
+    which "^2.0.2"
 
-release-it@^13.3.2, release-it@~13.5.7:
+release-it@^13.5.5, release-it@~13.5.7:
   version "13.5.7"
   resolved "https://registry.yarnpkg.com/release-it/-/release-it-13.5.7.tgz#3ebce13e0f2545d191576ff8f3f1926c00db2e09"
   integrity sha512-i5Om4Xh2aby+ow+F9pEiGo3Lk8uQW7QzVOyBbrnorAQU4VYxC7cRgKnn1g57RAYAGYMriMqHRrlV4V2psfTiTA==
@@ -10554,12 +10555,12 @@ tmp@0.0.33, tmp@^0.0.33:
   dependencies:
     os-tmpdir "~1.0.2"
 
-tmp@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.1.0.tgz#ee434a4e22543082e294ba6201dcc6eafefa2877"
-  integrity sha512-J7Z2K08jbGcdA1kkQpJSqLF6T0tdQqpR2pnSUXsIchbPdTI9v3e85cLW0d6WDhwuAleOV71j2xWs8qMPfK7nKw==
+tmp@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.2.0.tgz#fdc6a78d2a77bf7e426ca476d8a4f82eefcf648c"
+  integrity sha512-spsb5g6EiPmteS5TcOAECU3rltCMDMp4VMU2Sb0+WttN4qGobEkMAd+dkr1cubscN08JGNDX765dPbGImbG7MQ==
   dependencies:
-    rimraf "^2.6.3"
+    rimraf "^3.0.0"
 
 tmpl@1.0.x:
   version "1.0.4"
@@ -11057,7 +11058,7 @@ which@1.3.1, which@^1.2.14, which@^1.2.9, which@^1.3.0:
   dependencies:
     isexe "^2.0.0"
 
-which@^2.0.1:
+which@^2.0.1, which@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/which/-/which-2.0.2.tgz#7c6a8dd0a636a0327e10b59c9286eee93f3f51b1"
   integrity sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==

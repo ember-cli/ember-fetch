@@ -150,11 +150,6 @@ export default Route.extend({
 
 * Yes, [pretender v2.1](https://github.com/pretenderjs/pretender/tree/v2.1.0) comes with `fetch` support.
 
-### Does this replace ic-ajax?
-
-* ideally yes, but only if you cater to IE9+
-* for basic drop-in compat `import ajax from 'ember-fetch/ajax'`
-
 ### What about all the run-loop and promise mixing details?
 
 * taken care of for you

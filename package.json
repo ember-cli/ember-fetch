@@ -82,7 +82,7 @@
     "mocha": "^7.1.2",
     "release-it": "~13.5.8",
     "release-it-lerna-changelog": "^2.3.0",
-    "typescript": "^3.9.2"
+    "typescript": "^3.9.3"
   },
   "engines": {
     "node": ">= 10"

@@ -1252,32 +1252,7 @@
     "@types/jquery" "*"
     "@types/rsvp" "*"
 
-"@types/ember@*":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@types/ember/-/ember-3.1.1.tgz#401810fa3ba911855d609d334ea77990b9b94802"
-  integrity sha512-8Yu+7qvcRA80NXuJrgii25hi4B/P3lrCug34O2ksPNHk2z1RaLnjKSj0cptQXMQAMnVtM0Vye8lAwUle47/M9w==
-  dependencies:
-    "@types/ember__application" "*"
-    "@types/ember__array" "*"
-    "@types/ember__component" "*"
-    "@types/ember__controller" "*"
-    "@types/ember__debug" "*"
-    "@types/ember__engine" "*"
-    "@types/ember__error" "*"
-    "@types/ember__object" "*"
-    "@types/ember__polyfills" "*"
-    "@types/ember__routing" "*"
-    "@types/ember__runloop" "*"
-    "@types/ember__service" "*"
-    "@types/ember__string" "*"
-    "@types/ember__template" "*"
-    "@types/ember__test" "*"
-    "@types/ember__utils" "*"
-    "@types/htmlbars-inline-precompile" "*"
-    "@types/jquery" "*"
-    "@types/rsvp" "*"
-
-"@types/ember@^3.1.2":
+"@types/ember@*", "@types/ember@^3.1.2":
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/@types/ember/-/ember-3.1.2.tgz#b795e41f4a5569447c006e293195e62dc139cced"
   integrity sha512-Z4jxklUlnoWEkenLaMDDmzguL3UUcAIaCiu28nNYlIovWTGmvKuJgUKSqd+03j4jjzaz+yz0fepM408XULew/A==
@@ -1408,10 +1383,10 @@
   resolved "https://registry.yarnpkg.com/@types/ember__template/-/ember__template-3.0.0.tgz#d499ebf000faa371c1c98124633b9864be69b968"
   integrity sha512-aWNg/kL2QToE0fwI8MVgAr2upWyAUwqRv2sp3CpypsMTOC1lZizIehz8QI6w1m1+Eh1WYs/89gvuM3mTc4OyIw==
 
-"@types/ember__test-helpers@^0.7.10":
-  version "0.7.10"
-  resolved "https://registry.yarnpkg.com/@types/ember__test-helpers/-/ember__test-helpers-0.7.10.tgz#2ade4fc848d35aafef42db97574a5845dcafdab7"
-  integrity sha512-e+NVsScAO+BcWCki9CuepScJ4akiKORrFyYaEvpoRSyyM5UpvY4Ov175hXxcNFv5JSyIvPUvhZtOH2W3BlLHhA==
+"@types/ember__test-helpers@^0.7.11":
+  version "0.7.11"
+  resolved "https://registry.yarnpkg.com/@types/ember__test-helpers/-/ember__test-helpers-0.7.11.tgz#e28daf5167b15ed7dd9e53603f8aa2af4db0fccc"
+  integrity sha512-YZajMQrTLGx/FV26W3peXuKThoPW6e28o+NM+ytr++SLs1f54D6K9HmEiOpBzpYl7nIORqWUfURtypp51IeswA==
   dependencies:
     "@types/ember" "*"
     "@types/ember__application" "*"

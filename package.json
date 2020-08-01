@@ -79,7 +79,7 @@
     "glob": "^7.1.6",
     "lerna-changelog": "^1.0.1",
     "loader.js": "^4.2.3",
-    "mocha": "^7.1.2",
+    "mocha": "^8.1.0",
     "release-it": "~13.5.8",
     "release-it-lerna-changelog": "^2.3.0",
     "typescript": "^3.9.3"

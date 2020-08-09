@@ -6,7 +6,7 @@ module.exports = function(defaults) {
   let app = new EmberAddon(defaults, {
     // Add options here
     'ember-fetch': {
-      preferNative: true
+      preferNative: process.env.PREFER_NATIVE ? true : false
     }
   });
 

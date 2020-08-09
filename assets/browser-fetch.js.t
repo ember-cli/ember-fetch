@@ -1,7 +1,7 @@
-(function (global) {
-  define('fetch', ['exports'], function(self) {
+(function (originalGlobal) {
+  define('fetch', ['exports'], function(exports) {
     'use strict';
-    var Promise = global.Ember.RSVP.Promise;
+    var Promise = originalGlobal.Ember.RSVP.Promise;
     var supportProps = [
       'FormData',
       'FileReader',
@@ -22,18 +22,24 @@
       combinedProps = supportProps.concat(polyfillProps);
     }
     combinedProps.forEach(function(prop) {
-      if (global[prop]) {
-        Object.defineProperty(self, prop, {
+      if (originalGlobal[prop]) {
+        Object.defineProperty(exports, prop, {
           configurable: true,
-          get: function() { return global[prop] },
-          set: function(v) { global[prop] = v }
+          get: function() { return originalGlobal[prop] },
+          set: function(v) { originalGlobal[prop] = v }
         });
       }
     });
 
+    // shadow github/fetch global object
+    // https://github.com/github/fetch/blob/v3.4.0/fetch.js
+    var globalThis =  exports;
+    // shadow mo/abortcontroller-polyfill global object
+    // https://github.com/mo/abortcontroller-polyfill/blob/v1.4.0/src/abortcontroller-polyfill.js
+    var self = exports;
     <%= moduleBody %>
 
-    if (!self.fetch) {
+    if (!globalThis.fetch) {
       throw new Error('fetch is not defined - maybe your browser targets are not covering everything you need?');
     }
 
@@ -43,15 +49,15 @@
       return result;
     }
 
-    if (global.Ember.Test) {
-      global.Ember.Test.registerWaiter(function() {
+    if (originalGlobal.Ember.Test) {
+      originalGlobal.Ember.Test.registerWaiter(function() {
         return pending === 0;
       });
 
-      self['default'] = function() {
+      exports['default'] = function() {
         pending++;
 
-        return self.fetch.apply(global, arguments).then(function(response){
+        return exports.fetch.apply(originalGlobal, arguments).then(function(response){
           response.clone().blob().then(decrement, decrement);
           return response;
         }, function(reason) {
@@ -60,14 +66,17 @@
         });
       };
     } else {
-      self['default'] = self.fetch;
+      exports['default'] = exports.fetch;
     }
     supportProps.forEach(function(prop) {
-      delete self[prop];
+      delete exports[prop];
     });
   });
 
   define('fetch/ajax', ['exports'], function() {
     throw new Error('You included `fetch/ajax` but it was renamed to `ember-fetch/ajax`');
   });
-}(typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : this));
+}((typeof window !== 'undefined' && window) ||
+  (typeof globalThis !== 'undefined' && globalThis) ||
+  (typeof self !== 'undefined' && self) ||
+  (typeof global !== 'undefined' && global)));

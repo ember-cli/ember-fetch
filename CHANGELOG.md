@@ -1,3 +1,19 @@
+## v8.0.2 (2020-08-10)
+
+#### :bug: Bug Fix
+* [#552](https://github.com/ember-cli/ember-fetch/pull/552) Fix whatwg-fetch 3.4 global object name change compatibility ([@xg-wang](https://github.com/xg-wang))
+
+#### :memo: Documentation
+* [#517](https://github.com/ember-cli/ember-fetch/pull/517) Remove mentioning ajax from readme ([@xg-wang](https://github.com/xg-wang))
+
+#### :house: Internal
+* [#548](https://github.com/ember-cli/ember-fetch/pull/548) Re-roll yarn.lock file. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 3
+- Logan Rosen ([@loganrosen](https://github.com/loganrosen))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+
 ## v8.0.1 (2020-03-30)
 
 #### :bug: Bug Fix

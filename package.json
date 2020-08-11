@@ -89,7 +89,9 @@
   },
   "resolutions": {
     "release-it-lerna-changelog/release-it": "~12.4.3",
-    "**/engine.io": "~3.3.0"
+    "**/engine.io": "~3.3.0",
+    "eslint/inquirer": "7.0.1",
+    "@ember/optional-features/inquirer": "7.0.1"
   },
   "engines": {
     "node": "8.* || >= 10"

@@ -4844,10 +4844,10 @@ ember-cli-typescript@^3.1.3:
     stagehand "^1.0.0"
     walk-sync "^2.0.0"
 
-ember-cli-typescript@^4.0.0-rc.1:
-  version "4.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-typescript/-/ember-cli-typescript-4.0.0-rc.1.tgz#b0def77bc617e9bc77876cf90a984637dd38f40b"
-  integrity sha512-C8o24nGPyv1EN3EFhrYZK9CGG8dQVgBU3gucl/GBEbdXTjmiKLSJtm65IZOZh3uU+G4EO9iTVGGsKkw+j2DX3A==
+ember-cli-typescript@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-typescript/-/ember-cli-typescript-4.0.0.tgz#690f0cd3d15f4a69ae6d89f25b70b5997ae59161"
+  integrity sha512-ZwnBbBJ0yAIKq4FVgNFkxfMwqJhw6PyT45Enp2RvWIgzgaYCId8brrSgg3tvVWWjA7N5hiT4Ilyz5jrQwrnU1Q==
   dependencies:
     ansi-to-html "^0.6.6"
     broccoli-stew "^3.0.0"

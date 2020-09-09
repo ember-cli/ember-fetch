@@ -16,7 +16,7 @@ describe('renders in fastboot build', function() {
     app = new AddonTestApp();
 
     return app
-      .create('dummy', { skipNpm: true })
+      .create('dummy', { skipNpm: true, emberVersion: 'latest' })
       .then(app =>
         app.editPackageJSON(pkg => {
           pkg.devDependencies['ember-cli-fastboot'] = '*';

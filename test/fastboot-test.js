@@ -16,7 +16,7 @@ describe('renders in fastboot build without calling fetch', function() {
     app = new AddonTestApp();
 
     return app
-      .create('fresh', { skipNpm: true, noFixtures: true })
+      .create('fresh', { skipNpm: true, noFixtures: true, emberVersion: 'latest' })
       .then(app =>
         app.editPackageJSON(pkg => {
           pkg.devDependencies['ember-cli-fastboot'] = '*';

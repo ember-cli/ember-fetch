@@ -3,7 +3,7 @@ import Mix from '@ember/polyfills/types';
 export type Nullable<T> = T | null | undefined;
 
 export type PlainObject<T = string | number | boolean> = {
-  [key: string]: T | PlainObject<T> | PlainObject<T>[];
+  [key: string]: T | PlainObject<T> | PlainObject<T>[] | undefined | null;
 }
 
 export type PlainHeaders = {
@@ -22,7 +22,7 @@ export type Method =
 export type AjaxOptions = {
   url: string;
   type: Method;
-  data?: PlainObject<string> | BodyInit;
+  data?: PlainObject | BodyInit;
   headers?: PlainHeaders;
 };
 

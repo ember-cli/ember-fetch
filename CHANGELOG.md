@@ -1,3 +1,11 @@
+## v8.0.4 (2021-01-18)
+
+#### :house: Internal
+* [#586](https://github.com/ember-cli/ember-fetch/pull/586) Update `.npmignore` file ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 1
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
 ## v8.0.3 (2021-01-18)
 
 #### :bug: Bug Fix

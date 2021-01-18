@@ -1,3 +1,13 @@
+## v8.0.3 (2021-01-18)
+
+#### :bug: Bug Fix
+* [#568](https://github.com/ember-cli/ember-fetch/pull/568) Updates the type for data property to be less restrictive. ([@LuisAverhoff](https://github.com/LuisAverhoff))
+
+#### Committers: 3
+- Luis Manuel Averhoff ([@LuisAverhoff](https://github.com/LuisAverhoff))
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v8.0.2 (2020-08-10)
 
 #### :bug: Bug Fix

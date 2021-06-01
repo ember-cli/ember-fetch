@@ -29,7 +29,7 @@
     "broccoli-concat": "^4.2.5",
     "broccoli-debug": "^0.6.5",
     "broccoli-merge-trees": "^4.2.0",
-    "broccoli-rollup": "^2.1.1",
+    "broccoli-rollup": "^5.0.0",
     "broccoli-stew": "^3.0.0",
     "broccoli-templater": "^2.0.1",
     "calculate-cache-key-for-tree": "^2.0.0",

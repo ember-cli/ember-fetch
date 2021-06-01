@@ -97,5 +97,9 @@
       "abortcontroller-polyfill",
       "abortcontroller-polyfill/dist/cjs-ponyfill"
     ]
+  },
+  "volta": {
+    "node": "10.24.1",
+    "yarn": "1.22.10"
   }
 }

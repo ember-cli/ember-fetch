@@ -27,6 +27,7 @@ const map = stew.map;
 const Rollup = require('broccoli-rollup');
 const BroccoliDebug = require('broccoli-debug');
 const calculateCacheKeyForTree = require('calculate-cache-key-for-tree');
+const VersionChecker = require('ember-cli-version-checker');
 
 const debug = BroccoliDebug.buildDebugCallback('ember-fetch');
 
@@ -73,6 +74,9 @@ module.exports = {
     let hasEmberFetch = !!this.project.findAddonByName('ember-fetch');
     let hasEmberCliFastboot = !!this.project.findAddonByName('ember-cli-fastboot');
 
+    let emberSource = new VersionChecker(this.project).for('ember-source');
+    let hasEmberSourceModules = emberSource.exists() && emberSource.gte('3.27.0');
+
     if(isApp && hasEmberCliFastboot && !hasEmberFetch) {
       throw new Error(`Ember fetch is not installed as top-level dependency of the application using fastboot. Add ember-fetch as dependecy in application's package.json.
       For details check here - https://github.com/ember-cli/ember-fetch#top-level-addon`);
@@ -88,6 +92,7 @@ module.exports = {
     app._fetchBuildConfig = Object.assign({
       preferNative: false,
       alwaysIncludePolyfill: false,
+      hasEmberSourceModules,
       browsers: this.project.targets && this.project.targets.browsers
     }, app.options['ember-fetch']);
 
@@ -216,8 +221,19 @@ module.exports = {
       sourceMapConfig: { enabled: false }
     }), 'after-concat');
 
+    const moduleHeader = options.hasEmberSourceModules ? `
+  define('fetch', ['exports', 'ember', 'rsvp'], function(exports, Ember__module, RSVP__module) {
+    'use strict';
+    var Ember = 'default' in Ember__module ? Ember__module['default'] : Ember__module;
+    var RSVP = 'default' in RSVP__module ? RSVP__module['default'] : RSVP__module;` : `
+  define('fetch', ['exports'], function(exports) {
+    'use strict';
+    var Ember = originalGlobal.Ember;
+    var RSVP = Ember.RSVP;`
+
     return debug(new Template(polyfillNode, TEMPLATE_PATH, function(content) {
       return {
+        moduleHeader,
         moduleBody: content
       };
     }), 'browser-fetch');

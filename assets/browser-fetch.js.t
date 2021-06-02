@@ -1,7 +1,6 @@
 (function (originalGlobal) {
-  define('fetch', ['exports'], function(exports) {
-    'use strict';
-    var Promise = originalGlobal.Ember.RSVP.Promise;
+  <%= moduleHeader %>
+    var Promise = RSVP.Promise;
     var supportProps = [
       'FormData',
       'FileReader',
@@ -49,8 +48,8 @@
       return result;
     }
 
-    if (originalGlobal.Ember.Test) {
-      originalGlobal.Ember.Test.registerWaiter(function() {
+    if (Ember.Test) {
+      Ember.Test.registerWaiter(function() {
         return pending === 0;
       });
 

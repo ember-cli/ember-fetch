@@ -1,3 +1,11 @@
+## v8.0.5 (2021-06-02)
+
+#### :bug: Bug Fix
+* [#620](https://github.com/ember-cli/ember-fetch/pull/620) Fix ember global ([@chancancode](https://github.com/chancancode))
+
+#### Committers: 1
+- Godfrey Chan ([@chancancode](https://github.com/chancancode))
+
 ## v8.0.4 (2021-01-18)
 
 #### :house: Internal

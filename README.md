@@ -91,6 +91,20 @@ If all your [browser targets](https://guides.emberjs.com/release/configuring-emb
 
 The way you do import remains same.
 
+### Use native promise instead of RSVP
+
+If you do not want to use RSVP, but native Promises, you can specify this build config flag:
+
+```js
+// ember-cli-build.js
+let app = new EmberAddon(defaults, {
+  // Add options here
+  'ember-fetch': {
+    nativePromise: true
+  }
+});
+```
+
 ### Error Handling
 
 A `fetch` response is successful if `response.ok` is true,

@@ -1,3 +1,11 @@
+## v8.1.0 (2021-06-15)
+
+#### :rocket: Enhancement
+* [#623](https://github.com/ember-cli/ember-fetch/pull/623) Allow to use native promises instead of RSVP ([@mydea](https://github.com/mydea))
+
+#### Committers: 1
+- Francesco Novy ([@mydea](https://github.com/mydea))
+
 ## v8.0.5 (2021-06-02)
 
 #### :bug: Bug Fix

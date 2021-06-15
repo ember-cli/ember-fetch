@@ -33,6 +33,7 @@ jobs:
         - yarn lint:js
         - yarn test
         - PREFER_NATIVE=true yarn test
+        - NATIVE_PROMISE=true yarn test
         - npm run test:node
 
     - name: "Floating Dependencies"

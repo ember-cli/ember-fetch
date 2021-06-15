@@ -1,6 +1,5 @@
 (function (originalGlobal) {
   <%= moduleHeader %>
-    var Promise = RSVP.Promise;
     var supportProps = [
       'FormData',
       'FileReader',

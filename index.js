@@ -91,6 +91,7 @@ module.exports = {
 
     app._fetchBuildConfig = Object.assign({
       preferNative: false,
+      nativePromise: false,
       alwaysIncludePolyfill: false,
       hasEmberSourceModules,
       browsers: this.project.targets && this.project.targets.browsers
@@ -221,22 +222,48 @@ module.exports = {
       sourceMapConfig: { enabled: false }
     }), 'after-concat');
 
-    const moduleHeader = options.hasEmberSourceModules ? `
-  define('fetch', ['exports', 'ember', 'rsvp'], function(exports, Ember__module, RSVP__module) {
-    'use strict';
-    var Ember = 'default' in Ember__module ? Ember__module['default'] : Ember__module;
-    var RSVP = 'default' in RSVP__module ? RSVP__module['default'] : RSVP__module;` : `
-  define('fetch', ['exports'], function(exports) {
-    'use strict';
-    var Ember = originalGlobal.Ember;
-    var RSVP = Ember.RSVP;`
+    const moduleHeader = this._getModuleHeader(options);
 
-    return debug(new Template(polyfillNode, TEMPLATE_PATH, function(content) {
-      return {
-        moduleHeader,
-        moduleBody: content
-      };
-    }), 'browser-fetch');
+    return debug(
+      new Template(polyfillNode, TEMPLATE_PATH, function (content) {
+        return {
+          moduleHeader,
+          moduleBody: content,
+        };
+      }),
+      "browser-fetch"
+    );
+  },
+
+  _getModuleHeader({ hasEmberSourceModules, nativePromise }) {
+    if (hasEmberSourceModules && nativePromise) {
+      return `
+define('fetch', ['exports', 'ember'], function(exports, Ember__module) {
+  'use strict';
+  var Ember = 'default' in Ember__module ? Ember__module['default'] : Ember__module;`;
+    }
+
+    if (hasEmberSourceModules) {
+      return `
+define('fetch', ['exports', 'ember', 'rsvp'], function(exports, Ember__module, RSVP__module) {
+  'use strict';
+  var Ember = 'default' in Ember__module ? Ember__module['default'] : Ember__module;
+  var RSVP = 'default' in RSVP__module ? RSVP__module['default'] : RSVP__module;
+  var Promise = RSVP.Promise;`;
+    }
+
+    if (nativePromise) {
+      return `
+define('fetch', ['exports'], function(exports) {
+  'use strict';
+  var Ember = originalGlobal.Ember;`;
+    }
+
+    return `
+define('fetch', ['exports'], function(exports) {
+  'use strict';
+  var Ember = originalGlobal.Ember;
+  var Promise = Ember.RSVP.Promise;`;
   },
 
   _checkSupports(featureName, browsers) {

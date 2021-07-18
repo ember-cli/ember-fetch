@@ -89,13 +89,12 @@ module.exports = {
       importTarget = this;
     }
 
-    app._fetchBuildConfig = Object.assign({
-      preferNative: false,
-      nativePromise: false,
-      alwaysIncludePolyfill: false,
-      hasEmberSourceModules,
-      browsers: this.project.targets && this.project.targets.browsers
-    }, app.options['ember-fetch']);
+    app._fetchBuildConfig = this._normalizeBuildConfig({
+        hasEmberSourceModules,
+        browsers: this.project.targets && this.project.targets.browsers
+      },
+      app.options['ember-fetch']
+    );
 
     importTarget.import('vendor/ember-fetch.js', {
       exports: {
@@ -108,6 +107,59 @@ module.exports = {
         ]
       }
     });
+  },
+
+  _normalizeBuildConfig({ hasEmberSourceModules, browsers = [] }, appConfig) {
+    const config = Object.assign({
+      nativePromise: false,
+      preferNative: undefined,
+      /** @prop {'never' | 'if-necessary' | 'always'} */
+      includePolyfill: undefined,
+      /** @deprecated Use `includePolyfill: 'always'` */
+      alwaysIncludePolyfill: undefined,
+      hasEmberSourceModules,
+      browsers
+    }, appConfig);
+
+    const { alwaysIncludePolyfill } = config;
+    delete config.alwaysIncludePolyfill;
+
+    if (typeof alwaysIncludePolyfill !== `undefined`) {
+      this.ui.writeDeprecateLine(
+        `[ember-fetch] \`alwaysIncludePolyfill: ${Boolean(alwaysIncludePolyfill)
+        }\` is deprecated. Use \`includePolyfill: '${alwaysIncludePolyfill ? 'always' : 'if-necessary'
+        }'\` instead.`
+      );
+
+      if (typeof includePolyfill !== 'undefined') {
+        throw new Error(`[ember-fetch] \`includePolyfill\` already specified. Remove \`alwaysIncludePolyfill\`.`);
+      }
+
+      if (alwaysIncludePolyfill) {
+        config.includePolyfill = 'always';
+      }
+    }
+
+    if (typeof config.includePolyfill === 'undefined') {
+      config.includePolyfill = config.preferNative ? 'if-necessary' : 'always';
+    } else {
+      switch (config.includePolyfill) {
+        case 'never':
+        case 'if-necessary':
+          if (typeof config.preferNative === 'undefined') {
+            config.preferNative = true;
+          } else if (!config.preferNative) {
+            throw new Error(`[ember-fetch] \`preferNative: false\` cannot be used together with \`includePolyfill: '${config.includePolyfill}'\`. Either set it to \`true\` or omit it to imply the same.`);
+          }
+          break;
+        case 'always': break;
+        default: throw new Error(`[ember-fetch] \`includePolyfill: '${config.includePolyfill}'\` is invalid. Acceptable values: never, if-necessary, always`);
+      }
+    }
+
+    config.preferNative = Boolean(config.preferNative);
+
+    return config;
   },
 
   /*
@@ -174,15 +226,17 @@ module.exports = {
   // that can be used by the Ember app.
   treeForBrowserFetch(options) {
     const browsers = options.browsers;
-    // To skip including the polyfill, `preferNative` needs to be `true` AND `alwaysIncludePolyfill` needs to be `false` (default)
-    const alwaysIncludePolyfill = !options.preferNative || options.alwaysIncludePolyfill;
-    const needsFetchPolyfill = alwaysIncludePolyfill || !this._checkSupports('fetch', browsers);
-    const needsAbortControllerPolyfill = alwaysIncludePolyfill || !this._checkSupports('abortcontroller', browsers);
+
+    const maybeIncludePolyfill = options.preferNative && options.includePolyfill === 'if-necessary';
+    const alwaysIncludePolyfill = !options.preferNative || options.includePolyfill === 'always';
+
+    const needsFetchPolyfill = !this._checkSupports('fetch', browsers);
+    const needsAbortControllerPolyfill = !this._checkSupports('abortcontroller', browsers);
 
     const inputNodes = [];
     const inputFiles = [];
 
-    if (needsAbortControllerPolyfill) {
+    if (alwaysIncludePolyfill || maybeIncludePolyfill && needsAbortControllerPolyfill) {
       const abortcontrollerNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('abortcontroller-polyfill'))), {
         rollup: {
           input: 'src/abortcontroller-polyfill.js',
@@ -199,7 +253,7 @@ module.exports = {
       inputFiles.push('abortcontroller.js');
     }
 
-    if (needsFetchPolyfill) {
+    if (alwaysIncludePolyfill || maybeIncludePolyfill && needsFetchPolyfill) {
       const fetchNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('whatwg-fetch'))), {
         rollup: {
           input: 'fetch.js',

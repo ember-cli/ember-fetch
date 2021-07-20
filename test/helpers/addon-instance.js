@@ -28,7 +28,7 @@ function makeApp({
 }) {
   return {
     project,
-    config: {
+    options: {
       'ember-fetch': emberFetchConfig
     },
     ...overrides

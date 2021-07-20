@@ -119,7 +119,7 @@ module.exports = {
       alwaysIncludePolyfill: undefined,
       hasEmberSourceModules: this._hasEmberSourceModules(),
       browsers: this.project.targets && this.project.targets.browsers || undefined
-    }, app.config['ember-fetch']);
+    }, app.options['ember-fetch']);
 
     const { alwaysIncludePolyfill } = config;
     delete config.alwaysIncludePolyfill;

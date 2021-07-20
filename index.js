@@ -74,9 +74,6 @@ module.exports = {
     let hasEmberFetch = !!this.project.findAddonByName('ember-fetch');
     let hasEmberCliFastboot = !!this.project.findAddonByName('ember-cli-fastboot');
 
-    let emberSource = new VersionChecker(this.project).for('ember-source');
-    let hasEmberSourceModules = emberSource.exists() && emberSource.gte('3.27.0');
-
     if(isApp && hasEmberCliFastboot && !hasEmberFetch) {
       throw new Error(`Ember fetch is not installed as top-level dependency of the application using fastboot. Add ember-fetch as dependecy in application's package.json.
       For details check here - https://github.com/ember-cli/ember-fetch#top-level-addon`);
@@ -89,12 +86,7 @@ module.exports = {
       importTarget = this;
     }
 
-    app._fetchBuildConfig = this._normalizeBuildConfig({
-        hasEmberSourceModules,
-        browsers: this.project.targets && this.project.targets.browsers
-      },
-      app.options['ember-fetch']
-    );
+    this._normalizeBuildConfig(app);
 
     importTarget.import('vendor/ember-fetch.js', {
       exports: {
@@ -109,17 +101,25 @@ module.exports = {
     });
   },
 
-  _normalizeBuildConfig({ hasEmberSourceModules, browsers = [] }, appConfig) {
-    const config = Object.assign({
+  _hasEmberSourceModules() {
+    const emberSource = new VersionChecker(this.project).for('ember-source');
+    const hasEmberSourceModules = emberSource.exists() && emberSource.gte('3.27.0');
+    return hasEmberSourceModules;
+  },
+
+  _normalizeBuildConfig(app = this._findApp()) {
+    if (app._fetchBuildConfig) return app._fetchBuildConfig;
+
+    const config = app._fetchBuildConfig = Object.assign({
       nativePromise: false,
       preferNative: undefined,
       /** @prop {'never' | 'if-necessary' | 'always'} */
       includePolyfill: undefined,
       /** @deprecated Use `includePolyfill: 'always'` */
       alwaysIncludePolyfill: undefined,
-      hasEmberSourceModules,
-      browsers
-    }, appConfig);
+      hasEmberSourceModules: this._hasEmberSourceModules(),
+      browsers: this.project.targets && this.project.targets.browsers || undefined
+    }, app.config['ember-fetch']);
 
     const { alwaysIncludePolyfill } = config;
     delete config.alwaysIncludePolyfill;

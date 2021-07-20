@@ -1,30 +1,15 @@
 'use strict';
 
-const AddonFactory = require('../');
 const expect = require('chai').expect;
 const helpers = require('broccoli-test-helper');
 
-function makeAddonInstance({ browsers, ...config }) {
-  const addon = Object.create(AddonFactory);
-  Object.assign(addon, {
-    addons: [],
-    ui: {
-      writeWarnLine() {},
-      writeDeprecateLine() {},
-    }
-  });
-  addon._fetchBuildConfig = addon._normalizeBuildConfig(
-    { hasEmberSourceModules: true, browsers },
-    config
-  );
-  return addon;
-}
+const { makeRootAddon } = require('./helpers/addon-instance');
 
 describe(`Do not include the polyfill if the browser targets match`, function() {
   let output, subject, addon;
 
   beforeEach(function() {
-    addon = makeAddonInstance({
+    addon = makeRootAddon({
       preferNative: true,
       alwaysIncludePolyfill: false,
       browsers: ['last 1 chrome versions']
@@ -52,7 +37,7 @@ describe(`Ignore target browsers if preferNative is false`, function() {
   let output, subject, addon;
 
   beforeEach(function() {
-    addon = makeAddonInstance({
+    addon = makeRootAddon({
       preferNative: false,
       alwaysIncludePolyfill: false,
       browsers: ['last 1 chrome versions']
@@ -80,7 +65,7 @@ describe(`Include the polyfill if the browser targets do not match`, function() 
   let output, subject, addon;
 
   beforeEach(function() {
-    addon = makeAddonInstance({
+    addon = makeRootAddon({
       preferNative: true,
       alwaysIncludePolyfill: false,
       browsers: ['ie 11']
@@ -108,7 +93,7 @@ describe(`Do not include the polyfill if the browser targets do not match, but i
   let output, subject, addon;
 
   beforeEach(function() {
-    addon = makeAddonInstance({
+    addon = makeRootAddon({
       includePolyfill: 'never',
       browsers: ['ie 11']
     });
@@ -135,7 +120,7 @@ describe(`Include the abortcontroller polyfill only if the browser targets suppo
   let output, subject, addon;
 
   beforeEach(function() {
-    addon = makeAddonInstance({
+    addon = makeRootAddon({
       preferNative: true,
       alwaysIncludePolyfill: false,
       browsers: ['safari 11']
@@ -163,7 +148,7 @@ describe(`Include the polyfill if includePolyfill='always'`, function() {
   let output, subject, addon;
 
   beforeEach(function() {
-    addon = makeAddonInstance({
+    addon = makeRootAddon({
       includePolyfill: 'always',
       browsers: ['last 1 chrome versions']
     });
@@ -190,7 +175,7 @@ describe(`[deprecated] Include the polyfill if alwaysIncludePolyfill=true`, func
   let output, subject, addon;
 
   beforeEach(function() {
-    addon = makeAddonInstance({
+    addon = makeRootAddon({
       preferNative: true,
       alwaysIncludePolyfill: true,
       browsers: ['last 1 chrome versions']

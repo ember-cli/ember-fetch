@@ -77,7 +77,7 @@
     "eslint-plugin-ember": "^8.5.2",
     "eslint-plugin-node": "^11.1.0",
     "fs-extra": "^9.0.1",
-    "glob": "^7.1.6",
+    "glob": "^7.1.7",
     "lerna-changelog": "^1.0.1",
     "loader.js": "^4.2.3",
     "mocha": "^8.4.0",

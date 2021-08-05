@@ -3,8 +3,8 @@ import { hash } from 'rsvp';
 import fetch, { Request } from 'fetch';
 import ajax from 'ember-fetch/ajax';
 
-export default Route.extend({
-  model: function() {
+export default class IndexRoute extends Route {
+  model() {
     return hash({
       fetch: fetch('/omg.json').then(function(request) {
         return request.json();
@@ -15,4 +15,4 @@ export default Route.extend({
       ajax: ajax('/omg.json')
     });
   }
-});
+}

@@ -23,13 +23,13 @@ ember-fetch requries ember-cli 2.13 or above.
 import Route from '@ember/routing/route';
 import fetch from 'fetch';
 
-export default Route.extend({
+export default class MyRoute extends Route {
   model() {
     return fetch('/my-cool-end-point.json').then(function(response) {
       return response.json();
     });
   }
-});
+}
 ```
 
 Available imports:
@@ -133,7 +133,7 @@ import {
   isUnauthorizedResponse
 } from 'ember-fetch/errors';
 
-export default Route.extend({
+export default class ExampleRoute extends Route {
   model() {
     return fetch('/omg.json')
       .then(function(response) {
@@ -152,7 +152,7 @@ export default Route.extend({
         // handle network error
       });
   }
-});
+}
 ```
 
 ## Browser Support

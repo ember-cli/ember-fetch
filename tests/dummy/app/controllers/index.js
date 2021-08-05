@@ -1,23 +1,35 @@
-import Controller from '@ember/controller';
-import { run } from '@ember/runloop';
-import fetch from 'fetch';
+import Controller from "@ember/controller";
+import { run } from "@ember/runloop";
+import { action } from "@ember/object";
+import fetch from "fetch";
 
-export default Controller.extend({
-  actions: {
-    fetchSlowData() {
-      fetch('/slow-data.json')
-        .then((r) => r.json(), (e) => {
-          run(() => this.set('fetchedSlowDataFailed', true));
+export default class IndexController extends Controller {
+  @action
+  fetchSlowData() {
+    fetch("/slow-data.json")
+      .then(
+        (r) => r.json(),
+        (e) => {
+          run(() => this.set("fetchedSlowDataFailed", true));
           throw e;
-        })
-        .then((data) => {
-          run(() => this.setProperties({ fetchedSlowData: data, fetchedSlowDataFailed: false }));
-        });
-    },
-
-    badFetch() {
-      fetch('http://localhost:9999') // probably there is nothing listening here :D
-        .then((r) => r.json(), () => run(() => this.set('fetchFailed', true)));
-    }
+        }
+      )
+      .then((data) => {
+        run(() =>
+          this.setProperties({
+            fetchedSlowData: data,
+            fetchedSlowDataFailed: false,
+          })
+        );
+      });
   }
-});
+
+  @action
+  badFetch() {
+    fetch("http://localhost:9999") // probably there is nothing listening here :D
+      .then(
+        (r) => r.json(),
+        () => run(() => this.set("fetchFailed", true))
+      );
+  }
+}

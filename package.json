@@ -101,6 +101,9 @@
       "abortcontroller-polyfill/dist/cjs-ponyfill"
     ]
   },
+  "ember": {
+    "edition": "octane"
+  },
   "volta": {
     "node": "10.24.1",
     "yarn": "1.22.10"

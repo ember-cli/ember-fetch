@@ -1,3 +1,5 @@
+import { debug } from '@ember/debug';
+
 /**
  * Function that always attempts to parse the response as json, and if an error is thrown,
  * returns `undefined` if the response is successful and has a status code of 204 (No Content),
@@ -22,7 +24,7 @@ export default function determineBodyPromise(
       ) {
         ret = undefined;
       } else {
-        console.warn('This response was unable to be parsed as json.', payload);
+        debug(`This response was unable to be parsed as json: ${payload}`);
       }
     }
     return ret;

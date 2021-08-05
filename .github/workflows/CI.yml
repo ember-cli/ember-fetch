@@ -22,7 +22,7 @@ jobs:
 
   ember-tests:
     needs: lint
-    name: "Tests: ubuntu (node@${{ matrix.node-version }})"
+    name: "Ember Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -37,11 +37,12 @@ jobs:
 
   prefer-native-tests:
     needs: ember-tests
-    name: "PREFER_NATIVE=true Tests: ubuntu (node@${{ matrix.node-version }})"
-    runs-on: ubuntu-latest
+    name: "PREFER_NATIVE=true Tests: ${{ matrix.os }} (node@${{ matrix.node-version }})"
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         node-version: ["12"]
+        os: [ubuntu-latest, macos, windows-latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -52,11 +53,12 @@ jobs:
 
   native-promise-tests:
     needs: ember-tests
-    name: "NATIVE_PROMISE=true Tests: ubuntu (node@${{ matrix.node-version }})"
-    runs-on: ubuntu-latest
+    name: "NATIVE_PROMISE=true Tests: ${{ matrix.os }} (node@${{ matrix.node-version }})"
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         node-version: ["12"]
+        os: [ubuntu-latest, macos, windows-latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -67,11 +69,12 @@ jobs:
 
   node-tests:
     needs: ember-tests
-    name: "Node Tests: ubuntu (node@${{ matrix.node-version }})"
-    runs-on: ubuntu-latest
+    name: "Node Tests: ${{ matrix.os }} (node@${{ matrix.node-version }})"
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         node-version: ["12"]
+        os: [ubuntu-latest, macos, windows-latest]
 
     steps:
       - uses: actions/checkout@v2

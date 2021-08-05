@@ -25,7 +25,7 @@
     "postpublish": "ember ts:clean"
   },
   "dependencies": {
-    "abortcontroller-polyfill": "^1.7.1",
+    "abortcontroller-polyfill": "^1.7.3",
     "broccoli-concat": "^4.2.5",
     "broccoli-debug": "^0.6.5",
     "broccoli-merge-trees": "^4.2.0",

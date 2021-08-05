@@ -1,3 +1,15 @@
+## v8.1.1 (2021-08-05)
+
+#### :rocket: Enhancement
+* [#636](https://github.com/ember-cli/ember-fetch/pull/636) Replace console.warn with Ember.debug ([@nlfurniss](https://github.com/nlfurniss))
+
+#### :house: Internal
+* [#637](https://github.com/ember-cli/ember-fetch/pull/637) Move CI testing to Github ([@nlfurniss](https://github.com/nlfurniss))
+
+#### Committers: 2
+- Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v8.1.0 (2021-06-15)
 
 #### :rocket: Enhancement
@@ -140,7 +152,7 @@
 g-wang))
 
 #### Committers: 1
-- Thomas Wang ([@xg-wang](https://github.com/xg-wang)) 
+- Thomas Wang ([@xg-wang](https://github.com/xg-wang))
 
 ## v6.7.1 (2019-09-12)
 

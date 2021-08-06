@@ -41,13 +41,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: [12]
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [10]
+        os: [ubuntu-latest]
     env:
       PREFER_NATIVE: true
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
       - run: yarn install --frozen-lockfile --non-interactive
@@ -59,13 +60,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: [12]
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [10]
+        os: [ubuntu-latest]
     env:
       PREFER_NATIVE: true
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
       - run: yarn install --frozen-lockfile --non-interactive
@@ -77,11 +79,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: [12]
+        node: [10]
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
       - run: yarn install --frozen-lockfile --non-interactive
@@ -97,6 +100,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
+        node: [10]
         ember-try-scenario:
           - ember-lts-3.4
           - ember-lts-3.8
@@ -112,8 +116,9 @@ jobs:
             allow-failure: true
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: 12.x
+          node-version: ${{ matrix.node}}
       - name: install dependencies
         run: yarn install
       - name: test

@@ -22,64 +22,64 @@ jobs:
 
   ember-tests:
     needs: lint
-    name: "Ember Tests: ubuntu (node@${{ matrix.node-version }})"
+    name: "Ember Tests: ubuntu (node@${{ matrix.node }})"
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ["12"]
+        node: [12]
 
     steps:
       - uses: actions/checkout@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node }}
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn test
 
   prefer-native-tests:
     needs: ember-tests
-    name: "PREFER_NATIVE=true Tests: ${{ matrix.os }} (node@${{ matrix.node-version }})"
+    name: "PREFER_NATIVE=true Tests: ${{ matrix.os }} (node@${{ matrix.node }})"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: ["12"]
+        node: [12]
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node }}
       - run: yarn install --frozen-lockfile --non-interactive
       - run: PREFER_NATIVE=true yarn test
 
   native-promise-tests:
     needs: ember-tests
-    name: "NATIVE_PROMISE=true Tests: ${{ matrix.os }} (node@${{ matrix.node-version }})"
+    name: "NATIVE_PROMISE=true Tests: ${{ matrix.os }} (node@${{ matrix.node }})"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: ["12"]
+        node: [12]
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node }}
       - run: yarn install --frozen-lockfile --non-interactive
       - run: NATIVE_PROMISE=true yarn test
 
   node-tests:
     needs: ember-tests
-    name: "Node Tests: ${{ matrix.os }} (node@${{ matrix.node-version }})"
+    name: "Node Tests: ${{ matrix.os }} (node@${{ matrix.node }})"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: ["12"]
+        node: [12]
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node }}
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn run test:node
 

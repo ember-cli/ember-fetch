@@ -26,10 +26,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12]
+        node: [10]
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
       - run: yarn install --frozen-lockfile --non-interactive
@@ -88,7 +89,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: yarn install --frozen-lockfile --non-interactive
-      - run: yarn run test:node
+      - run: npm run test:node
 
   try-scenarios:
     name: Tests - ${{ matrix.ember-try-scenario }}

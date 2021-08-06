@@ -49,7 +49,9 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: yarn install --frozen-lockfile --non-interactive
-      - run: PREFER_NATIVE=true yarn test
+      - env:
+          PREFER_NATIVE: true
+      - run: yarn test
 
   native-promise-tests:
     needs: ember-tests

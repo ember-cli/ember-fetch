@@ -1,4 +1,4 @@
-import { assign } from '@ember/polyfills';
+import { assign as emberAssign } from '@ember/polyfills';
 import { serializeQueryParams } from './serialize-query-params';
 import {
   Method,
@@ -6,6 +6,9 @@ import {
   AjaxOptions,
   isPlainObject
 } from 'ember-fetch/types';
+
+// Avoid `ember-polyfills.deprecate-assign` deprecation.
+const assign = Object.assign || emberAssign;
 
 /**
  * Helper function that translates the options passed to `jQuery.ajax` into a format that `fetch` expects.

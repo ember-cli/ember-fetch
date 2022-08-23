@@ -6,7 +6,7 @@
 
 import RSVP from 'rsvp';
 export default function fetch(
-  input: RequestInfo,
+  input: URL | RequestInfo,
   init?: RequestInit
 ): RSVP.Promise<Response>;
 export const Headers: {

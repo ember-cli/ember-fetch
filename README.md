@@ -21,7 +21,7 @@ ember-fetch requries ember-cli 2.13 or above.
 
 ```js
 import Route from '@ember/routing/route';
-import fetch from 'fetch';
+import fetch from 'ember-fetch';
 
 export default Route.extend({
   model() {
@@ -33,6 +33,11 @@ export default Route.extend({
 ```
 
 Available imports:
+```js
+import fetch, { Headers, Request, Response, AbortController } from 'ember-fetch';
+```
+
+`ember-fetch` still supports importing from the old import path:
 ```js
 import fetch, { Headers, Request, Response, AbortController } from 'fetch';
 ```
@@ -126,7 +131,7 @@ otherwise you can read the status code to determine the bad response type.
 
 ```js
 import Route from '@ember/routing/route';
-import fetch from 'fetch';
+import fetch from 'ember-fetch';
 import {
   isAbortError,
   isServerErrorResponse,

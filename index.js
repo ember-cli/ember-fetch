@@ -28,11 +28,14 @@ const Rollup = require('broccoli-rollup');
 const BroccoliDebug = require('broccoli-debug');
 const calculateCacheKeyForTree = require('calculate-cache-key-for-tree');
 const VersionChecker = require('ember-cli-version-checker');
+const { readFileSync } = require('fs');
 
 const debug = BroccoliDebug.buildDebugCallback('ember-fetch');
 
 // Path to the template that contains the shim wrapper around the browser polyfill
 const TEMPLATE_PATH = path.resolve(__dirname + '/assets/browser-fetch.js.t');
+
+const LEGACY_ALIAS_TEMPLATE = readFileSync(path.resolve(__dirname + '/assets/fetch-legacy-alias.js.t'));
 
 /*
  * The `index.js` file is the main entry point for all Ember CLI addons.  The
@@ -222,7 +225,7 @@ module.exports = {
       sourceMapConfig: { enabled: false }
     }), 'after-concat');
 
-    const moduleHeader = this._getModuleHeader(options);
+    const moduleHeader = LEGACY_ALIAS_TEMPLATE + this._getModuleHeader(options);
 
     return debug(
       new Template(polyfillNode, TEMPLATE_PATH, function (content) {
@@ -238,14 +241,14 @@ module.exports = {
   _getModuleHeader({ hasEmberSourceModules, nativePromise }) {
     if (hasEmberSourceModules && nativePromise) {
       return `
-define('fetch', ['exports', 'ember'], function(exports, Ember__module) {
+define('ember-fetch', ['exports', 'ember'], function(exports, Ember__module) {
   'use strict';
   var Ember = 'default' in Ember__module ? Ember__module['default'] : Ember__module;`;
     }
 
     if (hasEmberSourceModules) {
       return `
-define('fetch', ['exports', 'ember', 'rsvp'], function(exports, Ember__module, RSVP__module) {
+define('ember-fetch', ['exports', 'ember', 'rsvp'], function(exports, Ember__module, RSVP__module) {
   'use strict';
   var Ember = 'default' in Ember__module ? Ember__module['default'] : Ember__module;
   var RSVP = 'default' in RSVP__module ? RSVP__module['default'] : RSVP__module;
@@ -254,13 +257,13 @@ define('fetch', ['exports', 'ember', 'rsvp'], function(exports, Ember__module, R
 
     if (nativePromise) {
       return `
-define('fetch', ['exports'], function(exports) {
+define('ember-fetch', ['exports'], function(exports) {
   'use strict';
   var Ember = originalGlobal.Ember;`;
     }
 
     return `
-define('fetch', ['exports'], function(exports) {
+define('ember-fetch', ['exports'], function(exports) {
   'use strict';
   var Ember = originalGlobal.Ember;
   var Promise = Ember.RSVP.Promise;`;

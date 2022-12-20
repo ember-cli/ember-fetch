@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { run } from '@ember/runloop';
-import fetch from 'ember-fetch';
+import fetch from 'fetch';
 
 export default Controller.extend({
   actions: {

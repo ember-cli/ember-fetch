@@ -1,4 +1,4 @@
-import { setupFastboot } from 'fetch';
+import { setupFastboot } from 'ember-fetch';
 
 /**
  * To allow relative URLs for Fastboot mode, we need the per request information

@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { hash } from 'rsvp';
-import fetch from 'fetch';
+import fetch from 'ember-fetch';
 
 export default Route.extend({
   model: function() {

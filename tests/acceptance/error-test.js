@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import Pretender from 'pretender';
-import fetch, { AbortController } from 'fetch';
+import fetch, { AbortController } from 'ember-fetch';
 import {
   isUnauthorizedResponse,
   isForbiddenResponse,

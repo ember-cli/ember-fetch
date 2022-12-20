@@ -43,7 +43,13 @@ import fetch, { Headers, Request, Response, AbortController } from 'fetch';
 ```
 
 ### Use with TypeScript
-To use `ember-fetch` with TypeScript or enable editor's type support, You can add `"fetch": ["node_modules/ember-fetch"]` to your `tsconfig.json`.
+If you import from `ember-fetch`, the types just work:
+
+```ts
+import fetch from 'ember-fetch';
+```
+
+If you're still using the legacy `fetch` import path, you need to add `"fetch": ["node_modules/ember-fetch"]` to your `tsconfig.json`.
 
 ```json
 {

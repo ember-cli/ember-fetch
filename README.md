@@ -37,7 +37,7 @@ Available imports:
 import fetch, { Headers, Request, Response, AbortController } from 'ember-fetch';
 ```
 
-`ember-fetch` still supports importing from the old import path:
+`ember-fetch` still supports importing from the old import path, but this will shortly be deprecated and ***will be removed in the next major***:
 ```js
 import fetch, { Headers, Request, Response, AbortController } from 'fetch';
 ```

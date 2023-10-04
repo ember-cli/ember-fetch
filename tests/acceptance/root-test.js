@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import { visit, click, find, currentRouteName } from '@ember/test-helpers';
 import Pretender from 'pretender';
-import fetch from 'fetch';
+import fetch from 'ember-fetch';
 
 var server;
 

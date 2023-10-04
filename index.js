@@ -238,14 +238,14 @@ module.exports = {
   _getModuleHeader({ hasEmberSourceModules, nativePromise }) {
     if (hasEmberSourceModules && nativePromise) {
       return `
-define('fetch', ['exports', 'ember'], function(exports, Ember__module) {
+define('ember-fetch', ['exports', 'ember'], function(exports, Ember__module) {
   'use strict';
   var Ember = 'default' in Ember__module ? Ember__module['default'] : Ember__module;`;
     }
 
     if (hasEmberSourceModules) {
       return `
-define('fetch', ['exports', 'ember', 'rsvp'], function(exports, Ember__module, RSVP__module) {
+define('ember-fetch', ['exports', 'ember', 'rsvp'], function(exports, Ember__module, RSVP__module) {
   'use strict';
   var Ember = 'default' in Ember__module ? Ember__module['default'] : Ember__module;
   var RSVP = 'default' in RSVP__module ? RSVP__module['default'] : RSVP__module;
@@ -254,13 +254,13 @@ define('fetch', ['exports', 'ember', 'rsvp'], function(exports, Ember__module, R
 
     if (nativePromise) {
       return `
-define('fetch', ['exports'], function(exports) {
+define('ember-fetch', ['exports'], function(exports) {
   'use strict';
   var Ember = originalGlobal.Ember;`;
     }
 
     return `
-define('fetch', ['exports'], function(exports) {
+define('ember-fetch', ['exports'], function(exports) {
   'use strict';
   var Ember = originalGlobal.Ember;
   var Promise = Ember.RSVP.Promise;`;

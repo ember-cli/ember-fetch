@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { Headers } from 'fetch';
+import { Headers } from 'ember-fetch';
 
 module('Headers', function() {
   test('iterator', function(assert) {

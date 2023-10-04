@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { AbortController } from 'fetch';
+import { AbortController } from 'ember-fetch';
 
 module('AbortController', function() {
   test('signal', function(assert) {

@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { hash } from 'rsvp';
-import fetch, { Request } from 'fetch';
+import fetch, { Request } from 'ember-fetch';
 import ajax from 'ember-fetch/ajax';
 
 export default Route.extend({

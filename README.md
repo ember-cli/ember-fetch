@@ -37,21 +37,6 @@ Available imports:
 import fetch, { Headers, Request, Response, AbortController } from 'ember-fetch';
 ```
 
-### Use with TypeScript
-To use `ember-fetch` with TypeScript or enable editor's type support, You can add `"fetch": ["node_modules/ember-fetch"]` to your `tsconfig.json`.
-
-```json
-{
-  "compilerOptions": {
-    "paths": {
-      "fetch": [
-        "node_modules/ember-fetch"
-      ]
-    }
-  }
-}
-```
-
 ### Use with Ember Data
 
 ember-data@3.9.2 was released with built-in fetch support, if your ember-data is below 3.9.2, please checkout [ember-fetch v7.x](https://github.com/ember-cli/ember-fetch/tree/v7.x).

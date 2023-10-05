@@ -10,3 +10,4 @@
 
 # npm/pnpm/yarn pack output
 *.tgz
+/node_modules/

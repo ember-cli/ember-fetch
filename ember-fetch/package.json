@@ -16,6 +16,7 @@
     "./*": "./dist/*.js",
     "./addon-main.js": "./addon-main.cjs"
   },
+  "typings": "./index.d.ts",
   "files": [
     "addon-main.cjs",
     "declarations",

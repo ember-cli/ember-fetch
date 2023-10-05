@@ -1,6 +1,17 @@
 import { macroCondition, isTesting } from '@embroider/macros';
 import { assert } from '@ember/debug';
 import { waitForPromise } from '@ember/test-waiters';
+import {
+  isUnauthorizedResponse,
+  isForbiddenResponse,
+  isInvalidResponse,
+  isBadRequestResponse,
+  isNotFoundResponse,
+  isGoneResponse,
+  isAbortError,
+  isConflictResponse,
+  isServerErrorResponse,
+} from './errors';
 
 let setupFetchWaiter;
 let fetch;
@@ -23,5 +34,16 @@ if (macroCondition(isTesting())) {
   setupFetchWaiter = () => {};
 }
 
-// fetch is re-exported here for backwards compatbiility
-export { setupFetchWaiter, fetch };
+export {
+  setupFetchWaiter,
+  fetch, // fetch is re-exported here for backwards compatbiility
+  isUnauthorizedResponse,
+  isForbiddenResponse,
+  isInvalidResponse,
+  isBadRequestResponse,
+  isNotFoundResponse,
+  isGoneResponse,
+  isAbortError,
+  isConflictResponse,
+  isServerErrorResponse,
+};

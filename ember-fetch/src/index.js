@@ -3,6 +3,7 @@ import { assert } from '@ember/debug';
 import { waitForPromise } from '@ember/test-waiters';
 
 let setupFetchWaiter;
+let fetch;
 
 if (macroCondition(isTesting())) {
   let isSetup = false;
@@ -12,8 +13,8 @@ if (macroCondition(isTesting())) {
       !isSetup,
     );
 
-    let realFetch = globalThis.fetch;
-    globalThis.fetch = (...args) => waitForPromise(realFetch(...args));
+    let fetch = globalThis.fetch;
+    globalThis.fetch = (...args) => waitForPromise(fetch(...args));
 
     isSetup = true;
   };
@@ -22,4 +23,5 @@ if (macroCondition(isTesting())) {
   setupFetchWaiter = () => {};
 }
 
-export { setupFetchWaiter };
+// fetch is re-exported here for backwards compatbiility
+export { setupFetchWaiter, fetch };

@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: 18
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Configure pnpm
+        run: |
+          pnpm config set registry https://registry.npmjs.org
+          pnpm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Prepare release
+        run: pnpm semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Publish packages
+        run: pnpm publish -r

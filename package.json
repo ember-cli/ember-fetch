@@ -1,6 +1,6 @@
 {
   "private": true,
-  "repository": "",
+  "repository": "https://github.com/ember-cli/ember-fetch",
   "license": "MIT",
   "author": "",
   "scripts": {
@@ -17,8 +17,7 @@
   "devDependencies": {
     "concurrently": "^8.2.0",
     "prettier": "^3.0.3",
-    "prettier-plugin-ember-template-tag": "^1.1.0",
-    "semantic-release": "^22.0.5"
+    "prettier-plugin-ember-template-tag": "^1.1.0"
   },
   "pnpm": {
     "overrides": {

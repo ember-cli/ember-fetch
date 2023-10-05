@@ -5,7 +5,10 @@
   "keywords": [
     "ember-addon"
   ],
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ember-cli/ember-fetch.git"
+  },
   "license": "MIT",
   "author": "",
   "exports": {
@@ -54,10 +57,22 @@
     "prettier": "^3.0.3",
     "prettier-plugin-ember-template-tag": "^1.1.0",
     "rollup": "^3.21.8",
-    "rollup-plugin-copy": "^3.4.0"
+    "rollup-plugin-copy": "^3.4.0",
+    "release-it": "^16.2.1",
+    "@release-it-plugins/lerna-changelog": "^6.0.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
+  },
+  "changelog": {
+    "repo": "ember-cli/ember-fetch",
+    "labels": {
+      "breaking": ":boom: Breaking Change",
+      "enhancement": ":rocket: Enhancement",
+      "bug": ":bug: Bug Fix",
+      "documentation": ":memo: Documentation",
+      "internal": ":house: Internal"
+    }
   },
   "ember": {
     "edition": "octane"
@@ -67,5 +82,23 @@
     "type": "addon",
     "main": "addon-main.cjs",
     "app-js": {}
+  },
+  "release-it": {
+    "plugins": {
+      "@release-it-plugins/lerna-changelog": {
+        "infile": "CHANGELOG.md",
+        "launchEditor": true
+      }
+    },
+    "git": {
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true,
+      "tokenRef": "GITHUB_AUTH"
+    }
   }
 }

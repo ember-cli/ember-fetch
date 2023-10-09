@@ -14,7 +14,7 @@ import {
 } from './errors';
 
 let setupFetchWaiter;
-let fetch;
+let fetch = globalThis.fetch;
 
 if (macroCondition(isTesting())) {
   let isSetup = false;
@@ -24,7 +24,6 @@ if (macroCondition(isTesting())) {
       !isSetup,
     );
 
-    let fetch = globalThis.fetch;
     globalThis.fetch = (...args) => waitForPromise(fetch(...args));
 
     isSetup = true;

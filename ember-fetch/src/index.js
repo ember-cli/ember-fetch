@@ -1,17 +1,6 @@
 import { macroCondition, isTesting } from '@embroider/macros';
 import { assert } from '@ember/debug';
 import { waitForPromise } from '@ember/test-waiters';
-import {
-  isUnauthorizedResponse,
-  isForbiddenResponse,
-  isInvalidResponse,
-  isBadRequestResponse,
-  isNotFoundResponse,
-  isGoneResponse,
-  isAbortError,
-  isConflictResponse,
-  isServerErrorResponse,
-} from './errors';
 
 let setupFetchWaiter;
 let fetch = globalThis.fetch;

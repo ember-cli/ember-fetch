@@ -1,4 +1,3 @@
-import { assign } from '@ember/polyfills';
 import { serializeQueryParams } from './serialize-query-params';
 import {
   Method,
@@ -13,12 +12,17 @@ import {
 export default function mungOptionsForFetch(
   options: AjaxOptions
 ): FetchOptions {
-  const hash = assign(
-    {
-      credentials: 'same-origin'
-    },
-    options
-  ) as FetchOptions;
+  let fetchOptions = {
+    credentials: 'same-origin',
+  };
+  
+  for (const key in options) {
+    if (Object.prototype.hasOwnProperty.call(options, key)) {
+      fetchOptions[key] = options[key]
+    }
+  }
+  
+  const hash = fetchOptions as FetchOptions;
 
   // Default to 'GET' in case `type` is not passed in (mimics jQuery.ajax).
   hash.method = (hash.method || hash.type || 'GET').toUpperCase() as Method;

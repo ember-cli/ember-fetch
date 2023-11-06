@@ -57,7 +57,7 @@ const TEMPLATE_PATH = path.resolve(__dirname + '/assets/browser-fetch.js.t');
  *    global, but we can rely on the fact that Ember users are using modules.)
  */
 module.exports = {
-  name: 'ember-fetch',
+  name: require('./package').name,
 
   /*
    * The `included` hook is invoked at the very beginning of the build process.
@@ -75,7 +75,7 @@ module.exports = {
     let hasEmberCliFastboot = !!this.project.findAddonByName('ember-cli-fastboot');
 
     let emberSource = new VersionChecker(this.project).for('ember-source');
-    let hasEmberSourceModules = emberSource.exists() && emberSource.gte('3.27.0');
+    let hasEmberSourceModules = emberSource.exists() && emberSource.gte('4.4.0');
 
     if(isApp && hasEmberCliFastboot && !hasEmberFetch) {
       throw new Error(`Ember fetch is not installed as top-level dependency of the application using fastboot. Add ember-fetch as dependecy in application's package.json.

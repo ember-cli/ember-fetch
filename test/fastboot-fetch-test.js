@@ -7,18 +7,18 @@ chai.use(require('chai-fs'));
 
 const AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 
-describe('renders in fastboot build', function() {
+describe('renders in fastboot build', function () {
   this.timeout(300000);
 
   let app;
 
-  beforeEach(function() {
+  beforeEach(function () {
     app = new AddonTestApp();
 
     return app
       .create('dummy', { skipNpm: true })
-      .then(app =>
-        app.editPackageJSON(pkg => {
+      .then((app) =>
+        app.editPackageJSON((pkg) => {
           pkg.devDependencies['ember-cli-fastboot'] = '*';
           // ember-fetch-adapter@0.4.0 has ember-fetch as dependency, we want to test
           pkg.devDependencies['ember-fetch-adapter'] = '0.4.0';
@@ -27,27 +27,27 @@ describe('renders in fastboot build', function() {
           pkg.devDependencies['node-fetch'] = '*';
         })
       )
-      .then(function() {
+      .then(function () {
         return app.run('npm', 'install');
       })
-      .then(function() {
+      .then(function () {
         return app.startServer({
-          command: 'serve'
+          command: 'serve',
         });
       });
   });
 
-  afterEach(function() {
+  afterEach(function () {
     return app.stopServer();
   });
 
-  it('fetches in fastboot mode', function() {
+  it('fetches in fastboot mode', function () {
     return get({
       url: 'http://localhost:49741/',
       headers: {
-        Accept: 'text/html'
-      }
-    }).then(function(response) {
+        Accept: 'text/html',
+      },
+    }).then(function (response) {
       expect(response.body).to.contain('Hello World! fetch');
       expect(response.body).to.contain('Hello World! fetch (Request)');
     });

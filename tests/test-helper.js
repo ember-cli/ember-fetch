@@ -12,7 +12,7 @@ registerDeprecationHandler((msg, options, next) => {
   if (options.id !== 'deprecate-fetch-ember-data-support') {
     next(msg, options);
   }
-})
+});
 
 setup(QUnit.assert);
 

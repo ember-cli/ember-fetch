@@ -25,7 +25,7 @@ module.exports = async function () {
         name: 'ember-lts-4.4',
         npm: {
           devDependencies: {
-            'ember-source': '~4.4.0'
+            'ember-source': '~4.4.0',
           },
         },
       },
@@ -33,7 +33,7 @@ module.exports = async function () {
         name: 'ember-lts-4.8',
         npm: {
           devDependencies: {
-            'ember-source': '~4.8.0'
+            'ember-source': '~4.8.0',
           },
         },
       },
@@ -41,31 +41,31 @@ module.exports = async function () {
         name: 'ember-release',
         npm: {
           devDependencies: {
-            'ember-source': await getChannelURL('release')
+            'ember-source': await getChannelURL('release'),
           },
         },
-        allowedToFail: true
+        allowedToFail: true,
       },
       {
         name: 'ember-beta',
         npm: {
           devDependencies: {
-            'ember-source': await getChannelURL('beta')
+            'ember-source': await getChannelURL('beta'),
           },
         },
-        allowedToFail: true
+        allowedToFail: true,
       },
       {
         name: 'ember-canary',
         npm: {
           devDependencies: {
-            'ember-source': await getChannelURL('canary')
+            'ember-source': await getChannelURL('canary'),
           },
         },
-        allowedToFail: true
+        allowedToFail: true,
       },
       embroiderSafe({ allowedToFail: true }),
-      embroiderOptimized({ allowedToFail: true })
-    ]
-  }
+      embroiderOptimized({ allowedToFail: true }),
+    ],
+  };
 };

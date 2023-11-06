@@ -7,18 +7,18 @@ chai.use(require('chai-fs'));
 
 const AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 
-describe('renders in fastboot build without calling fetch', function() {
+describe('renders in fastboot build without calling fetch', function () {
   this.timeout(300000);
 
   let app;
 
-  beforeEach(function() {
+  beforeEach(function () {
     app = new AddonTestApp();
 
     return app
       .create('fresh', { skipNpm: true, noFixtures: true })
-      .then(app =>
-        app.editPackageJSON(pkg => {
+      .then((app) =>
+        app.editPackageJSON((pkg) => {
           pkg.devDependencies['ember-cli-fastboot'] = '*';
           // ember-fetch-adapter@0.4.0 has ember-fetch as dependency, we want to test
           pkg.devDependencies['ember-fetch-adapter'] = '0.4.0';
@@ -27,33 +27,33 @@ describe('renders in fastboot build without calling fetch', function() {
           pkg.devDependencies['node-fetch'] = '*';
         })
       )
-      .then(function() {
+      .then(function () {
         return app.run('npm', 'install');
       })
-      .then(function() {
+      .then(function () {
         return app.startServer({
-          command: 'serve'
+          command: 'serve',
         });
       });
   });
 
-  afterEach(function() {
+  afterEach(function () {
     return app.stopServer();
   });
 
-  it('builds into dist/ember-fetch/fetch-fastboot.js ignoring sub dependency version conflict', function() {
+  it('builds into dist/ember-fetch/fetch-fastboot.js ignoring sub dependency version conflict', function () {
     expect(app.filePath('dist/index.html')).to.be.a.file();
     expect(app.filePath('dist/ember-fetch/fetch-fastboot.js')).to.be.a.file();
     expect(app.filePath('dist/assets/fresh-fastboot.js')).to.be.a.file();
   });
 
-  it('fresh serve works', function() {
+  it('fresh serve works', function () {
     return get({
       url: 'http://localhost:49741/',
       headers: {
-        Accept: 'text/html'
-      }
-    }).then(function(response) {
+        Accept: 'text/html',
+      },
+    }).then(function (response) {
       expect(response.body).to.contain('Congratulations, you made it!');
     });
   });

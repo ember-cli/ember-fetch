@@ -1,8 +1,8 @@
 import { module, test } from 'qunit';
 import mungOptionsForFetch from 'ember-fetch/utils/mung-options-for-fetch';
 
-module('Unit | mungOptionsForFetch', function() {
-  test('mungOptionsForFetch transforms jQuery-style options into fetch compatible options', function(assert) {
+module('Unit | mungOptionsForFetch', function () {
+  test('mungOptionsForFetch transforms jQuery-style options into fetch compatible options', function (assert) {
     assert.expect(2);
 
     const jQueryGetOptions = {
@@ -10,12 +10,12 @@ module('Unit | mungOptionsForFetch', function() {
       type: 'GET',
       headers: {
         'x-fake-header': 13,
-        'Content-Type': 'application/vnd.api+json'
+        'Content-Type': 'application/vnd.api+json',
       },
       data: {
         a: 1,
-        b: 2
-      }
+        b: 2,
+      },
     };
 
     const fetchGetOptions = mungOptionsForFetch(jQueryGetOptions);
@@ -29,12 +29,12 @@ module('Unit | mungOptionsForFetch', function() {
         type: 'GET',
         headers: {
           'x-fake-header': 13,
-          'Content-Type': 'application/vnd.api+json'
+          'Content-Type': 'application/vnd.api+json',
         },
         data: {
           a: 1,
-          b: 2
-        }
+          b: 2,
+        },
       },
       "GET call's options are correct"
     );
@@ -42,7 +42,7 @@ module('Unit | mungOptionsForFetch', function() {
     const jqueryPostOptions = {
       url: 'https://emberjs.com',
       type: 'POST',
-      data: { a: 1 }
+      data: { a: 1 },
     };
 
     const fetchPostOptions = mungOptionsForFetch(jqueryPostOptions);
@@ -55,25 +55,25 @@ module('Unit | mungOptionsForFetch', function() {
         type: 'POST',
         body: '{"a":1}',
         data: {
-          a: 1
-        }
+          a: 1,
+        },
       },
       "POST call's options are correct"
     );
   });
 
-  test('mungOptionsForFetch sets the method to "GET" if `type` is not provided', function(assert) {
+  test('mungOptionsForFetch sets the method to "GET" if `type` is not provided', function (assert) {
     assert.expect(1);
     const getOptions = {
       url: 'https://emberjs.com',
-      type: undefined
+      type: undefined,
     };
 
     const options = mungOptionsForFetch(getOptions);
     assert.equal(options.method, 'GET');
   });
 
-  test('mungOptionsForFetch sets the method to an uppercase string', function(assert) {
+  test('mungOptionsForFetch sets the method to an uppercase string', function (assert) {
     assert.expect(2);
     const getOptions = {
       url: 'https://emberjs.com',
@@ -92,13 +92,13 @@ module('Unit | mungOptionsForFetch', function() {
     assert.equal(options.method, 'POST');
   });
 
-  test('mungOptionsForFetch adds string query params to the url correctly', function(assert) {
+  test('mungOptionsForFetch adds string query params to the url correctly', function (assert) {
     assert.expect(2);
 
     const baseUrl = 'https://emberjs.com';
     const noQueryStringOptions = {
       url: baseUrl,
-      data: { a: 1, b: 2 }
+      data: { a: 1, b: 2 },
     };
 
     let options = mungOptionsForFetch(noQueryStringOptions);
@@ -110,7 +110,7 @@ module('Unit | mungOptionsForFetch', function() {
 
     const hasQueryStringOptions = {
       url: `${baseUrl}?fastboot=true`,
-      data: { a: 1, b: 2 }
+      data: { a: 1, b: 2 },
     };
 
     options = mungOptionsForFetch(hasQueryStringOptions);
@@ -121,7 +121,7 @@ module('Unit | mungOptionsForFetch', function() {
     );
   });
 
-  test("mungOptionsForFetch removes undefined query params when method is POST and 'data' is an object", function(assert) {
+  test("mungOptionsForFetch removes undefined query params when method is POST and 'data' is an object", function (assert) {
     assert.expect(1);
 
     const dataAsObject = {
@@ -130,26 +130,26 @@ module('Unit | mungOptionsForFetch', function() {
       c: 3,
       d: null,
       e: 0,
-      f: false
+      f: false,
     };
 
     const undefinedQueryStringOptions = {
       url: 'https://emberjs.com',
       type: 'POST',
-      data: dataAsObject
+      data: dataAsObject,
     };
 
     let options = mungOptionsForFetch(undefinedQueryStringOptions);
     assert.deepEqual(options.body, '{"a":1,"c":3,"d":null,"e":0,"f":false}');
   });
 
-  test('mungOptionsForFetch sets the request body correctly when the method is not GET or HEAD', function(assert) {
+  test('mungOptionsForFetch sets the request body correctly when the method is not GET or HEAD', function (assert) {
     assert.expect(3);
 
     const baseOptions = {
       url: '/',
       type: 'POST',
-      data: { a: 1 }
+      data: { a: 1 },
     };
 
     // Tests POST method.
@@ -179,7 +179,7 @@ module('Unit | mungOptionsForFetch', function() {
     );
   });
 
-  test("mungOptionsForFetch sets the request body correctly when the method is POST and 'data' is a string", function(assert) {
+  test("mungOptionsForFetch sets the request body correctly when the method is POST and 'data' is a string", function (assert) {
     assert.expect(1);
 
     // Tests stringified objects.
@@ -187,20 +187,20 @@ module('Unit | mungOptionsForFetch', function() {
     const optionsWithStringData = {
       url: 'https://emberjs.com',
       type: 'POST',
-      data: stringifiedData
+      data: stringifiedData,
     };
 
     let options = mungOptionsForFetch(optionsWithStringData);
     assert.deepEqual(options.body, stringifiedData);
   });
 
-  test('mungOptionsForFetch does not set a request body when the method is GET or HEAD', function(assert) {
+  test('mungOptionsForFetch does not set a request body when the method is GET or HEAD', function (assert) {
     assert.expect(4);
 
     const baseOptions = {
       url: '/',
       type: 'GET',
-      data: { a: 1 }
+      data: { a: 1 },
     };
 
     let options = mungOptionsForFetch(baseOptions);
@@ -235,13 +235,13 @@ module('Unit | mungOptionsForFetch', function() {
     );
   });
 
-  test("mungOptionsForFetch correctly processes an empty 'data' object", function(assert) {
+  test("mungOptionsForFetch correctly processes an empty 'data' object", function (assert) {
     assert.expect(2);
 
     const getData = {
       url: 'https://emberjs.com',
       type: 'GET',
-      data: {}
+      data: {},
     };
 
     const getOptions = mungOptionsForFetch(getData);
@@ -254,17 +254,17 @@ module('Unit | mungOptionsForFetch', function() {
     const postData = {
       url: 'https://emberjs.com',
       type: 'POST',
-      data: {}
+      data: {},
     };
 
     const postOptions = mungOptionsForFetch(postData);
     assert.equal(postOptions.body, '{}', "'options.body' is an empty object");
   });
 
-  test("mungOptionsForFetch sets the request body correctly when 'data' is FormData", function(assert) {
+  test("mungOptionsForFetch sets the request body correctly when 'data' is FormData", function (assert) {
     assert.expect(1);
 
-    const formData = new FormData()
+    const formData = new FormData();
     const postData = {
       url: 'https://emberjs.com',
       type: 'POST',
@@ -272,14 +272,18 @@ module('Unit | mungOptionsForFetch', function() {
     };
 
     const postOptions = mungOptionsForFetch(postData);
-    assert.equal(postOptions.body, formData, "'options.body' is the FormData passed in");
+    assert.equal(
+      postOptions.body,
+      formData,
+      "'options.body' is the FormData passed in"
+    );
   });
 
-  test("mungOptionsForFetch sets the request body correctly when 'data' has no constructor", function(assert) {
+  test("mungOptionsForFetch sets the request body correctly when 'data' has no constructor", function (assert) {
     assert.expect(1);
 
     const data = Object.create(null);
-    data.request = "body";
+    data.request = 'body';
     const postData = {
       url: 'https://emberjs.com',
       type: 'POST',
@@ -287,6 +291,10 @@ module('Unit | mungOptionsForFetch', function() {
     };
 
     const postOptions = mungOptionsForFetch(postData);
-    assert.equal(postOptions.body, JSON.stringify(data), "'options.body' is properly converted to a string");
+    assert.equal(
+      postOptions.body,
+      JSON.stringify(data),
+      "'options.body' is properly converted to a string"
+    );
   });
 });

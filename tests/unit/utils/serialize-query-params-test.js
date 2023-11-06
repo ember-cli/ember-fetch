@@ -1,9 +1,8 @@
 import { module, test } from 'qunit';
 import { serializeQueryParams } from 'ember-fetch/utils/serialize-query-params';
 
-
-module('Unit | serializeQueryParams', function() {
-  test('serializeQueryParams turns deeply nested objects into queryParams like $.param', function(assert) {
+module('Unit | serializeQueryParams', function () {
+  test('serializeQueryParams turns deeply nested objects into queryParams like $.param', function (assert) {
     assert.expect(1);
 
     const body = {
@@ -12,10 +11,10 @@ module('Unit | serializeQueryParams', function() {
       c: {
         d: 3,
         e: {
-          f: 4
+          f: 4,
         },
-        g: [5, 6, 7]
-      }
+        g: [5, 6, 7],
+      },
     };
     const queryParamString = serializeQueryParams(body);
 
@@ -25,7 +24,7 @@ module('Unit | serializeQueryParams', function() {
     );
   });
 
-  test('serializeQueryParams does not serialize keys with undefined values', function(assert) {
+  test('serializeQueryParams does not serialize keys with undefined values', function (assert) {
     assert.expect(1);
 
     const body = {
@@ -34,13 +33,13 @@ module('Unit | serializeQueryParams', function() {
       c: {
         d: undefined,
         e: {
-          f: 4
+          f: 4,
         },
-        g: [5, 6, 7]
+        g: [5, 6, 7],
       },
       h: null,
       i: 0,
-      j: false
+      j: false,
     };
     const queryParamString = serializeQueryParams(body);
 

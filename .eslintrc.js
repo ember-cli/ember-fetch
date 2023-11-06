@@ -25,7 +25,7 @@ module.exports = {
   rules: {
     'ember/no-new-mixins': 'off',
     'ember/no-jquery': 'error',
-    'no-console': ['error', { allow: ['warn'] }]
+    'no-console': ['error', { allow: ['warn'] }],
   },
   overrides: [
     // TypeScript files
@@ -35,8 +35,8 @@ module.exports = {
       plugins: ['@typescript-eslint'],
       rules: {
         'no-undef': 'off',
-        'no-unused-var': 'off'
-      }
+        'no-unused-var': 'off',
+      },
     },
     // node files
     {
@@ -62,8 +62,8 @@ module.exports = {
       extends: ['plugin:n/recommended'],
       rules: {
         'node/no-unpublished-require': 'off',
-        'node/no-extraneous-require': 'off'
-      }
+        'node/no-extraneous-require': 'off',
+      },
     },
     {
       // test files

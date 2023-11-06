@@ -7,8 +7,8 @@ module.exports = function (defaults) {
     // Add options here
     'ember-fetch': {
       nativePromise: process.env.NATIVE_PROMISE ? true : false,
-      preferNative: process.env.PREFER_NATIVE ? true : false
-    }
+      preferNative: process.env.PREFER_NATIVE ? true : false,
+    },
   });
 
   /*

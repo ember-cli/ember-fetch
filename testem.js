@@ -9,7 +9,7 @@ module.exports = {
   browser_args: {
     Firefox: {
       mode: 'ci',
-      args: ['-headless']
+      args: ['-headless'],
     },
     Chrome: {
       mode: 'ci',

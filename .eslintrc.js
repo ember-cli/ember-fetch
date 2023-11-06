@@ -22,6 +22,15 @@ module.exports = {
   env: {
     browser: true,
   },
+  globals: {
+    require: true,
+    beforeEach: true,
+    it: true,
+    describe: true,
+    afterEach: true,
+    process: true,
+    module: true,
+  },
   rules: {
     'ember/no-new-mixins': 'off',
     'ember/no-jquery': 'error',

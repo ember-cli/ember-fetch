@@ -70,7 +70,7 @@ module('Unit | mungOptionsForFetch', function () {
     };
 
     const options = mungOptionsForFetch(getOptions);
-    assert.equal(options.method, 'GET');
+    assert.strictEqual(options.method, 'GET');
   });
 
   test('mungOptionsForFetch sets the method to an uppercase string', function (assert) {
@@ -81,7 +81,7 @@ module('Unit | mungOptionsForFetch', function () {
     };
 
     let options = mungOptionsForFetch(getOptions);
-    assert.equal(options.method, 'GET');
+    assert.strictEqual(options.method, 'GET');
 
     const postOptions = {
       url: 'https://emberjs.com',
@@ -89,7 +89,7 @@ module('Unit | mungOptionsForFetch', function () {
     };
 
     options = mungOptionsForFetch(postOptions);
-    assert.equal(options.method, 'POST');
+    assert.strictEqual(options.method, 'POST');
   });
 
   test('mungOptionsForFetch adds string query params to the url correctly', function (assert) {
@@ -102,7 +102,7 @@ module('Unit | mungOptionsForFetch', function () {
     };
 
     let options = mungOptionsForFetch(noQueryStringOptions);
-    assert.equal(
+    assert.strictEqual(
       options.url,
       `${baseUrl}?a=1&b=2`,
       'url that started without query params has query params'
@@ -114,7 +114,7 @@ module('Unit | mungOptionsForFetch', function () {
     };
 
     options = mungOptionsForFetch(hasQueryStringOptions);
-    assert.equal(
+    assert.strictEqual(
       options.url,
       `${baseUrl}?fastboot=true&a=1&b=2`,
       'url that started with query params has more query params'
@@ -154,7 +154,7 @@ module('Unit | mungOptionsForFetch', function () {
 
     // Tests POST method.
     let options = mungOptionsForFetch(baseOptions);
-    assert.equal(
+    assert.strictEqual(
       options.body,
       JSON.stringify(baseOptions.data),
       'POST request body correctly set'
@@ -163,7 +163,7 @@ module('Unit | mungOptionsForFetch', function () {
     // Tests PUT method.
     baseOptions.type = 'PUT';
     options = mungOptionsForFetch(baseOptions);
-    assert.equal(
+    assert.strictEqual(
       options.body,
       JSON.stringify(baseOptions.data),
       'PUT request body correctly set'
@@ -172,7 +172,7 @@ module('Unit | mungOptionsForFetch', function () {
     // Tests DELETE method.
     baseOptions.type = 'DELETE';
     options = mungOptionsForFetch(baseOptions);
-    assert.equal(
+    assert.strictEqual(
       options.body,
       JSON.stringify(baseOptions.data),
       'DELETE request has the correct body'
@@ -204,7 +204,7 @@ module('Unit | mungOptionsForFetch', function () {
     };
 
     let options = mungOptionsForFetch(baseOptions);
-    assert.equal(
+    assert.strictEqual(
       options.body,
       undefined,
       'GET request does not have a request body'
@@ -212,7 +212,7 @@ module('Unit | mungOptionsForFetch', function () {
 
     baseOptions.type = 'HEAD';
     options = mungOptionsForFetch(baseOptions);
-    assert.equal(
+    assert.strictEqual(
       options.body,
       undefined,
       'HEAD request does not have a request body'
@@ -220,7 +220,7 @@ module('Unit | mungOptionsForFetch', function () {
 
     baseOptions.data = {};
     options = mungOptionsForFetch(baseOptions);
-    assert.equal(
+    assert.strictEqual(
       options.body,
       undefined,
       'HEAD request does not have a request body when `data` is an empty object'
@@ -228,7 +228,7 @@ module('Unit | mungOptionsForFetch', function () {
 
     baseOptions.type = 'GET';
     options = mungOptionsForFetch(baseOptions);
-    assert.equal(
+    assert.strictEqual(
       options.body,
       undefined,
       'GET request does not have a request body when `data` is an empty object'
@@ -245,7 +245,7 @@ module('Unit | mungOptionsForFetch', function () {
     };
 
     const getOptions = mungOptionsForFetch(getData);
-    assert.equal(
+    assert.strictEqual(
       getOptions.url.indexOf('?'),
       -1,
       'A question mark is not added if there are no query params to add'
@@ -258,7 +258,11 @@ module('Unit | mungOptionsForFetch', function () {
     };
 
     const postOptions = mungOptionsForFetch(postData);
-    assert.equal(postOptions.body, '{}', "'options.body' is an empty object");
+    assert.strictEqual(
+      postOptions.body,
+      '{}',
+      "'options.body' is an empty object"
+    );
   });
 
   test("mungOptionsForFetch sets the request body correctly when 'data' is FormData", function (assert) {
@@ -272,7 +276,7 @@ module('Unit | mungOptionsForFetch', function () {
     };
 
     const postOptions = mungOptionsForFetch(postData);
-    assert.equal(
+    assert.strictEqual(
       postOptions.body,
       formData,
       "'options.body' is the FormData passed in"
@@ -291,7 +295,7 @@ module('Unit | mungOptionsForFetch', function () {
     };
 
     const postOptions = mungOptionsForFetch(postData);
-    assert.equal(
+    assert.strictEqual(
       postOptions.body,
       JSON.stringify(data),
       "'options.body' is properly converted to a string"

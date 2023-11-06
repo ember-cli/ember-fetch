@@ -28,8 +28,8 @@ module('Acceptance: Root', function (hooks) {
 
     await visit('/');
 
-    assert.equal(currentRouteName(), 'index');
-    assert.equal(
+    assert.strictEqual(currentRouteName(), 'index');
+    assert.strictEqual(
       this.element.querySelector('.fetch').textContent.trim(),
       'Hello World! fetch'
     );
@@ -37,7 +37,7 @@ module('Acceptance: Root', function (hooks) {
 
   test('posting a string', function (assert) {
     server.post('/upload', function (req) {
-      assert.equal(req.requestBody, 'foo');
+      assert.strictEqual(req.requestBody, 'foo');
       return [
         200,
         { 'Content-Type': 'text/json' },
@@ -50,11 +50,11 @@ module('Acceptance: Root', function (hooks) {
       body: 'foo',
     })
       .then(function (res) {
-        assert.equal(res.status, 200);
+        assert.strictEqual(res.status, 200);
         return res.json();
       })
       .then(function (data) {
-        assert.equal(data.name, 'World');
+        assert.strictEqual(data.name, 'World');
       });
   });
 
@@ -75,11 +75,11 @@ module('Acceptance: Root', function (hooks) {
       body: form,
     })
       .then(function (res) {
-        assert.equal(res.status, 200);
+        assert.strictEqual(res.status, 200);
         return res.json();
       })
       .then(function (data) {
-        assert.equal(data.name, 'World');
+        assert.strictEqual(data.name, 'World');
       });
   });
 
@@ -98,11 +98,11 @@ module('Acceptance: Root', function (hooks) {
       body: new window.ArrayBuffer(),
     })
       .then(function (res) {
-        assert.equal(res.status, 200);
+        assert.strictEqual(res.status, 200);
         return res.json();
       })
       .then(function (data) {
-        assert.equal(data.name, 'World');
+        assert.strictEqual(data.name, 'World');
       });
   });
 

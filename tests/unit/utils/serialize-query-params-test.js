@@ -18,7 +18,7 @@ module('Unit | serializeQueryParams', function () {
     };
     const queryParamString = serializeQueryParams(body);
 
-    assert.equal(
+    assert.strictEqual(
       queryParamString,
       'a=1&b=2&c%5Bd%5D=3&c%5Be%5D%5Bf%5D=4&c%5Bg%5D%5B%5D=5&c%5Bg%5D%5B%5D=6&c%5Bg%5D%5B%5D=7'
     );
@@ -43,7 +43,7 @@ module('Unit | serializeQueryParams', function () {
     };
     const queryParamString = serializeQueryParams(body);
 
-    assert.equal(
+    assert.strictEqual(
       queryParamString,
       'b=2&c%5Be%5D%5Bf%5D=4&c%5Bg%5D%5B%5D=5&c%5Bg%5D%5B%5D=6&c%5Bg%5D%5B%5D=7&h=&i=0&j=false'
     );

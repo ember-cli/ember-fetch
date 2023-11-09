@@ -11,12 +11,20 @@ on:
     tags:
       - "*"
 
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: "Linting"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 16
+          cache: yarn
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn lint:js
 
@@ -25,13 +33,19 @@ jobs:
     name: "Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: ["12"]
+        node-version:
+          - 16
+          - 18
+          - 20
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn test
 
@@ -40,13 +54,19 @@ jobs:
     name: "PREFER_NATIVE=true Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: ["12"]
+        node-version:
+          - 16
+          - 18
+          - 20
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
       - run: yarn install --frozen-lockfile --non-interactive
       - run: PREFER_NATIVE=true yarn test
 
@@ -55,13 +75,19 @@ jobs:
     name: "NATIVE_PROMISE=true Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: ["12"]
+        node-version:
+          - 16
+          - 18
+          - 20
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
       - run: yarn install --frozen-lockfile --non-interactive
       - run: NATIVE_PROMISE=true yarn test
 
@@ -70,13 +96,19 @@ jobs:
     name: "Node Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: ["12"]
+        node-version:
+          - 16
+          - 18
+          - 20
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn run test:node
 
@@ -88,7 +120,7 @@ jobs:
     needs: ember-tests
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         ember-try-scenario:
           - ember-lts-3.4
@@ -105,8 +137,9 @@ jobs:
             allow-failure: true
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
         with:
-          node-version: 12.x
+          node-version: 16
       - name: install dependencies
         run: yarn install
       - name: test

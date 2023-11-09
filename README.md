@@ -19,7 +19,7 @@ HTML5 [fetch](https://fetch.spec.whatwg.org) polyfill from [github](https://gith
 
 * Ember.js v4.4 or above
 * Ember CLI v4.4 or above
-* Node.js v14 or above
+* Node.js >=16.13 or >=18.*
 
 ember-fetch requries ember-cli 2.13 or above.
 

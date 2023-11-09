@@ -11,12 +11,20 @@ on:
     tags:
       - "*"
 
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: "Linting"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 16
+          cache: yarn
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn lint:js
 

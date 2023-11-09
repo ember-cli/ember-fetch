@@ -71,7 +71,8 @@ module.exports = {
     {
       files: ['test/**/*.js'],
       env: {
-        mocha: true
+        mocha: true,
+        node: true
       },
       rules: {
         'node/no-unpublished-require': 'off',

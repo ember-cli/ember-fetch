@@ -33,6 +33,7 @@ jobs:
     name: "Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node-version:
           - 16
@@ -53,6 +54,7 @@ jobs:
     name: "PREFER_NATIVE=true Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node-version:
           - 16
@@ -73,6 +75,7 @@ jobs:
     name: "NATIVE_PROMISE=true Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node-version:
           - 16
@@ -93,6 +96,7 @@ jobs:
     name: "Node Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node-version:
           - 16
@@ -116,7 +120,7 @@ jobs:
     needs: ember-tests
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         ember-try-scenario:
           - ember-lts-3.4

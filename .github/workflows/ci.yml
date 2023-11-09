@@ -26,12 +26,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ["12"]
+        node-version:
+          - 16
+          - 18
+          - 20
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn test
 
@@ -41,12 +46,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ["12"]
+        node-version:
+          - 16
+          - 18
+          - 20
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
       - run: yarn install --frozen-lockfile --non-interactive
       - run: PREFER_NATIVE=true yarn test
 
@@ -56,12 +66,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ["12"]
+        node-version:
+          - 16
+          - 18
+          - 20
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
       - run: yarn install --frozen-lockfile --non-interactive
       - run: NATIVE_PROMISE=true yarn test
 
@@ -71,12 +86,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ["12"]
+        node-version:
+          - 16
+          - 18
+          - 20
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn run test:node
 
@@ -105,8 +125,9 @@ jobs:
             allow-failure: true
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
         with:
-          node-version: 12.x
+          node-version: 16
       - name: install dependencies
         run: yarn install
       - name: test

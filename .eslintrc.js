@@ -35,6 +35,8 @@ module.exports = {
     'ember/no-new-mixins': 'off',
     'ember/no-jquery': 'error',
     'no-console': ['error', { allow: ['warn'] }],
+    'ember/no-classic-classes': 'off',
+    'ember/no-actions-hash': 'off',
   },
   overrides: [
     // TypeScript files

@@ -15,13 +15,13 @@ export default function mungOptionsForFetch(
   let fetchOptions = {
     credentials: 'same-origin',
   };
-  
+
   for (const key in options) {
     if (Object.prototype.hasOwnProperty.call(options, key)) {
-      fetchOptions[key] = options[key]
+      fetchOptions[key] = options[key];
     }
   }
-  
+
   const hash = fetchOptions as FetchOptions;
 
   // Default to 'GET' in case `type` is not passed in (mimics jQuery.ajax).

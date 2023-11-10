@@ -9,7 +9,7 @@ export default function determineBodyPromise(
   response: Response,
   requestData: JQueryAjaxSettings
 ): Promise<object | string | undefined> {
-  return response.text().then(function(payload) {
+  return response.text().then(function (payload) {
     let ret: string | object | undefined = payload;
     try {
       ret = JSON.parse(payload);

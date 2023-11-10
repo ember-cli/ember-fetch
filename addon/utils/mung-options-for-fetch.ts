@@ -3,7 +3,7 @@ import {
   Method,
   FetchOptions,
   AjaxOptions,
-  isPlainObject
+  isPlainObject,
 } from 'ember-fetch/types';
 
 /**

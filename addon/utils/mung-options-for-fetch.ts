@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { assign } from '@ember/polyfills';
 import { serializeQueryParams } from './serialize-query-params';
 import {

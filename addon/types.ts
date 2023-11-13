@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Mix from '@ember/polyfills/types';
 
 export type Nullable<T> = T | null | undefined;

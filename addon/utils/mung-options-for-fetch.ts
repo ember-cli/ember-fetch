@@ -18,7 +18,7 @@ export default function mungOptionsForFetch(
 
   for (const key in options) {
     if (Object.prototype.hasOwnProperty.call(options, key)) {
-      fetchOptions[key] = options[key];
+      (fetchOptions as any)[key] = (options as any)[key];
     }
   }
 

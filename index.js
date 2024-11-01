@@ -238,18 +238,18 @@ module.exports = {
             rollup: {
               input: 'fetch.js',
               output: {
-                file: 'fetch.js',
+                dir: 'whatwg-fetch',
                 name: 'WHATWGFetch',
                 format: 'iife',
               },
             },
           }
         ),
-        'whatwg-fetch'
+        ''
       );
 
       inputNodes.push(fetchNode);
-      inputFiles.push('fetch.js');
+      inputFiles.push('whatwg-fetch/fetch.js');
     }
 
     const polyfillNode = debug(

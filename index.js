@@ -20,7 +20,7 @@ const path = require('path');
 // broccoli-rollup: rollup dependencies to expected module format
 //
 const stew = require('broccoli-stew');
-const Template = require('broccoli-templater');
+const Template = require('@gorner/broccoli-templater');
 const MergeTrees = require('broccoli-merge-trees');
 const concat = require('broccoli-concat');
 const map = stew.map;

@@ -37,7 +37,7 @@
     "broccoli-merge-trees": "^4.2.0",
     "broccoli-rollup": "^5.0.0",
     "broccoli-stew": "^3.0.0",
-    "broccoli-templater": "^2.0.1",
+    "@gorner/broccoli-templater": "^2.0.3",
     "calculate-cache-key-for-tree": "^2.0.0",
     "caniuse-api": "^3.0.0",
     "ember-cli-babel": "^7.26.11",
@@ -48,7 +48,10 @@
     "whatwg-fetch": "^3.6.2"
   },
   "resolutions": {
-    "@babel/traverse": "^7.25.9"
+    "@babel/traverse": "^7.25.9",
+    "json5": "^2.2.3",
+    "rollup": "^2.79.2",
+    "sourcemap-validator": "Gaurav0/sourcemap-validator#a99b8d71b9a858fec7405e18e4ea94a26cf8506d"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -102,7 +105,7 @@
     "chai-fs": "^2.0.0",
     "concurrently": "^8.0.1",
     "ember-auto-import": "^2.9.0",
-    "ember-cli": "~4.12.1",
+    "ember-cli": "~4.12.3",
     "ember-cli-addon-tests": "^0.11.1",
     "ember-cli-dependency-checker": "^3.3.1",
     "ember-cli-fastboot": "^4.1.5",

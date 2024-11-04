@@ -5196,10 +5196,9 @@ ember-cached-decorator-polyfill@^1.0.1:
     ember-cli-babel "^7.26.11"
     ember-cli-babel-plugin-helpers "^1.1.1"
 
-ember-cli-addon-tests@^0.11.1:
+ember-cli-addon-tests@Gaurav0/ember-cli-addon-tests#c68be47ca6db8f54136dfa0e3a53a46eb03cea4a:
   version "0.11.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-addon-tests/-/ember-cli-addon-tests-0.11.1.tgz#70c9164cb4126b2d17bbf9588ff34d97d4bfbad1"
-  integrity sha512-PI3ht9NrgfAwBgh3aPCVecajndvDKltTqRdtxt5bgfQJ3+AMs6moXhijKygwuAeT5btyhhLbceTfHRL/K8pX2w==
+  resolved "https://codeload.github.com/Gaurav0/ember-cli-addon-tests/tar.gz/c68be47ca6db8f54136dfa0e3a53a46eb03cea4a"
   dependencies:
     chalk "^2.0.1"
     debug "^3.0.0"

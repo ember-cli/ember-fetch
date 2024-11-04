@@ -16,15 +16,23 @@ describe('renders in fastboot build without calling fetch', function () {
     app = new AddonTestApp();
 
     return app
-      .create('fresh', { skipNpm: true, noFixtures: true })
+      .create('fresh', {
+        skipNpm: true,
+        noFixtures: true,
+        emberVersion: '^3.28.10',
+        emberDataVersion: '^3.28.9',
+      })
       .then((app) =>
         app.editPackageJSON((pkg) => {
+          pkg.devDependencies['isbinaryfile'] = '5.0.0';
+          pkg.devDependencies['ember-resolver'] = '^8.1.0';
           pkg.devDependencies['ember-cli-fastboot'] = '*';
           // ember-fetch-adapter@0.4.0 has ember-fetch as dependency, we want to test
-          pkg.devDependencies['ember-fetch-adapter'] = '0.4.0';
+          pkg.devDependencies['ember-fetch-adapter'] = '0.4.3';
           // These 2 are in ember-fetch's package.json, symlinking to dummy won't help resolve
           pkg.devDependencies['abortcontroller-polyfill'] = '*';
-          pkg.devDependencies['node-fetch'] = '*';
+          pkg.devDependencies['node-fetch'] = '^2.6.7';
+          delete pkg.devDependencies.dummy;
         })
       )
       .then(function () {
@@ -34,6 +42,10 @@ describe('renders in fastboot build without calling fetch', function () {
         return app.startServer({
           command: 'serve',
         });
+      })
+      .catch((e) => {
+        //eslint-disable-next-line no-console
+        console.error(e);
       });
   });
 

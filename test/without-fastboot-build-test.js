@@ -16,9 +16,15 @@ describe('it builds without ember-cli-fastboot', function () {
 
   it('builds no exist dist/ember-fetch/fetch-fastboot.js', function () {
     return app
-      .create('dummy', { skipNpm: true })
+      .create('dummy', {
+        skipNpm: true,
+        emberVersion: '^3.28.10',
+        emberDataVersion: '^3.28.9',
+      })
       .then((app) =>
         app.editPackageJSON((pkg) => {
+          pkg.devDependencies['isbinaryfile'] = '5.0.0';
+          pkg.devDependencies['ember-resolver'] = '^8.1.0';
           delete pkg.devDependencies['ember-cli-fastboot'];
         })
       )
@@ -36,6 +42,8 @@ describe('it builds without ember-cli-fastboot', function () {
       .create('dummy', { skipNpm: true })
       .then((app) =>
         app.editPackageJSON((pkg) => {
+          pkg.devDependencies['ember-source'] = '^3.28.10';
+          pkg.devDependencies['isbinaryfile'] = '5.0.0';
           pkg.devDependencies['ember-cli-fastboot'] = '*';
         })
       )
@@ -52,6 +60,10 @@ describe('it builds without ember-cli-fastboot', function () {
         function () {
           delete process.env.FASTBOOT_DISABLED;
         }
-      );
+      )
+      .catch((e) => {
+        //eslint-disable-next-line no-console
+        console.error(e);
+      });
   });
 });

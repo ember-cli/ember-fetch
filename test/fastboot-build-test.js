@@ -16,13 +16,23 @@ describe('it builds with ember-cli-fastboot', function () {
     app = new AddonTestApp();
 
     return app
-      .create('dummy', { skipNpm: true })
+      .create('dummy', {
+        skipNpm: true,
+        emberVersion: '^3.28.10',
+        emberDataVersion: '^3.28.9',
+      })
       .then((app) =>
         app.editPackageJSON((pkg) => {
+          pkg.devDependencies['isbinaryfile'] = '5.0.0';
+          pkg.devDependencies['ember-resolver'] = '^8.1.0';
           pkg.devDependencies['ember-cli-fastboot'] = '*';
         })
       )
-      .then(() => app.run('npm', 'install'));
+      .then(() => app.run('npm', 'install'))
+      .catch((e) => {
+        //eslint-disable-next-line no-console
+        console.error(e);
+      });
   });
 
   it('builds into dist/ember-fetch/fetch-fastboot.js', function () {

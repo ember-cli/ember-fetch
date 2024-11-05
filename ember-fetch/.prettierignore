@@ -1,0 +1,18 @@
+# unconventional js
+/blueprints/*/files/
+
+# compiled output
+/dist/
+/declarations/
+
+# misc
+/coverage/
+ within a package
+
+# misc
+!.*
+.lint-todo/
+
+# ember-try
+/.node_modules.ember-try/
+/pnpm-lock.ember-try.yaml

@@ -1,0 +1,4 @@
+packages:
+- '.'
+- './ember-fetch'
+- './test-app'

@@ -9,3 +9,5 @@ export function fetch(...args) {
 
   return promise;
 }
+
+export default fetch;

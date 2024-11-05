@@ -1,24 +1,17 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
+# The authoritative copies of these live in the monorepo root (because they're
+# more useful on github that way), but the build copies them into here so they
+# will also appear in published NPM packages.
+/README.md
+/LICENSE.md
 
 # compiled output
-/dist
-/tmp
+dist/
+declarations/
 
-# dependencies
-/node_modules
-/bower_components
+# npm/pnpm/yarn pack output
+*.tgz
 
-# misc
-/.sass-cache
-/connect.lock
-/coverage/*
-/libpeerconnection.log
+# deps & caches
+node_modules/
 .eslintcache
-npm-debug.log*
-yarn-error.log
-testem.log
-
-# ember-try
-.node_modules.ember-try/
-bower.json.ember-try
-package.json.ember-try
+.prettiercache

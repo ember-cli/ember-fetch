@@ -63,9 +63,6 @@ importers:
       ember-try:
         specifier: ^3.0.0
         version: 3.0.0
-      pretender:
-        specifier: ^3.4.7
-        version: 3.4.7
     devDependencies:
       '@babel/core':
         specifier: ^7.25.2
@@ -162,7 +159,7 @@ importers:
         version: 9.1.0(eslint@8.57.1)
       eslint-plugin-ember:
         specifier: ^12.2.1
-        version: 12.3.1(@babel/core@7.26.0)(@typescript-eslint/parser@7.18.0(eslint@8.57.1))(eslint@8.57.1)
+        version: 12.3.1(@babel/core@7.26.0)(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1)
       eslint-plugin-n:
         specifier: ^16.6.2
         version: 16.6.2(eslint@8.57.1)
@@ -2952,9 +2949,6 @@ packages:
     resolution: {integrity: sha512-AEo4zm+TenK7zQorGK1f9mJ8L14hnTDi2ZQPR+Mub1NX8zimka1mXpV5LpH8x9HoUmFSHZCfLHqWvp0Y4FxxzQ==}
     engines: {node: '>=8'}
 
-  fake-xml-http-request@2.1.2:
-    resolution: {integrity: sha512-HaFMBi7r+oEC9iJNpc3bvcW7Z7iLmM26hPDmlb0mFwyANSsOQAtJxbdWsXITKOzZUyMYK0zYCv3h5yDj9TsiXg==}
-
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
@@ -4545,9 +4539,6 @@ packages:
   prepend-http@2.0.0:
     resolution: {integrity: sha512-ravE6m9Atw9Z/jjttRUZ+clIXogdghyZAuWJ3qEzjT+jI/dL1ifAqhZeC5VHzQp1MSt1+jxKkFNemj/iO7tVUA==}
     engines: {node: '>=4'}
-
-  pretender@3.4.7:
-    resolution: {integrity: sha512-jkPAvt1BfRi0RKamweJdEcnjkeu7Es8yix3bJ+KgBC5VpG/Ln4JE3hYN6vJym4qprm8Xo5adhWpm3HCoft1dOw==}
 
   prettier-linter-helpers@1.0.0:
     resolution: {integrity: sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==}
@@ -8869,6 +8860,19 @@ snapshots:
       - '@babel/core'
       - supports-color
 
+  ember-eslint-parser@0.5.3(@babel/core@7.26.0)(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1):
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/eslint-parser': 7.25.9(@babel/core@7.26.0)(eslint@8.57.1)
+      '@glimmer/syntax': 0.92.3
+      content-tag: 2.0.3
+      eslint-scope: 7.2.2
+      html-tags: 3.3.1
+    optionalDependencies:
+      '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.6.3)
+    transitivePeerDependencies:
+      - eslint
+
   ember-eslint-parser@0.5.3(@babel/core@7.26.0)(@typescript-eslint/parser@7.18.0(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       '@babel/core': 7.26.0
@@ -9248,6 +9252,24 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  eslint-plugin-ember@12.3.1(@babel/core@7.26.0)(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1):
+    dependencies:
+      '@ember-data/rfc395-data': 0.0.4
+      css-tree: 2.3.1
+      ember-eslint-parser: 0.5.3(@babel/core@7.26.0)(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1)
+      ember-rfc176-data: 0.3.18
+      eslint: 8.57.1
+      eslint-utils: 3.0.0(eslint@8.57.1)
+      estraverse: 5.3.0
+      lodash.camelcase: 4.3.0
+      lodash.kebabcase: 4.1.1
+      requireindex: 1.2.0
+      snake-case: 3.0.4
+    optionalDependencies:
+      '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.6.3)
+    transitivePeerDependencies:
+      - '@babel/core'
+
   eslint-plugin-ember@12.3.1(@babel/core@7.26.0)(@typescript-eslint/parser@7.18.0(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       '@ember-data/rfc395-data': 0.0.4
@@ -9575,8 +9597,6 @@ snapshots:
       - supports-color
 
   extract-stack@2.0.0: {}
-
-  fake-xml-http-request@2.1.2: {}
 
   fast-deep-equal@3.1.3: {}
 
@@ -11301,11 +11321,6 @@ snapshots:
   prelude-ls@1.2.1: {}
 
   prepend-http@2.0.0: {}
-
-  pretender@3.4.7:
-    dependencies:
-      fake-xml-http-request: 2.1.2
-      route-recognizer: 0.3.4
 
   prettier-linter-helpers@1.0.0:
     dependencies:

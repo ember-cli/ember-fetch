@@ -75,7 +75,6 @@
   },
   "dependencies": {
     "ember-source-channel-url": "^3.0.0",
-    "ember-try": "^3.0.0",
-    "pretender": "^3.4.7"
+    "ember-try": "^3.0.0"
   }
 }

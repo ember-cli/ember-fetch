@@ -21,7 +21,6 @@ jobs:
       - run: pnpm lint
 
   tests:
-    needs: lint
     name: "Tests"
     runs-on: ubuntu-latest
 

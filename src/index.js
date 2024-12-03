@@ -1,9 +1,7 @@
 import { waitForPromise } from '@ember/test-waiters';
 
-const originalFetch = globalThis.fetch;
-
 export function fetch(...args) {
-  let promise = originalFetch(...args);
+  let promise = globalThis.fetch(...args);
 
   waitForPromise(promise);
 

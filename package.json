@@ -51,7 +51,7 @@
     "@babel/traverse": "^7.25.9",
     "json5": "^2.2.3",
     "rollup": "^2.79.2",
-    "sourcemap-validator": "Gaurav0/sourcemap-validator#a99b8d71b9a858fec7405e18e4ea94a26cf8506d"
+    "sourcemap-validator": "SeeClickFix/sourcemap-validator#v2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -106,7 +106,7 @@
     "concurrently": "^8.0.1",
     "ember-auto-import": "^2.9.0",
     "ember-cli": "~4.12.3",
-    "ember-cli-addon-tests": "Gaurav0/ember-cli-addon-tests#c68be47ca6db8f54136dfa0e3a53a46eb03cea4a",
+    "ember-cli-addon-tests": "SeeClickFix/ember-cli-addon-tests#v0.11.1",
     "ember-cli-dependency-checker": "^3.3.1",
     "ember-cli-fastboot": "^4.1.5",
     "ember-cli-inject-live-reload": "^2.1.0",

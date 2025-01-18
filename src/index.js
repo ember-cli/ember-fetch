@@ -1,11 +1,27 @@
 import { waitForPromise } from '@ember/test-waiters';
 
-export function fetch(...args) {
-  let promise = globalThis.fetch(...args);
+export async function wrappedFetch(...args) {
+    let responsePromise = fetch(...args);
 
-  waitForPromise(promise);
+    waitForPromise(responsePromise);
 
-  return promise;
+    let response = await responsePromise;
+
+    return new Proxy(response, {
+        get(target, prop, receiver) {
+            let original = Reflect.get(target, prop, receiver);
+
+            if (['json', 'text', 'arrayBuffer', 'blob', 'formData'].includes(prop)) {
+                return (...args) => {
+                    let parsePromise = original(...args);
+
+                    return waitForPromise(parsePromise);
+                }
+            }
+
+            return original;
+        }
+    });
 }
 
-export default fetch;
+export default wrappedFetch;

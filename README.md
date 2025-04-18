@@ -1,3 +1,11 @@
+# Deprecated 
+
+This library is no longer needed, as `fetch` is available everywhere. 
+
+To instrument `fetch` with the test waiting system, checkout [`waitForFetch`](https://github.com/emberjs/ember-test-waiters/blob/master/addon/src/wait-for-fetch.ts)
+
+See [RFC#1065](https://github.com/emberjs/rfcs/pull/1065/) for more information.
+
 # ember-fetch
 [![Build Status](https://travis-ci.org/ember-cli/ember-fetch.svg?branch=master)](https://travis-ci.org/ember-cli/ember-fetch)
 [![Build status](https://ci.appveyor.com/api/projects/status/u7qcv4pgsvo60sxt?svg=true)](https://ci.appveyor.com/project/embercli/ember-fetch)

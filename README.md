@@ -29,7 +29,7 @@ ember-fetch requries ember-cli 2.13 or above.
 
 ```js
 import Route from '@ember/routing/route';
-import fetch from 'fetch';
+import fetch from 'ember-fetch';
 
 export default Route.extend({
   model() {
@@ -42,11 +42,22 @@ export default Route.extend({
 
 Available imports:
 ```js
+import fetch, { Headers, Request, Response, AbortController } from 'ember-fetch';
+```
+
+`ember-fetch` still supports importing from the old import path, but this will shortly be deprecated and ***will be removed in the next major***:
+```js
 import fetch, { Headers, Request, Response, AbortController } from 'fetch';
 ```
 
 ### Use with TypeScript
-To use `ember-fetch` with TypeScript or enable editor's type support, You can add `"fetch": ["node_modules/ember-fetch"]` to your `tsconfig.json`.
+If you import from `ember-fetch`, the types just work:
+
+```ts
+import fetch from 'ember-fetch';
+```
+
+If you're still using the legacy `fetch` import path, you need to add `"fetch": ["node_modules/ember-fetch"]` to your `tsconfig.json`.
 
 ```json
 {
@@ -134,7 +145,7 @@ otherwise you can read the status code to determine the bad response type.
 
 ```js
 import Route from '@ember/routing/route';
-import fetch from 'fetch';
+import fetch from 'ember-fetch';
 import {
   isAbortError,
   isServerErrorResponse,

@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
-import { Response } from 'fetch';
+import { Response } from 'ember-fetch';
+import { Response as LegacyImportResponse } from 'fetch';
 import determineBodyPromise from 'ember-fetch/utils/determine-body-promise';
 
 module('Unit | determineBodyPromise', function() {
@@ -7,6 +8,17 @@ module('Unit | determineBodyPromise', function() {
     assert.expect(1);
 
     const response = new Response('{"data": "foo"}', { status: 200 });
+    const bodyPromise = determineBodyPromise(response, {});
+
+    return bodyPromise.then(body => {
+      assert.deepEqual(body, { data: 'foo' });
+    });
+  });
+
+  test('works when imported from legacy import path', function(assert) {
+    assert.expect(1);
+
+    const response = new LegacyImportResponse('{"data": "foo"}', { status: 200 });
     const bodyPromise = determineBodyPromise(response, {});
 
     return bodyPromise.then(body => {

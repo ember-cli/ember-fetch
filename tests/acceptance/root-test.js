@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import { visit, click, find, currentRouteName } from '@ember/test-helpers';
 import Pretender from 'pretender';
-import fetch from 'fetch';
+import fetch from 'ember-fetch';
 
 var server;
 
@@ -29,6 +29,21 @@ module('Acceptance: Root', function(hooks) {
     await visit('/');
 
     assert.equal(currentRouteName(), 'index');
+    assert.equal(this.element.querySelector('.fetch').textContent.trim(), 'Hello World! fetch');
+  });
+
+  test('legacy import path still works', async function(assert) {
+    server.get('/omg.json', function() {
+      return [
+        200,
+        { 'Content-Type': 'text/json'},
+        JSON.stringify({ name: 'World' })
+      ];
+    });
+
+    await visit('/legacy-import-path');
+
+    assert.equal(currentRouteName(), 'legacy-import-path');
     assert.equal(this.element.querySelector('.fetch').textContent.trim(), 'Hello World! fetch');
   });
 

@@ -33,6 +33,7 @@ module('Acceptance: Root', function(hooks) {
   });
 
   test('posting a string', function(assert) {
+    assert.expect(3);
     server.post('/upload', function(req) {
       assert.equal(req.requestBody, 'foo');
       return [
@@ -54,6 +55,7 @@ module('Acceptance: Root', function(hooks) {
   });
 
   test('posting a form', function(assert) {
+    assert.expect(3)
     server.post('/upload', function(req) {
       assert.ok(req.requestBody instanceof window.FormData);
       return [
@@ -77,6 +79,7 @@ module('Acceptance: Root', function(hooks) {
   });
 
   test('posting an array buffer', function(assert) {
+    assert.expect(3);
     server.post('/upload', function(req) {
       assert.ok(req.requestBody instanceof window.ArrayBuffer);
       return [

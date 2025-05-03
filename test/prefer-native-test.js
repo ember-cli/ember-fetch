@@ -1,11 +1,12 @@
 'use strict';
 
-const AddonFactory = require('../');
 const expect = require('chai').expect;
 const helpers = require('broccoli-test-helper');
 const vm = require('vm');
 const fs = require('fs');
 const RSVP = require('rsvp');
+
+const { makeRootAddon, makeNestedAddon } = require('./helpers/addon-instance');
 
 const testCode = `
 define('fetch-test', ['fetch'], function(_fetch) {
@@ -19,16 +20,7 @@ require('fetch-test');
     let output, subject, addon;
 
     beforeEach(function() {
-      addon = Object.create(AddonFactory);
-      Object.assign(addon, {
-        addons: [],
-        _fetchBuildConfig: {
-          preferNative
-        },
-        ui: {
-          writeWarnLine() {},
-        },
-      });
+      addon = makeRootAddon({ preferNative });
       subject = addon.treeForVendor();
       output = helpers.createBuilder(subject);
     });
@@ -98,23 +90,11 @@ require('fetch-test');
   describe(`Build browser assets with preferNative = ${preferNative} in nested dependencies`, function() {
     let output, subject, addon;
 
-    beforeEach(function() {
-      addon = Object.create(AddonFactory);
-
-      let app = {
-        _fetchBuildConfig: {
-          preferNative
-        }
-      };
-
-      Object.assign(addon, {
-        addons: [],
-        _findHost() {
-          return app;
-        },
-        ui: {
-          writeWarnLine() {},
-        },
+    beforeEach(function () {
+      const parentAddon = makeRootAddon({ preferNative });
+      addon = makeNestedAddon({
+        parent: parentAddon,
+        host: parentAddon.app
       });
       subject = addon.treeForVendor();
       output = helpers.createBuilder(subject);
@@ -186,26 +166,8 @@ require('fetch-test');
     let output, subject, addon;
 
     beforeEach(function() {
-      addon = Object.create(AddonFactory);
-
-      let app = {
-        _fetchBuildConfig: {
-          preferNative
-        }
-      };
-
-      Object.assign(addon, {
-        addons: [],
-        app: this,
-        parent: {
-          parent: {
-            app,
-            parent: {}
-          }
-        },
-        ui: {
-          writeWarnLine() {},
-        },
+      addon = makeNestedAddon({
+        parent: makeRootAddon({ preferNative })
       });
       subject = addon.treeForVendor();
       output = helpers.createBuilder(subject);

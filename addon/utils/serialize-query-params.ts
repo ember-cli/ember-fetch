@@ -45,9 +45,7 @@ export function serializeQueryParams(
     return s;
   }
 
-  return buildParams('', queryParamsObject)
-    .join('&')
-    .replace(/%20/g, '+');
+  return buildParams('', queryParamsObject).join('&').replace(/%20/g, '+');
 }
 
 /**

@@ -1,8 +1,8 @@
 import { module, test } from 'qunit';
 import { Headers } from 'fetch';
 
-module('Headers', function() {
-  test('iterator', function(assert) {
+module('Headers', function () {
+  test('iterator', function (assert) {
     let headers = new Headers();
 
     assert.ok(headers[Symbol.iterator]);

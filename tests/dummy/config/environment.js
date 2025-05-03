@@ -1,20 +1,17 @@
 'use strict';
 
-module.exports = function(environment) {
-  let ENV = {
+module.exports = function (environment) {
+  const ENV = {
     modulePrefix: 'dummy',
     environment,
     rootURL: '/',
-    locationType: 'auto',
+    locationType: 'history',
     EmberENV: {
+      EXTEND_PROTOTYPES: false,
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
       },
-      EXTEND_PROTOTYPES: {
-        // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
     },
 
     APP: {
@@ -23,8 +20,8 @@ module.exports = function(environment) {
     },
 
     fastboot: {
-      hostWhitelist: [/^localhost:\d+$/]
-    }
+      hostWhitelist: [/^localhost:\d+$/],
+    },
   };
 
   if (environment === 'development') {

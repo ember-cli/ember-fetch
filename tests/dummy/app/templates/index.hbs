@@ -1,13 +1,13 @@
 <div class="fetch">
-  Hello {{model.fetch.name}}! fetch
+  Hello {{this.model.fetch.name}}! fetch
 </div>
 
-<button onclick={{action 'fetchSlowData'}} id="fetch-slow-data-button">Fetch slow data</button>
-{{#if fetchedSlowData}}
-  <span class="fetched-slow-data-span">{{fetchedSlowData.content}}</span>
+<button onclick={{action 'fetchSlowData'}} id="fetch-slow-data-button" type="button">Fetch slow data</button>
+{{#if this.fetchedSlowData}}
+  <span class="fetched-slow-data-span">{{this.fetchedSlowData.content}}</span>
 {{/if}}
 
-<button onclick={{action 'badFetch'}} id="fetch-broken-data-button">Failing fetch</button>
-{{#if fetchFailed}}
+<button onclick={{action 'badFetch'}} id="fetch-broken-data-button" type="button">Failing fetch</button>
+{{#if this.fetchFailed}}
   <span class="fetched-failed-span">Fetch failed</span>
 {{/if}}

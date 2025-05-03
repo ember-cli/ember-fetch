@@ -1,5 +1,5 @@
 /* globals define FastBoot */
-define('fetch', ['exports'], function(exports) {
+define('fetch', ['exports'], function (exports) {
   var httpRegex = /^https?:\/\//;
   var protocolRelativeRegex = /^\/\//;
 
@@ -10,10 +10,13 @@ define('fetch', ['exports'], function(exports) {
 
   function parseRequest(request) {
     if (request === null) {
-      throw new Error('Trying to fetch with relative url but ember-fetch hasn\'t finished loading FastBootInfo, see details at https://github.com/ember-cli/ember-fetch#relative-url');
+      throw new Error(
+        "Trying to fetch with relative url but ember-fetch hasn't finished loading FastBootInfo, see details at https://github.com/ember-cli/ember-fetch#relative-url"
+      );
     }
     // Old Prember version is not sending protocol
-    const protocol = request.protocol === 'undefined:' ? 'http:' : request.protocol;
+    const protocol =
+      request.protocol === 'undefined:' ? 'http:' : request.protocol;
     return [request.get('host'), protocol];
   }
 
@@ -26,7 +29,7 @@ define('fetch', ['exports'], function(exports) {
    */
   function buildAbsoluteUrl(url) {
     if (protocolRelativeRegex.test(url)) {
-      let [host,] = parseRequest(REQUEST);
+      let [host] = parseRequest(REQUEST);
       url = host + url;
     } else if (!httpRegex.test(url)) {
       let [host, protocol] = parseRequest(REQUEST);
@@ -75,7 +78,7 @@ define('fetch', ['exports'], function(exports) {
    */
   exports.setupFastboot = function setupFastboot(fastBootRequest) {
     REQUEST = fastBootRequest;
-  }
+  };
   exports.Request = FastBootRequest;
   exports.Headers = nodeFetch.Headers;
   exports.Response = nodeFetch.Response;

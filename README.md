@@ -23,6 +23,12 @@ HTML5 [fetch](https://fetch.spec.whatwg.org) polyfill from [github](https://gith
 
 * `ember install ember-fetch`
 
+## Compatibility
+
+* Ember.js v4.4 or above
+* Ember CLI v4.4 or above
+* Node.js >=16.13 or >=18.*
+
 ember-fetch requries ember-cli 2.13 or above.
 
 ## Usage
@@ -47,6 +53,8 @@ import fetch, { Headers, Request, Response, AbortController } from 'fetch';
 
 ### Use with TypeScript
 To use `ember-fetch` with TypeScript or enable editor's type support, You can add `"fetch": ["node_modules/ember-fetch"]` to your `tsconfig.json`.
+
+## Usage
 
 ```json
 {

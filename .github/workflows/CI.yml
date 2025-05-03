@@ -11,102 +11,133 @@ on:
     tags:
       - "*"
 
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: "Linting"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: yarn install --frozen-lockfile --non-interactive
-      - run: yarn lint:js
+      - run: yarn lint
 
-  ember-tests:
+  ember-default-tests:
     needs: lint
     name: "Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: ["12"]
+        node-version:
+          - 16.14
+          - 18
+          - 20
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn test
 
-  prefer-native-tests:
-    needs: ember-tests
+  prefer-native-ember-default-tests:
+    needs: ember-default-tests
     name: "PREFER_NATIVE=true Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: ["12"]
+        node-version:
+          - 16.14
+          - 18
+          - 20
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
       - run: yarn install --frozen-lockfile --non-interactive
       - run: PREFER_NATIVE=true yarn test
 
-  native-promise-tests:
-    needs: ember-tests
+  native-promise-ember-default-tests:
+    needs: ember-default-tests
     name: "NATIVE_PROMISE=true Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: ["12"]
+        node-version:
+          - 16.14
+          - 18
+          - 20
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install --frozen-lockfile --non-interactive
       - run: NATIVE_PROMISE=true yarn test
 
   node-tests:
-    needs: ember-tests
+    needs: ember-default-tests
     name: "Node Tests: ubuntu (node@${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: ["12"]
+        node-version:
+          - 16.14
+          - 18
+          - 20
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn run test:node
 
-  try-scenarios:
+  ember-try-scenarios:
     name: Tests - ${{ matrix.ember-try-scenario }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.allow-failure }}
-    needs: ember-tests
+    needs: ember-default-tests
 
     strategy:
       fail-fast: true
       matrix:
         ember-try-scenario:
-          - ember-lts-3.4
-          - ember-lts-3.8
-          - ember-lts-3.12
-          - ember-lts-3.16
-          - ember-lts-3.20
-          - ember-lts-3.24
+          - ember-lts-3.28
+          - ember-lts-4.4
+          - ember-lts-4.8
+          - ember-lts-4.12
+          - ember-lts-5.4
+          - ember-lts-5.8
+          - ember-lts-5.12
           - ember-release
-          - ember-beta
         allow-failure: [false]
         include:
+          - ember-try-scenario: ember-beta
+            allow-failure: true
           - ember-try-scenario: ember-canary
             allow-failure: true
+          - ember-try-scenario: embroider-safe
+            allow-failure: true
+          - ember-try-scenario: embroider-optimized
+            allow-failure: true
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 12.x
+          node-version: 16.14
       - name: install dependencies
         run: yarn install
       - name: test

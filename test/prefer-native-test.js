@@ -14,16 +14,16 @@ define('fetch-test', ['fetch'], function(_fetch) {
 require('fetch-test');
 `;
 
-[true, false].forEach(preferNative => {
-  describe(`Build browser assets with preferNative = ${preferNative}`, function() {
+[true, false].forEach((preferNative) => {
+  describe(`Build browser assets with preferNative = ${preferNative}`, function () {
     let output, subject, addon;
 
-    beforeEach(function() {
+    beforeEach(function () {
       addon = Object.create(AddonFactory);
       Object.assign(addon, {
         addons: [],
         _fetchBuildConfig: {
-          preferNative
+          preferNative,
         },
         ui: {
           writeWarnLine() {},
@@ -41,7 +41,9 @@ require('fetch-test');
       await output.build();
       let files = output.read();
       expect(files).to.have.all.keys('ember-fetch.js');
-      expect(files['ember-fetch.js']).to.include(`var preferNative = ${preferNative}`);
+      expect(files['ember-fetch.js']).to.include(
+        `var preferNative = ${preferNative}`
+      );
     });
 
     it(`${
@@ -53,11 +55,11 @@ require('fetch-test');
       const sandbox = {
         __result: false,
         window: {
-          fetch: function() {
+          fetch: function () {
             sandbox.__result = true;
           },
-          Ember: { RSVP }
-        }
+          Ember: { RSVP },
+        },
       };
       vm.createContext(sandbox);
       const code = amdLoaderCode + emberFetchCode + testCode;
@@ -76,8 +78,8 @@ require('fetch-test');
             __result: false,
             // no fetch here
             // fetch: function() {},
-            Ember: { RSVP }
-          }
+            Ember: { RSVP },
+          },
         };
         vm.createContext(sandbox);
         const testCodeForNonFetch = `
@@ -91,20 +93,20 @@ require('fetch-test');
         const code = amdLoaderCode + emberFetchCode + testCodeForNonFetch;
         vm.runInContext(code, sandbox);
         expect(sandbox.window.__result).to.equal(true);
-      })
+      });
     }
   });
 
-  describe(`Build browser assets with preferNative = ${preferNative} in nested dependencies`, function() {
+  describe(`Build browser assets with preferNative = ${preferNative} in nested dependencies`, function () {
     let output, subject, addon;
 
-    beforeEach(function() {
+    beforeEach(function () {
       addon = Object.create(AddonFactory);
 
       let app = {
         _fetchBuildConfig: {
-          preferNative
-        }
+          preferNative,
+        },
       };
 
       Object.assign(addon, {
@@ -128,23 +130,25 @@ require('fetch-test');
       await output.build();
       let files = output.read();
       expect(files).to.have.all.keys('ember-fetch.js');
-      expect(files['ember-fetch.js']).to.include(`var preferNative = ${preferNative}`);
+      expect(files['ember-fetch.js']).to.include(
+        `var preferNative = ${preferNative}`
+      );
     });
 
     it(`${
       preferNative ? 'Prefers' : "Doesn't prefer"
-      } native fetch as specified`, async function () {
+    } native fetch as specified`, async function () {
       await output.build();
       let emberFetchCode = output.read()['ember-fetch.js'];
       const amdLoaderCode = fs.readFileSync(require.resolve('loader.js'));
       const sandbox = {
         __result: false,
         window: {
-          fetch: function() {
+          fetch: function () {
             sandbox.__result = true;
           },
-          Ember: { RSVP }
-        }
+          Ember: { RSVP },
+        },
       };
       vm.createContext(sandbox);
       const code = amdLoaderCode + emberFetchCode + testCode;
@@ -163,8 +167,8 @@ require('fetch-test');
             __result: false,
             // no fetch here
             // fetch: function() {},
-            Ember: { RSVP }
-          }
+            Ember: { RSVP },
+          },
         };
         vm.createContext(sandbox);
         const testCodeForNonFetch = `
@@ -178,20 +182,20 @@ require('fetch-test');
         const code = amdLoaderCode + emberFetchCode + testCodeForNonFetch;
         vm.runInContext(code, sandbox);
         expect(sandbox.window.__result).to.equal(true);
-      })
+      });
     }
   });
 
-  describe(`Build browser assets with preferNative = ${preferNative} in nested dependencies without _findHost`, function() {
+  describe(`Build browser assets with preferNative = ${preferNative} in nested dependencies without _findHost`, function () {
     let output, subject, addon;
 
-    beforeEach(function() {
+    beforeEach(function () {
       addon = Object.create(AddonFactory);
 
       let app = {
         _fetchBuildConfig: {
-          preferNative
-        }
+          preferNative,
+        },
       };
 
       Object.assign(addon, {
@@ -200,8 +204,8 @@ require('fetch-test');
         parent: {
           parent: {
             app,
-            parent: {}
-          }
+            parent: {},
+          },
         },
         ui: {
           writeWarnLine() {},
@@ -219,23 +223,25 @@ require('fetch-test');
       await output.build();
       let files = output.read();
       expect(files).to.have.all.keys('ember-fetch.js');
-      expect(files['ember-fetch.js']).to.include(`var preferNative = ${preferNative}`);
+      expect(files['ember-fetch.js']).to.include(
+        `var preferNative = ${preferNative}`
+      );
     });
 
     it(`${
       preferNative ? 'Prefers' : "Doesn't prefer"
-      } native fetch as specified`, async function () {
+    } native fetch as specified`, async function () {
       await output.build();
       let emberFetchCode = output.read()['ember-fetch.js'];
       const amdLoaderCode = fs.readFileSync(require.resolve('loader.js'));
       const sandbox = {
         __result: false,
         window: {
-          fetch: function() {
+          fetch: function () {
             sandbox.__result = true;
           },
-          Ember: { RSVP }
-        }
+          Ember: { RSVP },
+        },
       };
       vm.createContext(sandbox);
       const code = amdLoaderCode + emberFetchCode + testCode;
@@ -254,8 +260,8 @@ require('fetch-test');
             __result: false,
             // no fetch here
             // fetch: function() {},
-            Ember: { RSVP }
-          }
+            Ember: { RSVP },
+          },
         };
         vm.createContext(sandbox);
         const testCodeForNonFetch = `
@@ -269,7 +275,7 @@ require('fetch-test');
         const code = amdLoaderCode + emberFetchCode + testCodeForNonFetch;
         vm.runInContext(code, sandbox);
         expect(sandbox.window.__result).to.equal(true);
-      })
+      });
     }
   });
 });

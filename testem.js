@@ -1,35 +1,28 @@
 'use strict';
 
-const isRunningInTravis = process.env.TRAVIS === 'true';
-const launch_in_ci = ['Chrome'];
-
-if (isRunningInTravis) {
-  launch_in_ci.push('Firefox');
-}
-
 module.exports = {
   test_page: 'tests/index.html?hidepassed',
   disable_watching: true,
-  launch_in_ci,
-  launch_in_dev: [
-    'Chrome'
-  ],
+  launch_in_ci: ['Chrome'],
+  launch_in_dev: ['Chrome'],
+  browser_start_timeout: 120,
   browser_args: {
     Firefox: {
       mode: 'ci',
-      args: ['-headless']
+      args: ['-headless'],
     },
     Chrome: {
       mode: 'ci',
       args: [
         // --no-sandbox is needed when running Chrome inside a container
-        process.env.TRAVIS ? '--no-sandbox' : null,
-
-        '--disable-gpu',
+        process.env.CI ? '--no-sandbox' : null,
         '--headless',
+        '--disable-dev-shm-usage',
+        '--disable-software-rasterizer',
+        '--mute-audio',
         '--remote-debugging-port=0',
-        '--window-size=1440,900'
-      ].filter(Boolean)
-    }
-  }
+        '--window-size=1440,900',
+      ].filter(Boolean),
+    },
+  },
 };

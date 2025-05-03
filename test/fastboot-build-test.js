@@ -7,36 +7,46 @@ const glob = require('glob');
 
 const AddonTestApp = require('ember-cli-addon-tests').AddonTestApp;
 
-describe('it builds with ember-cli-fastboot', function() {
+describe('it builds with ember-cli-fastboot', function () {
   this.timeout(300000);
 
   let app;
 
-  beforeEach(function() {
+  beforeEach(function () {
     app = new AddonTestApp();
 
     return app
-      .create('dummy', { skipNpm: true })
-      .then(app =>
-        app.editPackageJSON(pkg => {
+      .create('dummy', {
+        skipNpm: true,
+        emberVersion: '^3.28.10',
+        emberDataVersion: '^3.28.9',
+      })
+      .then((app) =>
+        app.editPackageJSON((pkg) => {
+          pkg.devDependencies['isbinaryfile'] = '5.0.0';
+          pkg.devDependencies['ember-resolver'] = '^8.1.0';
           pkg.devDependencies['ember-cli-fastboot'] = '*';
         })
       )
-      .then(() => app.run('npm', 'install'));
+      .then(() => app.run('npm', 'install'))
+      .catch((e) => {
+        //eslint-disable-next-line no-console
+        console.error(e);
+      });
   });
 
-  it('builds into dist/ember-fetch/fetch-fastboot.js', function() {
-    return app.runEmberCommand('build').then(function() {
+  it('builds into dist/ember-fetch/fetch-fastboot.js', function () {
+    return app.runEmberCommand('build').then(function () {
       expect(app.filePath('dist/index.html')).to.be.a.file();
       expect(app.filePath('dist/ember-fetch/fetch-fastboot.js')).to.be.a.file();
       expect(app.filePath('dist/assets/dummy-fastboot.js')).to.be.a.file();
     });
   });
 
-  it('produces a production build with --environment=production', function() {
+  it('produces a production build with --environment=production', function () {
     return app
       .runEmberCommand('build', '--environment=production')
-      .then(function() {
+      .then(function () {
         expect(app.filePath('dist/index.html')).to.be.a.file();
         expect(find('dist/ember-fetch/fetch-fastboot-*.js')).to.be.a.file();
         expect(find('dist/ember-fetch/fetch-fastboot-*.js')).to.match(

@@ -20,7 +20,7 @@ const path = require('path');
 // broccoli-rollup: rollup dependencies to expected module format
 //
 const stew = require('broccoli-stew');
-const Template = require('broccoli-templater');
+const Template = require('@gorner/broccoli-templater');
 const MergeTrees = require('broccoli-merge-trees');
 const concat = require('broccoli-concat');
 const map = stew.map;
@@ -57,7 +57,7 @@ const TEMPLATE_PATH = path.resolve(__dirname + '/assets/browser-fetch.js.t');
  *    global, but we can rely on the fact that Ember users are using modules.)
  */
 module.exports = {
-  name: 'ember-fetch',
+  name: require('./package').name,
 
   /*
    * The `included` hook is invoked at the very beginning of the build process.
@@ -66,18 +66,20 @@ module.exports = {
    * which allows us to use the `import()` method to tell it to include a file
    * from our `vendor` tree into the final built app.
    */
-  included: function() {
+  included: function () {
     this._super.included.apply(this, arguments);
 
     let isApp = !this.project.isEmberCLIAddon();
 
     let hasEmberFetch = !!this.project.findAddonByName('ember-fetch');
-    let hasEmberCliFastboot = !!this.project.findAddonByName('ember-cli-fastboot');
+    let hasEmberCliFastboot =
+      !!this.project.findAddonByName('ember-cli-fastboot');
 
     let emberSource = new VersionChecker(this.project).for('ember-source');
-    let hasEmberSourceModules = emberSource.exists() && emberSource.gte('3.27.0');
+    let hasEmberSourceModules =
+      emberSource.exists() && emberSource.gte('4.4.0');
 
-    if(isApp && hasEmberCliFastboot && !hasEmberFetch) {
+    if (isApp && hasEmberCliFastboot && !hasEmberFetch) {
       throw new Error(`Ember fetch is not installed as top-level dependency of the application using fastboot. Add ember-fetch as dependecy in application's package.json.
       For details check here - https://github.com/ember-cli/ember-fetch#top-level-addon`);
     }
@@ -89,13 +91,16 @@ module.exports = {
       importTarget = this;
     }
 
-    app._fetchBuildConfig = Object.assign({
-      preferNative: false,
-      nativePromise: false,
-      alwaysIncludePolyfill: false,
-      hasEmberSourceModules,
-      browsers: this.project.targets && this.project.targets.browsers
-    }, app.options['ember-fetch']);
+    app._fetchBuildConfig = Object.assign(
+      {
+        preferNative: false,
+        nativePromise: false,
+        alwaysIncludePolyfill: false,
+        hasEmberSourceModules,
+        browsers: this.project.targets && this.project.targets.browsers,
+      },
+      app.options['ember-fetch']
+    );
 
     importTarget.import('vendor/ember-fetch.js', {
       exports: {
@@ -104,9 +109,9 @@ module.exports = {
           'Headers',
           'Request',
           'Response',
-          'AbortController'
-        ]
-      }
+          'AbortController',
+        ],
+      },
     });
   },
 
@@ -120,37 +125,51 @@ module.exports = {
    * the correct version of the polyfill at the `vendor/ember-fetch.js` path.
    */
   treeForVendor() {
-    let babelAddon = this.addons.find(addon => addon.name === 'ember-cli-babel');
+    let babelAddon = this.addons.find(
+      (addon) => addon.name === 'ember-cli-babel'
+    );
 
     const app = this._findApp();
     const options = app._fetchBuildConfig;
 
     let browserTree = this.treeForBrowserFetch(options);
     if (babelAddon) {
-      browserTree = debug(babelAddon.transpileTree(browserTree, {
-        'ember-cli-babel': {
-          compileModules: false,
-        },
-      }), 'after-babel');
-
+      browserTree = debug(
+        babelAddon.transpileTree(browserTree, {
+          'ember-cli-babel': {
+            compileModules: false,
+          },
+        }),
+        'after-babel'
+      );
     } else {
-      this.ui.writeWarnLine('[ember-fetch] Could not find `ember-cli-babel` addon, opting out of transpilation!')
+      this.ui.writeWarnLine(
+        '[ember-fetch] Could not find `ember-cli-babel` addon, opting out of transpilation!'
+      );
     }
 
     const preferNative = options.preferNative;
 
-    return debug(map(browserTree, (content) => `if (typeof FastBoot === 'undefined') {
+    return debug(
+      map(
+        browserTree,
+        (content) => `if (typeof FastBoot === 'undefined') {
       var preferNative = ${preferNative};
       ${content}
-    }`), 'wrapped');
+    }`
+      ),
+      'wrapped'
+    );
   },
 
   // Only include public/fetch-fastboot.js if top level addon
   treeForPublic() {
-    const fastbootEnabled = process.env.FASTBOOT_DISABLED !== 'true'
-      && !!this.project.findAddonByName('ember-cli-fastboot');
+    const fastbootEnabled =
+      process.env.FASTBOOT_DISABLED !== 'true' &&
+      !!this.project.findAddonByName('ember-cli-fastboot');
     return !this.parent.parent && fastbootEnabled
-      ? this._super.treeForPublic.apply(this, arguments) : null;
+      ? this._super.treeForPublic.apply(this, arguments)
+      : null;
   },
 
   cacheKeyForTree(treeType) {
@@ -175,52 +194,73 @@ module.exports = {
   treeForBrowserFetch(options) {
     const browsers = options.browsers;
     // To skip including the polyfill, `preferNative` needs to be `true` AND `alwaysIncludePolyfill` needs to be `false` (default)
-    const alwaysIncludePolyfill = !options.preferNative || options.alwaysIncludePolyfill;
-    const needsFetchPolyfill = alwaysIncludePolyfill || !this._checkSupports('fetch', browsers);
-    const needsAbortControllerPolyfill = alwaysIncludePolyfill || !this._checkSupports('abortcontroller', browsers);
+    const alwaysIncludePolyfill =
+      !options.preferNative || options.alwaysIncludePolyfill;
+    const needsFetchPolyfill =
+      alwaysIncludePolyfill || !this._checkSupports('fetch', browsers);
+    const needsAbortControllerPolyfill =
+      alwaysIncludePolyfill ||
+      !this._checkSupports('abortcontroller', browsers);
 
     const inputNodes = [];
     const inputFiles = [];
 
     if (needsAbortControllerPolyfill) {
-      const abortcontrollerNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('abortcontroller-polyfill'))), {
-        rollup: {
-          input: 'src/abortcontroller-polyfill.js',
-          output: {
-            file: 'abortcontroller.js',
-            // abortcontroller is polyfill only, the name is only required by rollup iife
-            name: 'AbortController',
-            format: 'iife'
+      const abortcontrollerNode = debug(
+        new Rollup(
+          path.dirname(
+            path.dirname(require.resolve('abortcontroller-polyfill'))
+          ),
+          {
+            rollup: {
+              input: 'src/abortcontroller-polyfill.js',
+              output: {
+                file: 'abortcontroller.js',
+                // abortcontroller is polyfill only, the name is only required by rollup iife
+                name: 'AbortController',
+                format: 'iife',
+              },
+            },
           }
-        }
-      }), 'abortcontroller');
+        ),
+        'abortcontroller'
+      );
 
       inputNodes.push(abortcontrollerNode);
       inputFiles.push('abortcontroller.js');
     }
 
     if (needsFetchPolyfill) {
-      const fetchNode = debug(new Rollup(path.dirname(path.dirname(require.resolve('whatwg-fetch'))), {
-        rollup: {
-          input: 'fetch.js',
-          output: {
-            file: 'fetch.js',
-            name: 'WHATWGFetch',
-            format: 'iife'
+      const fetchNode = debug(
+        new Rollup(
+          path.dirname(path.dirname(require.resolve('whatwg-fetch'))),
+          {
+            rollup: {
+              input: 'fetch.js',
+              output: {
+                dir: 'whatwg-fetch',
+                name: 'WHATWGFetch',
+                format: 'iife',
+              },
+            },
           }
-        }
-      }), 'whatwg-fetch');
+        ),
+        ''
+      );
 
       inputNodes.push(fetchNode);
-      inputFiles.push('fetch.js');
+      inputFiles.push('whatwg-fetch/fetch.js');
     }
 
-    const polyfillNode = debug(concat(new MergeTrees(inputNodes), {
-      inputFiles,
-      allowNone: true,
-      outputFile: 'ember-fetch.js',
-      sourceMapConfig: { enabled: false }
-    }), 'after-concat');
+    const polyfillNode = debug(
+      concat(new MergeTrees(inputNodes), {
+        inputFiles,
+        allowNone: true,
+        outputFile: 'ember-fetch.js',
+        sourceMapConfig: { enabled: false },
+      }),
+      'after-concat'
+    );
 
     const moduleHeader = this._getModuleHeader(options);
 
@@ -231,7 +271,7 @@ module.exports = {
           moduleBody: content,
         };
       }),
-      "browser-fetch"
+      'browser-fetch'
     );
   },
 
@@ -286,8 +326,12 @@ define('fetch', ['exports'], function(exports) {
       let app;
       let current = this;
       do {
-         app = current.app || this;
-      } while (current.parent && current.parent.parent && (current = current.parent));
+        app = current.app || this;
+      } while (
+        current.parent &&
+        current.parent.parent &&
+        (current = current.parent)
+      );
 
       return app;
     }

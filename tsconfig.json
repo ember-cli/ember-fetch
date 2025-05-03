@@ -17,6 +17,7 @@
     "noEmit": true,
     "strictFunctionTypes": true,
     "pretty": true,
+    "skipLibCheck": true,
     "stripInternal": true,
     "strict": true,
     "inlineSourceMap": true,

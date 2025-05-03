@@ -12,5 +12,5 @@ function patchFetchForRelativeURLs(instance) {
 
 export default {
   name: 'fetch',
-  initialize: patchFetchForRelativeURLs
+  initialize: patchFetchForRelativeURLs,
 };
